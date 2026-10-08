@@ -20,7 +20,7 @@ from .store import TenantStore, dataset_owner, utcnow_iso, DEMO_COMPANY_ID, DEMO
 from .crypto import hash_password, verify_password
 from .auth import (
     AuthError, create_user, update_user, login, logout,
-    get_tenant_context, build_tenant_context,
+    get_tenant_context, build_tenant_context, enter_demo, exit_demo,
 )
 from .authorization import (
     PermissionDenied, require_permission, scoped_company_id,
@@ -54,7 +54,7 @@ __all__ = [
     "dataset_owner", "utcnow_iso", "DEMO_COMPANY_ID", "DEMO_DATASET_ID",
     "hash_password", "verify_password",
     "AuthError", "create_user", "update_user", "login", "logout",
-    "get_tenant_context", "build_tenant_context",
+    "get_tenant_context", "build_tenant_context", "enter_demo", "exit_demo",
     "PermissionDenied", "require_permission", "scoped_company_id",
     "require_company_admin", "require_user_admin", "check_data_access",
     "create_company", "audit",
