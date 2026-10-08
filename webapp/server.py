@@ -55,6 +55,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from tenant import (
     TenantStore, TenantContext, AuthError, PermissionDenied,
     login, logout, get_tenant_context, require_permission,
+    enter_demo, exit_demo,
 )
 from tenant import audit as audit_mod
 
@@ -550,6 +551,36 @@ class WebappHandler(BaseHTTPRequestHandler):
         store, ctx = auth
 
         try:
+            if path == "/api/demo/enter":
+                # Entra a la demo sin destruir la sesión: crea una sesión
+                # nueva ligada a demo-retail (rol viewer, TTL 1h). La sesión
+                # origen queda intacta para poder volver.
+                origin_token = _parse_cookies(self).get(COOKIE_NAME, "")
+                try:
+                    demo_token, demo_ctx = enter_demo(store, ctx,
+                                                     origin_token)
+                except AuthError as e:
+                    return _send_json(self, 400, {"error": str(e)})
+                return _send_json(self, 200,
+                                  {"ok": True,
+                                   "company_name": demo_ctx.company_name},
+                                  set_cookie=demo_token)
+
+            if path == "/api/demo/exit":
+                # Sale de la demo: revoca la sesión demo y restaura la
+                # cookie con la sesión origen si sigue válida.
+                demo_token = _parse_cookies(self).get(COOKIE_NAME, "")
+                try:
+                    origin_token = exit_demo(store, demo_token)
+                except AuthError as e:
+                    return _send_json(self, 400, {"error": str(e)})
+                if origin_token:
+                    return _send_json(self, 200, {"ok": True},
+                                      set_cookie=origin_token)
+                return _send_json(self, 200,
+                                  {"ok": True, "login_required": True},
+                                  clear_cookie=True)
+
             if path == "/api/advisor/ask":
                 require_permission(store, ctx, "advisor.use", "advisor")
                 body = _read_json_body(self)
