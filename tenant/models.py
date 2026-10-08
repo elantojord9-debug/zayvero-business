@@ -79,6 +79,10 @@ class Session:
     created_at: str = ""
     expires_at: str = ""
     revoked: bool = False
+    # Sesión de demostración: token de la sesión origen (del usuario que
+    # entró a la demo) para poder volver sin pedir login. Solo la usa el
+    # servidor; nunca viaja al frontend. "" = sesión normal.
+    origin_session_id: str = ""
 
     def to_dict(self):
         return asdict(self)
