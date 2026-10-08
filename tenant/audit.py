@@ -35,6 +35,8 @@ DATASET_ACTIVATED = "DATASET_ACTIVATED"
 COMPANY_CONFIG_UPDATED = "COMPANY_CONFIG_UPDATED"
 # FASE 8 — experiencia de producto (primera entrada / onboarding)
 PRODUCT_OVERVIEW_VIEWED = "PRODUCT_OVERVIEW_VIEWED"
+DEMO_ENTER = "DEMO_ENTER"
+DEMO_EXIT = "DEMO_EXIT"
 
 
 def _scrub_metadata(metadata: dict | None) -> dict:
