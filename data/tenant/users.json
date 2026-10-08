@@ -174,5 +174,16 @@
     "password_hash": "pbkdf2_sha256$260000$927b457a11e3784e20f1f42085104484$6b020ebed48fc931bb035425b55e3ac4eb3cdc135f91a726b0cfb59eb3e1e1ab",
     "created_at": "2026-10-08T21:31:49Z",
     "updated_at": "2026-10-08T21:31:51Z"
+  },
+  {
+    "user_id": "USR-5befdfcbad8d",
+    "company_id": "CMP-29bdedca08d9",
+    "email": "demiguel099@gmail.com",
+    "name": "Luis Miguel Liriano",
+    "status": "active",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$40724a2803c5be80a11f0405984f674e$3404db1533d492ef6475514b8e43aa5bf6acdab4516f996351bda74a6e107f2c",
+    "created_at": "2026-10-08T22:09:55Z",
+    "updated_at": "2026-10-08T22:09:55Z"
   }
 ]
