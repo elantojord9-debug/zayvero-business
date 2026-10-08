@@ -1,0 +1,206 @@
+{
+ "report_metadata": {
+  "generated_at": "2026-10-08T21:11:59.884561+00:00",
+  "company_id": "CMP-966a4d28742c",
+  "dataset": "Ventas E2E F8",
+  "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+  "parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-966a4d28742c/ventas-e2e.parquet",
+  "n_rows_input": 200,
+  "runtime_seconds": 0.0,
+  "phase": "4A — Prediction Engine MVP"
+ },
+ "summary": {
+  "n_predictions": 3,
+  "n_ok": 0,
+  "n_insufficient_data": 3,
+  "methods_used": {},
+  "confidence": {
+   "min": null,
+   "max": null,
+   "mean": null,
+   "distribution": {
+    "0-39": 0,
+    "40-69": 0,
+    "70-100": 0
+   }
+  },
+  "trends": {
+   "UPWARD": 0,
+   "DOWNWARD": 0,
+   "STABLE": 0,
+   "UNSTABLE": 0,
+   "INSUFFICIENT_DATA": 0
+  },
+  "decline_risk": {
+   "LOW": 0,
+   "MEDIUM": 0,
+   "HIGH": 0,
+   "INSUFFICIENT_DATA": 0
+  }
+ },
+ "predictions": [
+  {
+   "prediction_id": "PRED-000001",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "GLOBAL",
+    "id": null,
+    "label": "negocio completo"
+   },
+   "period": null,
+   "forecast_horizon": 3,
+   "prediction_status": "INSUFFICIENT_DATA",
+   "predicted_value": null,
+   "lower_bound": null,
+   "upper_bound": null,
+   "confidence_score": 0.0,
+   "trend": "INSUFFICIENT_DATA",
+   "decline_risk": "INSUFFICIENT_DATA",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": null,
+   "training_period": null,
+   "validation_period": null,
+   "metrics": null,
+   "evidence_quality": "LOW",
+   "explanation": "ZAYVERO no genera una estimación para negocio completo (revenue, por mes): historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar).",
+   "limitations": [
+    "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+    "no se generó ningún valor numérico por falta de evidencia"
+   ],
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 12,
+    "series_start": "2024-01",
+    "series_end": "2024-12",
+    "forecast_horizon": 3,
+    "company_id": "CMP-966a4d28742c"
+   }
+  },
+  {
+   "prediction_id": "PRED-000002",
+   "prediction_type": "DEMAND_QUANTITY",
+   "entity": {
+    "kind": "GLOBAL",
+    "id": null,
+    "label": "negocio completo"
+   },
+   "period": null,
+   "forecast_horizon": 3,
+   "prediction_status": "INSUFFICIENT_DATA",
+   "predicted_value": null,
+   "lower_bound": null,
+   "upper_bound": null,
+   "confidence_score": 0.0,
+   "trend": "INSUFFICIENT_DATA",
+   "decline_risk": "INSUFFICIENT_DATA",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": null,
+   "training_period": null,
+   "validation_period": null,
+   "metrics": null,
+   "evidence_quality": "LOW",
+   "explanation": "ZAYVERO no genera una estimación para negocio completo (unidades, por mes): historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar).",
+   "limitations": [
+    "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+    "no se generó ningún valor numérico por falta de evidencia"
+   ],
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_QUANTITY)",
+    "n_periods": 12,
+    "series_start": "2024-01",
+    "series_end": "2024-12",
+    "forecast_horizon": 3,
+    "company_id": "CMP-966a4d28742c"
+   }
+  },
+  {
+   "prediction_id": "PRED-000003",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "GLOBAL",
+    "id": null,
+    "label": "negocio completo"
+   },
+   "period": null,
+   "forecast_horizon": 4,
+   "prediction_status": "INSUFFICIENT_DATA",
+   "predicted_value": null,
+   "lower_bound": null,
+   "upper_bound": null,
+   "confidence_score": 0.0,
+   "trend": "INSUFFICIENT_DATA",
+   "decline_risk": "INSUFFICIENT_DATA",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": null,
+   "training_period": null,
+   "validation_period": null,
+   "metrics": null,
+   "evidence_quality": "LOW",
+   "explanation": "ZAYVERO no genera una estimación para negocio completo (revenue, por semana): serie discontinua: solo 25% de los periodos tienen actividad (mínimo 50%).",
+   "limitations": [
+    "serie discontinua: solo 25% de los periodos tienen actividad (mínimo 50%)",
+    "no se generó ningún valor numérico por falta de evidencia"
+   ],
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por semana (DEMAND_REVENUE)",
+    "n_periods": 48,
+    "series_start": "2024-01-15/2024-01-21",
+    "series_end": "2024-12-09/2024-12-15",
+    "forecast_horizon": 4,
+    "company_id": "CMP-966a4d28742c"
+   }
+  }
+ ],
+ "methods": {
+  "baselines": [
+   "naive",
+   "moving_average",
+   "rolling_median",
+   "seasonal_naive"
+  ],
+  "selection": "menor RMSE en validación temporal (últimos H periodos); desempate por simplicidad",
+  "backtesting": "split temporal estricto: train < validation, sin fuga de información futura",
+  "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q)",
+  "interval": "±1.28·std(residuos de validación) (~80% empírico), límite inferior acotado a 0"
+ },
+ "trace": {
+  "input": "/home/hatch/workspace/zayvero-business/data/processed/CMP-966a4d28742c/ventas-e2e.parquet",
+  "filters": {
+   "transaction_status": "completed"
+  },
+  "note": "solo filas completed; las canceladas son reversiones, no demanda"
+ }
+}

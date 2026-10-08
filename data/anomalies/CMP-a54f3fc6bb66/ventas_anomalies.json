@@ -1,0 +1,2955 @@
+{
+ "report_metadata": {
+  "engine": "zayvero-business-anomaly-2A",
+  "dataset_label": "ventas.csv",
+  "company_id": "CMP-a54f3fc6bb66",
+  "source_parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-a54f3fc6bb66/ventas.parquet",
+  "generated_at_utc": "2026-10-08T04:21:09.122955+00:00",
+  "n_rows_analyzed": 1320,
+  "period_analyzed": "2023-01-01 → 2024-12-28",
+  "elapsed_seconds": 0.2
+ },
+ "summary": {
+  "total_anomalies": 52,
+  "anomalies_in_report": 52,
+  "by_severity": {
+   "INFO": 0,
+   "LOW": 32,
+   "MEDIUM": 10,
+   "HIGH": 9,
+   "CRITICAL": 1
+  },
+  "by_type": {
+   "temporal_spike": 42,
+   "quantity_outlier": 5,
+   "customer_unusual_purchase": 3,
+   "temporal_drop": 2
+  },
+  "avg_confidence": 65.4,
+  "note": "Una anomalía es una desviación de un patrón esperado; NO implica fraude, robo, pérdida ni error humano."
+ },
+ "anomalies": [
+  {
+   "type": "temporal_spike",
+   "severity": "CRITICAL",
+   "entity": {
+    "kind": "period",
+    "id": "2024-06-15",
+    "label": "día 2024-06-15"
+   },
+   "period": {
+    "start": "2024-06-15T00:00:00",
+    "end": "2024-06-15T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 56806.01,
+   "expected": 555.46,
+   "difference": 56250.55,
+   "ratio": 102.268,
+   "z_robust": 104.93,
+   "deviation": 104.93,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 555.46,
+    "baseline_mad": 361.6,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 123.98
+   },
+   "explanation": "Las ventas del día 2024-06-15 fueron £56,806.01, 102.3 veces superiores a su comportamiento habitual (£555.46). Desviación robusta z=104.9.",
+   "confidence_score": 85,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 104.93,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 85/100: historial 30 puntos (15/30), desviación 104.9 (35/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 555.46",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000001",
+   "priority_rank": 1
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "HIGH",
+   "entity": {
+    "kind": "period",
+    "id": "2024-W24",
+    "label": "semana 2024-W24"
+   },
+   "period": {
+    "start": "2024-06-10T00:00:00",
+    "end": "2024-06-10T00:00:00",
+    "granularity": "week"
+   },
+   "observed": 59159.63,
+   "expected": 3447.45,
+   "difference": 55712.17,
+   "ratio": 17.16,
+   "z_robust": 31.28,
+   "deviation": 31.28,
+   "evidence": {
+    "window_days": 12,
+    "baseline_median": 3447.45,
+    "baseline_mad": 1201.18,
+    "history_points": 12,
+    "sustained": false,
+    "global_median_revenue": 3677.06
+   },
+   "explanation": "Las ventas del semana 2024-W24 fueron £59,159.63, 17.2 veces superiores a su comportamiento habitual (£3,447.45). Desviación robusta z=31.3.",
+   "confidence_score": 66,
+   "confidence_factors": {
+    "history_points": 12,
+    "history_contribution": 6.0,
+    "deviation": 31.28,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 66/100: historial 12 puntos (6/30), desviación 31.3 (35/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 12), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 12 períodos = 3,447.45",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000002",
+   "priority_rank": 2
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "HIGH",
+   "entity": {
+    "kind": "period",
+    "id": "2024-06",
+    "label": "mes 2024-06"
+   },
+   "period": {
+    "start": "2024-06-01T00:00:00",
+    "end": "2024-06-01T00:00:00",
+    "granularity": "month"
+   },
+   "observed": 73217.55,
+   "expected": 17212.15,
+   "difference": 56005.4,
+   "ratio": 4.254,
+   "z_robust": 13.65,
+   "deviation": 13.65,
+   "evidence": {
+    "window_days": 6,
+    "baseline_median": 17212.15,
+    "baseline_mad": 2768.21,
+    "history_points": 6,
+    "sustained": false,
+    "global_median_revenue": 16260.47
+   },
+   "explanation": "Las ventas del mes 2024-06 fueron £73,217.55, 4.3 veces superiores a su comportamiento habitual (£17,212.15). Desviación robusta z=13.6.",
+   "confidence_score": 63,
+   "confidence_factors": {
+    "history_points": 6,
+    "history_contribution": 3.0,
+    "deviation": 13.65,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 63/100: historial 6 puntos (3/30), desviación 13.6 (35/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 6), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 6 períodos = 17,212.15",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000003",
+   "priority_rank": 3
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "HIGH",
+   "entity": {
+    "kind": "period",
+    "id": "2024-02-22",
+    "label": "día 2024-02-22"
+   },
+   "period": {
+    "start": "2024-02-22T00:00:00",
+    "end": "2024-02-22T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 3305.26,
+   "expected": 497.51,
+   "difference": 2807.75,
+   "ratio": 6.644,
+   "z_robust": 6.16,
+   "deviation": 6.16,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 497.51,
+    "baseline_mad": 307.51,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2024-02-22 fueron £3,305.26, 6.6 veces superiores a su comportamiento habitual (£497.51). Desviación robusta z=6.2.",
+   "confidence_score": 75,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 6.16,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 75/100: historial 30 puntos (15/30), desviación 6.2 (35/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 497.51",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000004",
+   "priority_rank": 4
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "HIGH",
+   "entity": {
+    "kind": "period",
+    "id": "2023-W11",
+    "label": "semana 2023-W11"
+   },
+   "period": {
+    "start": "2023-03-13T00:00:00",
+    "end": "2023-03-13T00:00:00",
+    "granularity": "week"
+   },
+   "observed": 5200.45,
+   "expected": 2746.28,
+   "difference": 2454.16,
+   "ratio": 1.894,
+   "z_robust": 9.66,
+   "deviation": 9.66,
+   "evidence": {
+    "window_days": 12,
+    "baseline_median": 2746.28,
+    "baseline_mad": 171.28,
+    "history_points": 12,
+    "sustained": true,
+    "global_median_revenue": 3677.06
+   },
+   "explanation": "Las ventas del semana 2023-W11 fueron £5,200.45, 1.9 veces superiores a su comportamiento habitual (£2,746.28). Desviación robusta z=9.7.",
+   "confidence_score": 76,
+   "confidence_factors": {
+    "history_points": 12,
+    "history_contribution": 6.0,
+    "deviation": 9.66,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 76/100: historial 12 puntos (6/30), desviación 9.7 (35/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 12), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 12 períodos = 2,746.28",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000005",
+   "priority_rank": 5
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "period",
+    "id": "2023-09-11",
+    "label": "día 2023-09-11"
+   },
+   "period": {
+    "start": "2023-09-11T00:00:00",
+    "end": "2023-09-11T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2310.98,
+   "expected": 191.94,
+   "difference": 2119.04,
+   "ratio": 12.04,
+   "z_robust": 4.78,
+   "deviation": 4.78,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 191.94,
+    "baseline_mad": 299.03,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-09-11 fueron £2,310.98, 12.0 veces superiores a su comportamiento habitual (£191.94). Desviación robusta z=4.8.",
+   "confidence_score": 78,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 4.78,
+    "magnitude_contribution": 27.9,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 78/100: historial 30 puntos (15/30), desviación 4.8 (28/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 191.94",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000006",
+   "priority_rank": 6
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "period",
+    "id": "2023-03-20",
+    "label": "día 2023-03-20"
+   },
+   "period": {
+    "start": "2023-03-20T00:00:00",
+    "end": "2023-03-20T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2083.72,
+   "expected": 373.48,
+   "difference": 1710.24,
+   "ratio": 5.579,
+   "z_robust": 4.01,
+   "deviation": 4.01,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 373.48,
+    "baseline_mad": 287.67,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 3.05
+   },
+   "explanation": "Las ventas del día 2023-03-20 fueron £2,083.72, 5.6 veces superiores a su comportamiento habitual (£373.48). Desviación robusta z=4.0.",
+   "confidence_score": 73,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 4.01,
+    "magnitude_contribution": 23.4,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 73/100: historial 30 puntos (15/30), desviación 4.0 (23/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 373.48",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000007",
+   "priority_rank": 7
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "period",
+    "id": "2023-12-06",
+    "label": "día 2023-12-06"
+   },
+   "period": {
+    "start": "2023-12-06T00:00:00",
+    "end": "2023-12-06T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2816.23,
+   "expected": 470.05,
+   "difference": 2346.18,
+   "ratio": 5.991,
+   "z_robust": 4.3,
+   "deviation": 4.3,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 470.05,
+    "baseline_mad": 368.38,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 3.53
+   },
+   "explanation": "Las ventas del día 2023-12-06 fueron £2,816.23, 6.0 veces superiores a su comportamiento habitual (£470.05). Desviación robusta z=4.3.",
+   "confidence_score": 65,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 4.3,
+    "magnitude_contribution": 25.1,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 65/100: historial 30 puntos (15/30), desviación 4.3 (25/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 470.05",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000008",
+   "priority_rank": 8
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "period",
+    "id": "2023-12-03",
+    "label": "día 2023-12-03"
+   },
+   "period": {
+    "start": "2023-12-03T00:00:00",
+    "end": "2023-12-03T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2518.36,
+   "expected": 420.15,
+   "difference": 2098.21,
+   "ratio": 5.994,
+   "z_robust": 4.34,
+   "deviation": 4.34,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 420.15,
+    "baseline_mad": 325.75,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 10.66
+   },
+   "explanation": "Las ventas del día 2023-12-03 fueron £2,518.36, 6.0 veces superiores a su comportamiento habitual (£420.15). Desviación robusta z=4.3.",
+   "confidence_score": 65,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 4.34,
+    "magnitude_contribution": 25.3,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 65/100: historial 30 puntos (15/30), desviación 4.3 (25/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 420.15",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000009",
+   "priority_rank": 9
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "period",
+    "id": "2024-02-04",
+    "label": "día 2024-02-04"
+   },
+   "period": {
+    "start": "2024-02-04T00:00:00",
+    "end": "2024-02-04T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2138.03,
+   "expected": 322.95,
+   "difference": 1815.07,
+   "ratio": 6.62,
+   "z_robust": 4.24,
+   "deviation": 4.24,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 322.95,
+    "baseline_mad": 288.81,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2024-02-04 fueron £2,138.03, 6.6 veces superiores a su comportamiento habitual (£322.95). Desviación robusta z=4.2.",
+   "confidence_score": 65,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 4.24,
+    "magnitude_contribution": 24.7,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 65/100: historial 30 puntos (15/30), desviación 4.2 (25/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 322.95",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000010",
+   "priority_rank": 10
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "period",
+    "id": "2023-W10",
+    "label": "semana 2023-W10"
+   },
+   "period": {
+    "start": "2023-03-06T00:00:00",
+    "end": "2023-03-06T00:00:00",
+    "granularity": "week"
+   },
+   "observed": 3661.05,
+   "expected": 2744.81,
+   "difference": 916.24,
+   "ratio": 1.334,
+   "z_robust": 5.37,
+   "deviation": 5.37,
+   "evidence": {
+    "window_days": 12,
+    "baseline_median": 2744.81,
+    "baseline_mad": 115.12,
+    "history_points": 11,
+    "sustained": true,
+    "global_median_revenue": 3677.06
+   },
+   "explanation": "Las ventas del semana 2023-W10 fueron £3,661.05, 1.3 veces superiores a su comportamiento habitual (£2,744.81). Desviación robusta z=5.4.",
+   "confidence_score": 72,
+   "confidence_factors": {
+    "history_points": 11,
+    "history_contribution": 5.5,
+    "deviation": 5.37,
+    "magnitude_contribution": 31.3,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 72/100: historial 11 puntos (6/30), desviación 5.4 (31/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 12), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 12 períodos = 2,744.81",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000011",
+   "priority_rank": 11
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "period",
+    "id": "2024-05-09",
+    "label": "día 2024-05-09"
+   },
+   "period": {
+    "start": "2024-05-09T00:00:00",
+    "end": "2024-05-09T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1655.8,
+   "expected": 248.7,
+   "difference": 1407.1,
+   "ratio": 6.658,
+   "z_robust": 4.0,
+   "deviation": 4.0,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 248.7,
+    "baseline_mad": 237.07,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2024-05-09 fueron £1,655.80, 6.7 veces superiores a su comportamiento habitual (£248.70). Desviación robusta z=4.0.",
+   "confidence_score": 63,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 4.0,
+    "magnitude_contribution": 23.4,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 63/100: historial 30 puntos (15/30), desviación 4.0 (23/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 248.70",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000012",
+   "priority_rank": 12
+  },
+  {
+   "type": "quantity_outlier",
+   "severity": "HIGH",
+   "entity": {
+    "kind": "product",
+    "id": "P001",
+    "label": "P001"
+   },
+   "period": {
+    "start": "2024-06-15T12:00:00",
+    "end": "2024-06-15T12:00:00",
+    "granularity": "transaction"
+   },
+   "observed": 50.0,
+   "expected": 19.0,
+   "difference": 31.0,
+   "ratio": 2.632,
+   "deviation": 10.75,
+   "evidence": {
+    "column": "Quantity",
+    "history_points": 292,
+    "q1": 3.0,
+    "q3": 7.0,
+    "iqr": 4.0,
+    "bounds": [
+     -9.0,
+     19.0
+    ],
+    "transaction": "INV101295",
+    "customer": "C0007"
+   },
+   "explanation": "Se registraron 1 transacciones del producto P001 con cantidad extraordinariamente alta a su rango habitual (hasta 19 unidades): cantidad 50.00 en transacción INV101295.",
+   "confidence_score": 90,
+   "confidence_factors": {
+    "history_points": 292,
+    "history_contribution": 30.0,
+    "deviation": 10.75,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 90/100: historial 292 puntos (30/30), desviación 10.8 (35/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "IQR por producto sobre Quantity (k=3, extremos lejanos)",
+    "filters": "transaction_status == 'completed', Quantity > 0. Cantidades <= 0 excluidas: pertenecen a la lógica de cancelación/devolución, no son anomalías.",
+    "rows_considered": 1320,
+    "baseline": "Q1/Q3 del propio producto",
+    "formula": "límite = Q3 + 3*IQR (superior)",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Máximo 5 casos por producto, 300 en total (los más extremos)."
+   },
+   "anomaly_id": "ANM-000013",
+   "priority_rank": 13
+  },
+  {
+   "type": "quantity_outlier",
+   "severity": "HIGH",
+   "entity": {
+    "kind": "product",
+    "id": "P001",
+    "label": "P001"
+   },
+   "period": {
+    "start": "2024-06-15T12:00:00",
+    "end": "2024-06-15T12:00:00",
+    "granularity": "transaction"
+   },
+   "observed": 50.0,
+   "expected": 19.0,
+   "difference": 31.0,
+   "ratio": 2.632,
+   "deviation": 10.75,
+   "evidence": {
+    "column": "Quantity",
+    "history_points": 292,
+    "q1": 3.0,
+    "q3": 7.0,
+    "iqr": 4.0,
+    "bounds": [
+     -9.0,
+     19.0
+    ],
+    "transaction": "INV101296",
+    "customer": "C0007"
+   },
+   "explanation": "Se registraron 1 transacciones del producto P001 con cantidad extraordinariamente alta a su rango habitual (hasta 19 unidades): cantidad 50.00 en transacción INV101296.",
+   "confidence_score": 90,
+   "confidence_factors": {
+    "history_points": 292,
+    "history_contribution": 30.0,
+    "deviation": 10.75,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 90/100: historial 292 puntos (30/30), desviación 10.8 (35/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "IQR por producto sobre Quantity (k=3, extremos lejanos)",
+    "filters": "transaction_status == 'completed', Quantity > 0. Cantidades <= 0 excluidas: pertenecen a la lógica de cancelación/devolución, no son anomalías.",
+    "rows_considered": 1320,
+    "baseline": "Q1/Q3 del propio producto",
+    "formula": "límite = Q3 + 3*IQR (superior)",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Máximo 5 casos por producto, 300 en total (los más extremos)."
+   },
+   "anomaly_id": "ANM-000014",
+   "priority_rank": 14
+  },
+  {
+   "type": "quantity_outlier",
+   "severity": "HIGH",
+   "entity": {
+    "kind": "product",
+    "id": "P001",
+    "label": "P001"
+   },
+   "period": {
+    "start": "2024-06-15T12:00:00",
+    "end": "2024-06-15T12:00:00",
+    "granularity": "transaction"
+   },
+   "observed": 50.0,
+   "expected": 19.0,
+   "difference": 31.0,
+   "ratio": 2.632,
+   "deviation": 10.75,
+   "evidence": {
+    "column": "Quantity",
+    "history_points": 292,
+    "q1": 3.0,
+    "q3": 7.0,
+    "iqr": 4.0,
+    "bounds": [
+     -9.0,
+     19.0
+    ],
+    "transaction": "INV101297",
+    "customer": "C0007"
+   },
+   "explanation": "Se registraron 1 transacciones del producto P001 con cantidad extraordinariamente alta a su rango habitual (hasta 19 unidades): cantidad 50.00 en transacción INV101297.",
+   "confidence_score": 90,
+   "confidence_factors": {
+    "history_points": 292,
+    "history_contribution": 30.0,
+    "deviation": 10.75,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 90/100: historial 292 puntos (30/30), desviación 10.8 (35/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "IQR por producto sobre Quantity (k=3, extremos lejanos)",
+    "filters": "transaction_status == 'completed', Quantity > 0. Cantidades <= 0 excluidas: pertenecen a la lógica de cancelación/devolución, no son anomalías.",
+    "rows_considered": 1320,
+    "baseline": "Q1/Q3 del propio producto",
+    "formula": "límite = Q3 + 3*IQR (superior)",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Máximo 5 casos por producto, 300 en total (los más extremos)."
+   },
+   "anomaly_id": "ANM-000015",
+   "priority_rank": 15
+  },
+  {
+   "type": "quantity_outlier",
+   "severity": "HIGH",
+   "entity": {
+    "kind": "product",
+    "id": "P001",
+    "label": "P001"
+   },
+   "period": {
+    "start": "2024-06-15T12:00:00",
+    "end": "2024-06-15T12:00:00",
+    "granularity": "transaction"
+   },
+   "observed": 50.0,
+   "expected": 19.0,
+   "difference": 31.0,
+   "ratio": 2.632,
+   "deviation": 10.75,
+   "evidence": {
+    "column": "Quantity",
+    "history_points": 292,
+    "q1": 3.0,
+    "q3": 7.0,
+    "iqr": 4.0,
+    "bounds": [
+     -9.0,
+     19.0
+    ],
+    "transaction": "INV101298",
+    "customer": "C0007"
+   },
+   "explanation": "Se registraron 1 transacciones del producto P001 con cantidad extraordinariamente alta a su rango habitual (hasta 19 unidades): cantidad 50.00 en transacción INV101298.",
+   "confidence_score": 90,
+   "confidence_factors": {
+    "history_points": 292,
+    "history_contribution": 30.0,
+    "deviation": 10.75,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 90/100: historial 292 puntos (30/30), desviación 10.8 (35/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "IQR por producto sobre Quantity (k=3, extremos lejanos)",
+    "filters": "transaction_status == 'completed', Quantity > 0. Cantidades <= 0 excluidas: pertenecen a la lógica de cancelación/devolución, no son anomalías.",
+    "rows_considered": 1320,
+    "baseline": "Q1/Q3 del propio producto",
+    "formula": "límite = Q3 + 3*IQR (superior)",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Máximo 5 casos por producto, 300 en total (los más extremos)."
+   },
+   "anomaly_id": "ANM-000016",
+   "priority_rank": 16
+  },
+  {
+   "type": "quantity_outlier",
+   "severity": "HIGH",
+   "entity": {
+    "kind": "product",
+    "id": "P001",
+    "label": "P001"
+   },
+   "period": {
+    "start": "2024-06-15T12:00:00",
+    "end": "2024-06-15T12:00:00",
+    "granularity": "transaction"
+   },
+   "observed": 50.0,
+   "expected": 19.0,
+   "difference": 31.0,
+   "ratio": 2.632,
+   "deviation": 10.75,
+   "evidence": {
+    "column": "Quantity",
+    "history_points": 292,
+    "q1": 3.0,
+    "q3": 7.0,
+    "iqr": 4.0,
+    "bounds": [
+     -9.0,
+     19.0
+    ],
+    "transaction": "INV101299",
+    "customer": "C0007"
+   },
+   "explanation": "Se registraron 1 transacciones del producto P001 con cantidad extraordinariamente alta a su rango habitual (hasta 19 unidades): cantidad 50.00 en transacción INV101299.",
+   "confidence_score": 90,
+   "confidence_factors": {
+    "history_points": 292,
+    "history_contribution": 30.0,
+    "deviation": 10.75,
+    "magnitude_contribution": 35.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 90/100: historial 292 puntos (30/30), desviación 10.8 (35/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "IQR por producto sobre Quantity (k=3, extremos lejanos)",
+    "filters": "transaction_status == 'completed', Quantity > 0. Cantidades <= 0 excluidas: pertenecen a la lógica de cancelación/devolución, no son anomalías.",
+    "rows_considered": 1320,
+    "baseline": "Q1/Q3 del propio producto",
+    "formula": "límite = Q3 + 3*IQR (superior)",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Máximo 5 casos por producto, 300 en total (los más extremos)."
+   },
+   "anomaly_id": "ANM-000017",
+   "priority_rank": 17
+  },
+  {
+   "type": "customer_unusual_purchase",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "customer",
+    "id": "C0017",
+    "label": "cliente C0017"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed": 950.48,
+   "expected": 214.59,
+   "difference": 735.89,
+   "ratio": 4.429,
+   "z_robust": 4.7,
+   "deviation": 4.7,
+   "evidence": {
+    "transaction": "INV100702",
+    "customer_history_transactions": 30,
+    "customer_median_purchase": 214.59
+   },
+   "explanation": "El cliente C0017 realizó una compra de £950.48, 4.4 veces superior a su compra habitual (£214.59). Requiere revisión.",
+   "confidence_score": 67,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 4.7,
+    "magnitude_contribution": 27.4,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 67/100: historial 30 puntos (15/30), desviación 4.7 (27/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 1320,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z."
+   },
+   "anomaly_id": "ANM-000018",
+   "priority_rank": 18
+  },
+  {
+   "type": "customer_unusual_purchase",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "customer",
+    "id": "C0008",
+    "label": "cliente C0008"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed": 867.12,
+   "expected": 213.09,
+   "difference": 654.03,
+   "ratio": 4.069,
+   "z_robust": 5.21,
+   "deviation": 5.21,
+   "evidence": {
+    "transaction": "INV100676",
+    "customer_history_transactions": 26,
+    "customer_median_purchase": 213.09
+   },
+   "explanation": "El cliente C0008 realizó una compra de £867.12, 4.1 veces superior a su compra habitual (£213.09). Requiere revisión.",
+   "confidence_score": 68,
+   "confidence_factors": {
+    "history_points": 26,
+    "history_contribution": 13.0,
+    "deviation": 5.21,
+    "magnitude_contribution": 30.4,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 68/100: historial 26 puntos (13/30), desviación 5.2 (30/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 1320,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z."
+   },
+   "anomaly_id": "ANM-000019",
+   "priority_rank": 19
+  },
+  {
+   "type": "customer_unusual_purchase",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "customer",
+    "id": "C0008",
+    "label": "cliente C0008"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed": 781.62,
+   "expected": 213.09,
+   "difference": 568.53,
+   "ratio": 3.668,
+   "z_robust": 4.53,
+   "deviation": 4.53,
+   "evidence": {
+    "transaction": "INV100481",
+    "customer_history_transactions": 26,
+    "customer_median_purchase": 213.09
+   },
+   "explanation": "El cliente C0008 realizó una compra de £781.62, 3.7 veces superior a su compra habitual (£213.09). Requiere revisión.",
+   "confidence_score": 64,
+   "confidence_factors": {
+    "history_points": 26,
+    "history_contribution": 13.0,
+    "deviation": 4.53,
+    "magnitude_contribution": 26.4,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 64/100: historial 26 puntos (13/30), desviación 4.5 (26/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 1320,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z."
+   },
+   "anomaly_id": "ANM-000020",
+   "priority_rank": 20
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-09-18",
+    "label": "día 2023-09-18"
+   },
+   "period": {
+    "start": "2023-09-18T00:00:00",
+    "end": "2023-09-18T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1821.39,
+   "expected": 271.75,
+   "difference": 1549.63,
+   "ratio": 6.702,
+   "z_robust": 3.6,
+   "deviation": 3.6,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 271.75,
+    "baseline_mad": 290.24,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 5.59
+   },
+   "explanation": "Las ventas del día 2023-09-18 fueron £1,821.39, 6.7 veces superiores a su comportamiento habitual (£271.75). Desviación robusta z=3.6.",
+   "confidence_score": 71,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.6,
+    "magnitude_contribution": 21.0,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 71/100: historial 30 puntos (15/30), desviación 3.6 (21/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 271.75",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000021",
+   "priority_rank": 21
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-10-23",
+    "label": "día 2023-10-23"
+   },
+   "period": {
+    "start": "2023-10-23T00:00:00",
+    "end": "2023-10-23T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1769.01,
+   "expected": 325.89,
+   "difference": 1443.12,
+   "ratio": 5.428,
+   "z_robust": 3.52,
+   "deviation": 3.52,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 325.89,
+    "baseline_mad": 276.18,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 5.99
+   },
+   "explanation": "Las ventas del día 2023-10-23 fueron £1,769.01, 5.4 veces superiores a su comportamiento habitual (£325.89). Desviación robusta z=3.5.",
+   "confidence_score": 71,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.52,
+    "magnitude_contribution": 20.6,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 71/100: historial 30 puntos (15/30), desviación 3.5 (21/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 325.89",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000022",
+   "priority_rank": 22
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-W14",
+    "label": "semana 2023-W14"
+   },
+   "period": {
+    "start": "2023-04-03T00:00:00",
+    "end": "2023-04-03T00:00:00",
+    "granularity": "week"
+   },
+   "observed": 5806.8,
+   "expected": 2746.28,
+   "difference": 3060.52,
+   "ratio": 2.114,
+   "z_robust": 2.8,
+   "deviation": 2.8,
+   "evidence": {
+    "window_days": 12,
+    "baseline_median": 2746.28,
+    "baseline_mad": 736.64,
+    "history_points": 12,
+    "sustained": true,
+    "global_median_revenue": 3677.06
+   },
+   "explanation": "Las ventas del semana 2023-W14 fueron £5,806.80, 2.1 veces superiores a su comportamiento habitual (£2,746.28). Desviación robusta z=2.8.",
+   "confidence_score": 57,
+   "confidence_factors": {
+    "history_points": 12,
+    "history_contribution": 6.0,
+    "deviation": 2.8,
+    "magnitude_contribution": 16.3,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 57/100: historial 12 puntos (6/30), desviación 2.8 (16/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 12), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 12 períodos = 2,746.28",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000023",
+   "priority_rank": 23
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-10-22",
+    "label": "día 2024-10-22"
+   },
+   "period": {
+    "start": "2024-10-22T00:00:00",
+    "end": "2024-10-22T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2142.18,
+   "expected": 418.35,
+   "difference": 1723.84,
+   "ratio": 5.121,
+   "z_robust": 3.98,
+   "deviation": 3.98,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 418.35,
+    "baseline_mad": 291.85,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 5.3
+   },
+   "explanation": "Las ventas del día 2024-10-22 fueron £2,142.18, 5.1 veces superiores a su comportamiento habitual (£418.35). Desviación robusta z=4.0.",
+   "confidence_score": 63,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.98,
+    "magnitude_contribution": 23.2,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 63/100: historial 30 puntos (15/30), desviación 4.0 (23/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 418.35",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000024",
+   "priority_rank": 24
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-09-24",
+    "label": "día 2023-09-24"
+   },
+   "period": {
+    "start": "2023-09-24T00:00:00",
+    "end": "2023-09-24T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1490.47,
+   "expected": 304.31,
+   "difference": 1186.16,
+   "ratio": 4.898,
+   "z_robust": 2.89,
+   "deviation": 2.89,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 304.31,
+    "baseline_mad": 276.6,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-09-24 fueron £1,490.47, 4.9 veces superiores a su comportamiento habitual (£304.31). Desviación robusta z=2.9.",
+   "confidence_score": 67,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.89,
+    "magnitude_contribution": 16.9,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 67/100: historial 30 puntos (15/30), desviación 2.9 (17/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 304.31",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000025",
+   "priority_rank": 25
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-12-22",
+    "label": "día 2024-12-22"
+   },
+   "period": {
+    "start": "2024-12-22T00:00:00",
+    "end": "2024-12-22T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2402.68,
+   "expected": 477.81,
+   "difference": 1924.86,
+   "ratio": 5.028,
+   "z_robust": 3.53,
+   "deviation": 3.53,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 477.81,
+    "baseline_mad": 368.11,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 4.47
+   },
+   "explanation": "Las ventas del día 2024-12-22 fueron £2,402.68, 5.0 veces superiores a su comportamiento habitual (£477.81). Desviación robusta z=3.5.",
+   "confidence_score": 61,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.53,
+    "magnitude_contribution": 20.6,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 61/100: historial 30 puntos (15/30), desviación 3.5 (21/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 477.81",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000026",
+   "priority_rank": 26
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-06-05",
+    "label": "día 2024-06-05"
+   },
+   "period": {
+    "start": "2024-06-05T00:00:00",
+    "end": "2024-06-05T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2376.36,
+   "expected": 501.28,
+   "difference": 1875.08,
+   "ratio": 4.741,
+   "z_robust": 3.57,
+   "deviation": 3.57,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 501.28,
+    "baseline_mad": 353.87,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2024-06-05 fueron £2,376.36, 4.7 veces superiores a su comportamiento habitual (£501.28). Desviación robusta z=3.6.",
+   "confidence_score": 61,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.57,
+    "magnitude_contribution": 20.8,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 61/100: historial 30 puntos (15/30), desviación 3.6 (21/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 501.28",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000027",
+   "priority_rank": 27
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-W49",
+    "label": "semana 2023-W49"
+   },
+   "period": {
+    "start": "2023-12-04T00:00:00",
+    "end": "2023-12-04T00:00:00",
+    "granularity": "week"
+   },
+   "observed": 7309.16,
+   "expected": 3702.86,
+   "difference": 3606.3,
+   "ratio": 1.974,
+   "z_robust": 3.88,
+   "deviation": 3.88,
+   "evidence": {
+    "window_days": 12,
+    "baseline_median": 3702.86,
+    "baseline_mad": 626.99,
+    "history_points": 12,
+    "sustained": false,
+    "global_median_revenue": 3677.06
+   },
+   "explanation": "Las ventas del semana 2023-W49 fueron £7,309.16, 2.0 veces superiores a su comportamiento habitual (£3,702.86). Desviación robusta z=3.9.",
+   "confidence_score": 54,
+   "confidence_factors": {
+    "history_points": 12,
+    "history_contribution": 6.0,
+    "deviation": 3.88,
+    "magnitude_contribution": 22.6,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 54/100: historial 12 puntos (6/30), desviación 3.9 (23/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 12), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 12 períodos = 3,702.86",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000028",
+   "priority_rank": 28
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-05-08",
+    "label": "día 2023-05-08"
+   },
+   "period": {
+    "start": "2023-05-08T00:00:00",
+    "end": "2023-05-08T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2520.82,
+   "expected": 520.6,
+   "difference": 2000.22,
+   "ratio": 4.842,
+   "z_robust": 3.41,
+   "deviation": 3.41,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 520.6,
+    "baseline_mad": 395.39,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 3.85
+   },
+   "explanation": "Las ventas del día 2023-05-08 fueron £2,520.82, 4.8 veces superiores a su comportamiento habitual (£520.60). Desviación robusta z=3.4.",
+   "confidence_score": 60,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.41,
+    "magnitude_contribution": 19.9,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 60/100: historial 30 puntos (15/30), desviación 3.4 (20/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 520.60",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000029",
+   "priority_rank": 29
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-09-03",
+    "label": "día 2023-09-03"
+   },
+   "period": {
+    "start": "2023-09-03T00:00:00",
+    "end": "2023-09-03T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1482.72,
+   "expected": 290.24,
+   "difference": 1192.48,
+   "ratio": 5.109,
+   "z_robust": 2.77,
+   "deviation": 2.77,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 290.24,
+    "baseline_mad": 290.24,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-09-03 fueron £1,482.72, 5.1 veces superiores a su comportamiento habitual (£290.24). Desviación robusta z=2.8.",
+   "confidence_score": 66,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.77,
+    "magnitude_contribution": 16.2,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 66/100: historial 30 puntos (15/30), desviación 2.8 (16/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 290.24",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000030",
+   "priority_rank": 30
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-10-15",
+    "label": "día 2023-10-15"
+   },
+   "period": {
+    "start": "2023-10-15T00:00:00",
+    "end": "2023-10-15T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1418.49,
+   "expected": 304.31,
+   "difference": 1114.18,
+   "ratio": 4.661,
+   "z_robust": 2.79,
+   "deviation": 2.79,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 304.31,
+    "baseline_mad": 269.57,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 3.56
+   },
+   "explanation": "Las ventas del día 2023-10-15 fueron £1,418.49, 4.7 veces superiores a su comportamiento habitual (£304.31). Desviación robusta z=2.8.",
+   "confidence_score": 66,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.79,
+    "magnitude_contribution": 16.3,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 66/100: historial 30 puntos (15/30), desviación 2.8 (16/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 304.31",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000031",
+   "priority_rank": 31
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-03-15",
+    "label": "día 2023-03-15"
+   },
+   "period": {
+    "start": "2023-03-15T00:00:00",
+    "end": "2023-03-15T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1348.32,
+   "expected": 329.45,
+   "difference": 1018.87,
+   "ratio": 4.093,
+   "z_robust": 2.83,
+   "deviation": 2.83,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 329.45,
+    "baseline_mad": 242.75,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 7.78
+   },
+   "explanation": "Las ventas del día 2023-03-15 fueron £1,348.32, 4.1 veces superiores a su comportamiento habitual (£329.45). Desviación robusta z=2.8.",
+   "confidence_score": 67,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.83,
+    "magnitude_contribution": 16.5,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 67/100: historial 30 puntos (15/30), desviación 2.8 (17/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 329.45",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000032",
+   "priority_rank": 32
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-09-01",
+    "label": "día 2023-09-01"
+   },
+   "period": {
+    "start": "2023-09-01T00:00:00",
+    "end": "2023-09-01T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1307.9,
+   "expected": 205.88,
+   "difference": 1102.02,
+   "ratio": 6.353,
+   "z_robust": 2.7,
+   "deviation": 2.7,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 205.88,
+    "baseline_mad": 275.33,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-09-01 fueron £1,307.90, 6.4 veces superiores a su comportamiento habitual (£205.88). Desviación robusta z=2.7.",
+   "confidence_score": 66,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.7,
+    "magnitude_contribution": 15.7,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 66/100: historial 30 puntos (15/30), desviación 2.7 (16/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 205.88",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000033",
+   "priority_rank": 33
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-08-13",
+    "label": "día 2023-08-13"
+   },
+   "period": {
+    "start": "2023-08-13T00:00:00",
+    "end": "2023-08-13T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1991.51,
+   "expected": 438.75,
+   "difference": 1552.76,
+   "ratio": 4.539,
+   "z_robust": 3.58,
+   "deviation": 3.58,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 438.75,
+    "baseline_mad": 292.24,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 5.98
+   },
+   "explanation": "Las ventas del día 2023-08-13 fueron £1,991.51, 4.5 veces superiores a su comportamiento habitual (£438.75). Desviación robusta z=3.6.",
+   "confidence_score": 61,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.58,
+    "magnitude_contribution": 20.9,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 61/100: historial 30 puntos (15/30), desviación 3.6 (21/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 438.75",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000034",
+   "priority_rank": 34
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-03-06",
+    "label": "día 2023-03-06"
+   },
+   "period": {
+    "start": "2023-03-06T00:00:00",
+    "end": "2023-03-06T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1324.8,
+   "expected": 335.54,
+   "difference": 989.26,
+   "ratio": 3.948,
+   "z_robust": 2.69,
+   "deviation": 2.69,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 335.54,
+    "baseline_mad": 248.32,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 6.0
+   },
+   "explanation": "Las ventas del día 2023-03-06 fueron £1,324.80, 3.9 veces superiores a su comportamiento habitual (£335.54). Desviación robusta z=2.7.",
+   "confidence_score": 66,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.69,
+    "magnitude_contribution": 15.7,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 66/100: historial 30 puntos (15/30), desviación 2.7 (16/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 335.54",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000035",
+   "priority_rank": 35
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-10-12",
+    "label": "día 2023-10-12"
+   },
+   "period": {
+    "start": "2023-10-12T00:00:00",
+    "end": "2023-10-12T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1313.92,
+   "expected": 276.18,
+   "difference": 1037.75,
+   "ratio": 4.758,
+   "z_robust": 2.6,
+   "deviation": 2.6,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 276.18,
+    "baseline_mad": 269.57,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-10-12 fueron £1,313.92, 4.8 veces superiores a su comportamiento habitual (£276.18). Desviación robusta z=2.6.",
+   "confidence_score": 65,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.6,
+    "magnitude_contribution": 15.1,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 65/100: historial 30 puntos (15/30), desviación 2.6 (15/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 276.18",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000036",
+   "priority_rank": 36
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-09-22",
+    "label": "día 2024-09-22"
+   },
+   "period": {
+    "start": "2024-09-22T00:00:00",
+    "end": "2024-09-22T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1779.71,
+   "expected": 219.74,
+   "difference": 1559.97,
+   "ratio": 8.099,
+   "z_robust": 3.48,
+   "deviation": 3.48,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 219.74,
+    "baseline_mad": 302.41,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 24.83
+   },
+   "explanation": "Las ventas del día 2024-09-22 fueron £1,779.71, 8.1 veces superiores a su comportamiento habitual (£219.74). Desviación robusta z=3.5.",
+   "confidence_score": 60,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.48,
+    "magnitude_contribution": 20.3,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 60/100: historial 30 puntos (15/30), desviación 3.5 (20/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 219.74",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000037",
+   "priority_rank": 37
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-06-23",
+    "label": "día 2024-06-23"
+   },
+   "period": {
+    "start": "2024-06-23T00:00:00",
+    "end": "2024-06-23T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 2217.71,
+   "expected": 549.73,
+   "difference": 1667.98,
+   "ratio": 4.034,
+   "z_robust": 3.18,
+   "deviation": 3.18,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 549.73,
+    "baseline_mad": 353.87,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 4.81
+   },
+   "explanation": "Las ventas del día 2024-06-23 fueron £2,217.71, 4.0 veces superiores a su comportamiento habitual (£549.73). Desviación robusta z=3.2.",
+   "confidence_score": 59,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.18,
+    "magnitude_contribution": 18.5,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 59/100: historial 30 puntos (15/30), desviación 3.2 (19/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 549.73",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000038",
+   "priority_rank": 38
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-03-13",
+    "label": "día 2023-03-13"
+   },
+   "period": {
+    "start": "2023-03-13T00:00:00",
+    "end": "2023-03-13T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1249.8,
+   "expected": 334.36,
+   "difference": 915.44,
+   "ratio": 3.738,
+   "z_robust": 2.54,
+   "deviation": 2.54,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 334.36,
+    "baseline_mad": 242.75,
+    "history_points": 30,
+    "sustained": true,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-03-13 fueron £1,249.80, 3.7 veces superiores a su comportamiento habitual (£334.36). Desviación robusta z=2.5.",
+   "confidence_score": 65,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.54,
+    "magnitude_contribution": 14.8,
+    "sustained_pattern": true,
+    "consistency_contribution": 20.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 65/100: historial 30 puntos (15/30), desviación 2.5 (15/35), patrón sostenido (20/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 334.36",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000039",
+   "priority_rank": 39
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-06-21",
+    "label": "día 2023-06-21"
+   },
+   "period": {
+    "start": "2023-06-21T00:00:00",
+    "end": "2023-06-21T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1813.62,
+   "expected": 262.34,
+   "difference": 1551.28,
+   "ratio": 6.913,
+   "z_robust": 2.89,
+   "deviation": 2.89,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 262.34,
+    "baseline_mad": 362.19,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-06-21 fueron £1,813.62, 6.9 veces superiores a su comportamiento habitual (£262.34). Desviación robusta z=2.9.",
+   "confidence_score": 57,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.89,
+    "magnitude_contribution": 16.9,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 57/100: historial 30 puntos (15/30), desviación 2.9 (17/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 262.34",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000040",
+   "priority_rank": 40
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-11-05",
+    "label": "día 2023-11-05"
+   },
+   "period": {
+    "start": "2023-11-05T00:00:00",
+    "end": "2023-11-05T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1735.43,
+   "expected": 346.31,
+   "difference": 1389.12,
+   "ratio": 5.011,
+   "z_robust": 3.1,
+   "deviation": 3.1,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 346.31,
+    "baseline_mad": 301.96,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 4.96
+   },
+   "explanation": "Las ventas del día 2023-11-05 fueron £1,735.43, 5.0 veces superiores a su comportamiento habitual (£346.31). Desviación robusta z=3.1.",
+   "confidence_score": 58,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 3.1,
+    "magnitude_contribution": 18.1,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 58/100: historial 30 puntos (15/30), desviación 3.1 (18/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 346.31",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000041",
+   "priority_rank": 41
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-06-16",
+    "label": "día 2023-06-16"
+   },
+   "period": {
+    "start": "2023-06-16T00:00:00",
+    "end": "2023-06-16T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1704.36,
+   "expected": 312.65,
+   "difference": 1391.71,
+   "ratio": 5.451,
+   "z_robust": 2.98,
+   "deviation": 2.98,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 312.65,
+    "baseline_mad": 314.88,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-06-16 fueron £1,704.36, 5.5 veces superiores a su comportamiento habitual (£312.65). Desviación robusta z=3.0.",
+   "confidence_score": 57,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.98,
+    "magnitude_contribution": 17.4,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 57/100: historial 30 puntos (15/30), desviación 3.0 (17/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 312.65",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000042",
+   "priority_rank": 42
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-02-01",
+    "label": "día 2024-02-01"
+   },
+   "period": {
+    "start": "2024-02-01T00:00:00",
+    "end": "2024-02-01T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1489.51,
+   "expected": 241.9,
+   "difference": 1247.61,
+   "ratio": 6.158,
+   "z_robust": 2.91,
+   "deviation": 2.91,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 241.9,
+    "baseline_mad": 288.81,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2024-02-01 fueron £1,489.51, 6.2 veces superiores a su comportamiento habitual (£241.90). Desviación robusta z=2.9.",
+   "confidence_score": 57,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.91,
+    "magnitude_contribution": 17.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 57/100: historial 30 puntos (15/30), desviación 2.9 (17/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 241.90",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000043",
+   "priority_rank": 43
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-03-02",
+    "label": "día 2024-03-02"
+   },
+   "period": {
+    "start": "2024-03-02T00:00:00",
+    "end": "2024-03-02T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1858.58,
+   "expected": 497.51,
+   "difference": 1361.07,
+   "ratio": 3.736,
+   "z_robust": 2.66,
+   "deviation": 2.66,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 497.51,
+    "baseline_mad": 345.06,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 26.59
+   },
+   "explanation": "Las ventas del día 2024-03-02 fueron £1,858.58, 3.7 veces superiores a su comportamiento habitual (£497.51). Desviación robusta z=2.7.",
+   "confidence_score": 56,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.66,
+    "magnitude_contribution": 15.5,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 56/100: historial 30 puntos (15/30), desviación 2.7 (16/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 497.51",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000044",
+   "priority_rank": 44
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-W43",
+    "label": "semana 2024-W43"
+   },
+   "period": {
+    "start": "2024-10-21T00:00:00",
+    "end": "2024-10-21T00:00:00",
+    "granularity": "week"
+   },
+   "observed": 6988.81,
+   "expected": 3823.87,
+   "difference": 3164.94,
+   "ratio": 1.828,
+   "z_robust": 2.76,
+   "deviation": 2.76,
+   "evidence": {
+    "window_days": 12,
+    "baseline_median": 3823.87,
+    "baseline_mad": 773.96,
+    "history_points": 12,
+    "sustained": false,
+    "global_median_revenue": 3677.06
+   },
+   "explanation": "Las ventas del semana 2024-W43 fueron £6,988.81, 1.8 veces superiores a su comportamiento habitual (£3,823.87). Desviación robusta z=2.8.",
+   "confidence_score": 47,
+   "confidence_factors": {
+    "history_points": 12,
+    "history_contribution": 6.0,
+    "deviation": 2.76,
+    "magnitude_contribution": 16.1,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 47/100: historial 12 puntos (6/30), desviación 2.8 (16/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 12), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 12 períodos = 3,823.87",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000045",
+   "priority_rank": 45
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-04-06",
+    "label": "día 2023-04-06"
+   },
+   "period": {
+    "start": "2023-04-06T00:00:00",
+    "end": "2023-04-06T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1669.34,
+   "expected": 343.9,
+   "difference": 1325.44,
+   "ratio": 4.854,
+   "z_robust": 2.64,
+   "deviation": 2.64,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 343.9,
+    "baseline_mad": 338.9,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-04-06 fueron £1,669.34, 4.9 veces superiores a su comportamiento habitual (£343.90). Desviación robusta z=2.6.",
+   "confidence_score": 55,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.64,
+    "magnitude_contribution": 15.4,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 55/100: historial 30 puntos (15/30), desviación 2.6 (15/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 343.90",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000046",
+   "priority_rank": 46
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-04-25",
+    "label": "día 2023-04-25"
+   },
+   "period": {
+    "start": "2023-04-25T00:00:00",
+    "end": "2023-04-25T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1847.02,
+   "expected": 539.5,
+   "difference": 1307.51,
+   "ratio": 3.424,
+   "z_robust": 2.56,
+   "deviation": 2.56,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 539.5,
+    "baseline_mad": 343.9,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 4.28
+   },
+   "explanation": "Las ventas del día 2023-04-25 fueron £1,847.02, 3.4 veces superiores a su comportamiento habitual (£539.50). Desviación robusta z=2.6.",
+   "confidence_score": 55,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.56,
+    "magnitude_contribution": 15.0,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 55/100: historial 30 puntos (15/30), desviación 2.6 (15/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 539.50",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000047",
+   "priority_rank": 47
+  },
+  {
+   "type": "temporal_drop",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-W34",
+    "label": "semana 2023-W34"
+   },
+   "period": {
+    "start": "2023-08-21T00:00:00",
+    "end": "2023-08-21T00:00:00",
+    "granularity": "week"
+   },
+   "observed": 1200.13,
+   "expected": 3699.82,
+   "difference": -2499.69,
+   "ratio": 0.324,
+   "z_robust": -2.99,
+   "deviation": 2.99,
+   "evidence": {
+    "window_days": 12,
+    "baseline_median": 3699.82,
+    "baseline_mad": 564.63,
+    "history_points": 12,
+    "sustained": false,
+    "global_median_revenue": 3677.06
+   },
+   "explanation": "Las ventas del semana 2023-W34 fueron £1,200.13, 0.3 veces inferiores a su comportamiento habitual (£3,699.82). Desviación robusta z=-3.0.",
+   "confidence_score": 48,
+   "confidence_factors": {
+    "history_points": 12,
+    "history_contribution": 6.0,
+    "deviation": 2.99,
+    "magnitude_contribution": 17.4,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 48/100: historial 12 puntos (6/30), desviación 3.0 (17/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 12), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 12 períodos = 3,699.82",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000048",
+   "priority_rank": 48
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-03-18",
+    "label": "día 2024-03-18"
+   },
+   "period": {
+    "start": "2024-03-18T00:00:00",
+    "end": "2024-03-18T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1826.93,
+   "expected": 590.04,
+   "difference": 1236.89,
+   "ratio": 3.096,
+   "z_robust": 2.51,
+   "deviation": 2.51,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 590.04,
+    "baseline_mad": 332.82,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2024-03-18 fueron £1,826.93, 3.1 veces superiores a su comportamiento habitual (£590.04). Desviación robusta z=2.5.",
+   "confidence_score": 55,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.51,
+    "magnitude_contribution": 14.6,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 55/100: historial 30 puntos (15/30), desviación 2.5 (15/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 590.04",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000049",
+   "priority_rank": 49
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2024-09-14",
+    "label": "día 2024-09-14"
+   },
+   "period": {
+    "start": "2024-09-14T00:00:00",
+    "end": "2024-09-14T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1309.52,
+   "expected": 203.81,
+   "difference": 1105.71,
+   "ratio": 6.425,
+   "z_robust": 2.51,
+   "deviation": 2.51,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 203.81,
+    "baseline_mad": 296.95,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58,
+    "abrupt_day_over_day": true,
+    "day_over_day_ratio": 6.39
+   },
+   "explanation": "Las ventas del día 2024-09-14 fueron £1,309.52, 6.4 veces superiores a su comportamiento habitual (£203.81). Desviación robusta z=2.5.",
+   "confidence_score": 55,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.51,
+    "magnitude_contribution": 14.7,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 55/100: historial 30 puntos (15/30), desviación 2.5 (15/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 203.81",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000050",
+   "priority_rank": 50
+  },
+  {
+   "type": "temporal_spike",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-02-25",
+    "label": "día 2023-02-25"
+   },
+   "period": {
+    "start": "2023-02-25T00:00:00",
+    "end": "2023-02-25T00:00:00",
+    "granularity": "day"
+   },
+   "observed": 1311.1,
+   "expected": 304.82,
+   "difference": 1006.28,
+   "ratio": 4.301,
+   "z_robust": 2.6,
+   "deviation": 2.6,
+   "evidence": {
+    "window_days": 30,
+    "baseline_median": 304.82,
+    "baseline_mad": 260.6,
+    "history_points": 30,
+    "sustained": false,
+    "global_median_revenue": 421.58
+   },
+   "explanation": "Las ventas del día 2023-02-25 fueron £1,311.10, 4.3 veces superiores a su comportamiento habitual (£304.82). Desviación robusta z=2.6.",
+   "confidence_score": 55,
+   "confidence_factors": {
+    "history_points": 30,
+    "history_contribution": 15.0,
+    "deviation": 2.6,
+    "magnitude_contribution": 15.2,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 55/100: historial 30 puntos (15/30), desviación 2.6 (15/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 30), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 30 períodos = 304.82",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000051",
+   "priority_rank": 51
+  },
+  {
+   "type": "temporal_drop",
+   "severity": "LOW",
+   "entity": {
+    "kind": "period",
+    "id": "2023-W39",
+    "label": "semana 2023-W39"
+   },
+   "period": {
+    "start": "2023-09-25T00:00:00",
+    "end": "2023-09-25T00:00:00",
+    "granularity": "week"
+   },
+   "observed": 1343.52,
+   "expected": 3469.4,
+   "difference": -2125.88,
+   "ratio": 0.387,
+   "z_robust": -2.8,
+   "deviation": 2.8,
+   "evidence": {
+    "window_days": 12,
+    "baseline_median": 3469.4,
+    "baseline_mad": 511.45,
+    "history_points": 12,
+    "sustained": false,
+    "global_median_revenue": 3677.06
+   },
+   "explanation": "Las ventas del semana 2023-W39 fueron £1,343.52, 0.4 veces inferiores a su comportamiento habitual (£3,469.40). Desviación robusta z=-2.8.",
+   "confidence_score": 47,
+   "confidence_factors": {
+    "history_points": 12,
+    "history_contribution": 6.0,
+    "deviation": 2.8,
+    "magnitude_contribution": 16.4,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 47/100: historial 12 puntos (6/30), desviación 2.8 (16/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "ventas.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "method": "rolling median + MAD (ventana 12), z robusto = 0.6745*(x-mediana)/MAD",
+    "filters": "transaction_status == 'completed', Revenue no nulo, Date no nula",
+    "rows_considered": 1320,
+    "baseline": "mediana móvil 12 períodos = 3,469.40",
+    "formula": "z = 0.6745*(observado - mediana_móvil)/MAD_móvil; emisión si |z| >= 2.5",
+    "period_analyzed": "2023-01-01 → 2024-12-28",
+    "notes": "Las cancelaciones se excluyen: son reversiones, no ventas. Huecos sin ventas cuentan como 0."
+   },
+   "anomaly_id": "ANM-000052",
+   "priority_rank": 52
+  }
+ ],
+ "statistics": {
+  "rows_analyzed": 1320,
+  "detectors_run": 6,
+  "emission_threshold": "|z| >= 2.5 (o equivalente)",
+  "max_anomalies_cap": 1000,
+  "truncated": false,
+  "elapsed_seconds": 0.2
+ },
+ "methods": {
+  "temporal": {
+   "description": "Picos, caídas y cambios bruscos de ventas por día, semana ISO y mes.",
+   "method": "Serie de revenue (solo completed). Baseline: mediana móvil + MAD móvil (ventanas 30d/12sem/6m). z robusto = 0.6745*(x - mediana_móvil)/MAD_móvil. Emisión si |z| >= 2.5.",
+   "why_robust": "La mediana no se contamina con el propio evento; el MAD es insensible a valores extremos, a diferencia de la desviación estándar.",
+   "exclusions": "transaction_status != 'completed' excluidas (las cancelaciones son reversiones, no ventas). Huecos = 0."
+  },
+  "product_sales_change": {
+   "description": "Cambios bruscos de ventas de un producto vs su propio historial.",
+   "method": "Ventana reciente: últimos 30 días. Baseline: mediana del revenue diario histórico del producto (mín. 30 días activos y 10 transacciones). z robusto con MAD del historial. Emisión si |z| >= 2.5.",
+   "why_robust": "Comparación contra sí mismo: un producto que vende poco pero estable no genera anomalía."
+  },
+  "price_outlier": {
+   "description": "Precios extremadamente diferentes del histórico del producto.",
+   "method": "Por producto (completed, UnitPrice > 0, mín. 10 precios): límites Q1 - 3*IQR / Q3 + 3*IQR. Máx. 5 casos por producto.",
+   "distinction": "'Precio diferente' (aquí) vs 'precio inválido' (<=0 o no numérico: Data Quality Engine, excluido)."
+  },
+  "quantity_outlier": {
+   "description": "Cantidades extraordinarias por producto.",
+   "method": "Por producto (completed, Quantity > 0, mín. 10): límite Q3 + 3*IQR (solo cola superior).",
+   "distinction": "Quantity <= 0 excluida: pertenece a la lógica de cancelación/devolución, no es anomalía."
+  },
+  "customer_unusual_purchase": {
+   "description": "Compras excepcionalmente grandes vs el historial del propio cliente.",
+   "method": "Clientes con >= 5 transacciones. z robusto por transacción vs mediana/MAD del cliente. Emisión si z >= 4 (umbral alto: en wholesale una compra grande aislada puede ser normal). Top 100."
+  },
+  "customer_frequency_burst": {
+   "description": "Concentración inusual de compras en ventana corta.",
+   "method": "Clientes con >= 10 transacciones e intervalo mediano > 30 días. Ráfaga: >= 4 compras en 7 días (two-pointer).",
+   "note": "Descriptivo; no es modelo de churn."
+  },
+  "severity": {
+   "levels": [
+    "INFO",
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "rule": "Umbrales absolutos: HIGH dev>=6, MEDIUM dev>=4, LOW dev>=2.5, INFO dev>=1.5 (dev = |z| robusto, IQRs más allá del cuartil, o equivalente). CRITICAL: solo por ranking — top 25 por prioridad entre dev>=12 y confidence>=75. Así CRITICAL es excepcional y accionable, nunca una categoría masiva."
+  },
+  "confidence": {
+   "rule": "0-100 ponderado: historial (30) + magnitud (35) + consistencia (20) + calidad de datos (15). Cada anomalía explica sus factores."
+  },
+  "ranking": {
+   "rule": "priority = peso_severidad * (0.5 + confidence/100) * (1 + log10(1 + |impacto|)). Orden descendente."
+  }
+ },
+ "trace": {
+  "dataset": "ventas.csv",
+  "company_id": "CMP-a54f3fc6bb66",
+  "source_parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-a54f3fc6bb66/ventas.parquet",
+  "filters_global": "detectores de ventas usan transaction_status == 'completed'; precios/cantidades usan valores > 0",
+  "rows_considered": 1320,
+  "period_analyzed": "2023-01-01 → 2024-12-28",
+  "notes": "Toda anomalía individual incluye su propio bloque trace con baseline, fórmula y registros considerados."
+ }
+}

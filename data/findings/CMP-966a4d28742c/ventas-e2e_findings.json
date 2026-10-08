@@ -1,0 +1,639 @@
+{
+ "report_metadata": {
+  "engine": "zayvero-business-findings-2B",
+  "dataset_label": "Ventas E2E F8",
+  "company_id": "CMP-966a4d28742c",
+  "generated_at_utc": "2026-10-08T21:11:59.714875+00:00",
+  "elapsed_seconds": 0.0,
+  "anomalies_consumed": 4
+ },
+ "summary": {
+  "total_findings": 4,
+  "anomalies_deduped": 0,
+  "dedup_note": "4 anomalías 2A → 4 hallazgos (misma entidad+tipo = mismo evento)",
+  "by_priority": {
+   "MONITOR": 0,
+   "REVIEW": 4,
+   "IMPORTANT": 0,
+   "URGENT": 0
+  },
+  "by_type": {
+   "CUSTOMER_ANOMALY": 4
+  },
+  "by_severity": {
+   "MEDIUM": 4
+  },
+  "avg_impact_score": 67.1,
+  "avg_confidence": 56.0,
+  "note": "Un hallazgo es una desviación priorizada por su importancia potencial para el negocio; NO implica fraude, robo, pérdida ni error humano."
+ },
+ "top_findings": [
+  {
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-17",
+   "severity": "MEDIUM",
+   "business_priority": "REVIEW",
+   "impact_score": 68.3,
+   "impact_components": {
+    "monetary": 33.9,
+    "deviation": 10.8,
+    "confidence": 11.8,
+    "scope": 1.8,
+    "data_quality": 10.0,
+    "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+    "p95_reference": 222.91,
+    "n_affected": 1,
+    "n_merged": 1
+   },
+   "confidence_score": 59,
+   "evidence_quality": "LOW",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-17",
+    "label": "cliente CLI-17"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 332.91,
+   "expected_value": 144.44,
+   "difference": 188.47,
+   "percentage_difference": 130.48,
+   "statistical_explanation": "El cliente CLI-17 realizó una compra de £332.91, 2.3 veces superior a su compra habitual (£144.44). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "recommended_review": "Revisar el historial y las transacciones recientes del cliente CLI-17 para determinar si el comportamiento observado refleja un pedido legítimo o un cambio en su patrón de compra.",
+   "data_quality_warning": null,
+   "requires_review": false,
+   "requires_review_reason": null,
+   "contributing_detectors": [
+    "customer_unusual_purchase"
+   ],
+   "contributing_anomaly_ids": [
+    "ANM-000001"
+   ],
+   "n_merged": 1,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   },
+   "finding_id": "FND-000001",
+   "priority_rank": 1
+  },
+  {
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-23",
+   "severity": "MEDIUM",
+   "business_priority": "REVIEW",
+   "impact_score": 67.8,
+   "impact_components": {
+    "monetary": 34.8,
+    "deviation": 9.8,
+    "confidence": 11.4,
+    "scope": 1.8,
+    "data_quality": 10.0,
+    "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+    "p95_reference": 222.91,
+    "n_affected": 1,
+    "n_merged": 1
+   },
+   "confidence_score": 57,
+   "evidence_quality": "LOW",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-23",
+    "label": "cliente CLI-23"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 341.91,
+   "expected_value": 124.95,
+   "difference": 216.96,
+   "percentage_difference": 173.64,
+   "statistical_explanation": "El cliente CLI-23 realizó una compra de £341.91, 2.7 veces superior a su compra habitual (£124.95). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "recommended_review": "Revisar el historial y las transacciones recientes del cliente CLI-23 para determinar si el comportamiento observado refleja un pedido legítimo o un cambio en su patrón de compra.",
+   "data_quality_warning": null,
+   "requires_review": false,
+   "requires_review_reason": null,
+   "contributing_detectors": [
+    "customer_unusual_purchase"
+   ],
+   "contributing_anomaly_ids": [
+    "ANM-000002"
+   ],
+   "n_merged": 1,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   },
+   "finding_id": "FND-000002",
+   "priority_rank": 2
+  },
+  {
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-16",
+   "severity": "MEDIUM",
+   "business_priority": "REVIEW",
+   "impact_score": 66.3,
+   "impact_components": {
+    "monetary": 34.2,
+    "deviation": 9.3,
+    "confidence": 11.0,
+    "scope": 1.8,
+    "data_quality": 10.0,
+    "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+    "p95_reference": 222.91,
+    "n_affected": 1,
+    "n_merged": 1
+   },
+   "confidence_score": 55,
+   "evidence_quality": "LOW",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-16",
+    "label": "cliente CLI-16"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 323.91,
+   "expected_value": 127.94,
+   "difference": 195.96,
+   "percentage_difference": 153.17,
+   "statistical_explanation": "El cliente CLI-16 realizó una compra de £323.91, 2.5 veces superior a su compra habitual (£127.94). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "recommended_review": "Revisar el historial y las transacciones recientes del cliente CLI-16 para determinar si el comportamiento observado refleja un pedido legítimo o un cambio en su patrón de compra.",
+   "data_quality_warning": null,
+   "requires_review": false,
+   "requires_review_reason": null,
+   "contributing_detectors": [
+    "customer_unusual_purchase"
+   ],
+   "contributing_anomaly_ids": [
+    "ANM-000003"
+   ],
+   "n_merged": 1,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   },
+   "finding_id": "FND-000003",
+   "priority_rank": 3
+  },
+  {
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-22",
+   "severity": "MEDIUM",
+   "business_priority": "REVIEW",
+   "impact_score": 66.0,
+   "impact_components": {
+    "monetary": 35.0,
+    "deviation": 8.6,
+    "confidence": 10.6,
+    "scope": 1.8,
+    "data_quality": 10.0,
+    "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+    "p95_reference": 222.91,
+    "n_affected": 1,
+    "n_merged": 1
+   },
+   "confidence_score": 53,
+   "evidence_quality": "LOW",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-22",
+    "label": "cliente CLI-22"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 332.91,
+   "expected_value": 108.95,
+   "difference": 223.96,
+   "percentage_difference": 205.56,
+   "statistical_explanation": "El cliente CLI-22 realizó una compra de £332.91, 3.1 veces superior a su compra habitual (£108.95). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "recommended_review": "Revisar el historial y las transacciones recientes del cliente CLI-22 para determinar si el comportamiento observado refleja un pedido legítimo o un cambio en su patrón de compra.",
+   "data_quality_warning": null,
+   "requires_review": false,
+   "requires_review_reason": null,
+   "contributing_detectors": [
+    "customer_unusual_purchase"
+   ],
+   "contributing_anomaly_ids": [
+    "ANM-000004"
+   ],
+   "n_merged": 1,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   },
+   "finding_id": "FND-000004",
+   "priority_rank": 4
+  }
+ ],
+ "findings": [
+  {
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-17",
+   "severity": "MEDIUM",
+   "business_priority": "REVIEW",
+   "impact_score": 68.3,
+   "impact_components": {
+    "monetary": 33.9,
+    "deviation": 10.8,
+    "confidence": 11.8,
+    "scope": 1.8,
+    "data_quality": 10.0,
+    "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+    "p95_reference": 222.91,
+    "n_affected": 1,
+    "n_merged": 1
+   },
+   "confidence_score": 59,
+   "evidence_quality": "LOW",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-17",
+    "label": "cliente CLI-17"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 332.91,
+   "expected_value": 144.44,
+   "difference": 188.47,
+   "percentage_difference": 130.48,
+   "statistical_explanation": "El cliente CLI-17 realizó una compra de £332.91, 2.3 veces superior a su compra habitual (£144.44). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "recommended_review": "Revisar el historial y las transacciones recientes del cliente CLI-17 para determinar si el comportamiento observado refleja un pedido legítimo o un cambio en su patrón de compra.",
+   "data_quality_warning": null,
+   "requires_review": false,
+   "requires_review_reason": null,
+   "contributing_detectors": [
+    "customer_unusual_purchase"
+   ],
+   "contributing_anomaly_ids": [
+    "ANM-000001"
+   ],
+   "n_merged": 1,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   },
+   "finding_id": "FND-000001",
+   "priority_rank": 1
+  },
+  {
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-23",
+   "severity": "MEDIUM",
+   "business_priority": "REVIEW",
+   "impact_score": 67.8,
+   "impact_components": {
+    "monetary": 34.8,
+    "deviation": 9.8,
+    "confidence": 11.4,
+    "scope": 1.8,
+    "data_quality": 10.0,
+    "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+    "p95_reference": 222.91,
+    "n_affected": 1,
+    "n_merged": 1
+   },
+   "confidence_score": 57,
+   "evidence_quality": "LOW",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-23",
+    "label": "cliente CLI-23"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 341.91,
+   "expected_value": 124.95,
+   "difference": 216.96,
+   "percentage_difference": 173.64,
+   "statistical_explanation": "El cliente CLI-23 realizó una compra de £341.91, 2.7 veces superior a su compra habitual (£124.95). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "recommended_review": "Revisar el historial y las transacciones recientes del cliente CLI-23 para determinar si el comportamiento observado refleja un pedido legítimo o un cambio en su patrón de compra.",
+   "data_quality_warning": null,
+   "requires_review": false,
+   "requires_review_reason": null,
+   "contributing_detectors": [
+    "customer_unusual_purchase"
+   ],
+   "contributing_anomaly_ids": [
+    "ANM-000002"
+   ],
+   "n_merged": 1,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   },
+   "finding_id": "FND-000002",
+   "priority_rank": 2
+  },
+  {
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-16",
+   "severity": "MEDIUM",
+   "business_priority": "REVIEW",
+   "impact_score": 66.3,
+   "impact_components": {
+    "monetary": 34.2,
+    "deviation": 9.3,
+    "confidence": 11.0,
+    "scope": 1.8,
+    "data_quality": 10.0,
+    "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+    "p95_reference": 222.91,
+    "n_affected": 1,
+    "n_merged": 1
+   },
+   "confidence_score": 55,
+   "evidence_quality": "LOW",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-16",
+    "label": "cliente CLI-16"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 323.91,
+   "expected_value": 127.94,
+   "difference": 195.96,
+   "percentage_difference": 153.17,
+   "statistical_explanation": "El cliente CLI-16 realizó una compra de £323.91, 2.5 veces superior a su compra habitual (£127.94). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "recommended_review": "Revisar el historial y las transacciones recientes del cliente CLI-16 para determinar si el comportamiento observado refleja un pedido legítimo o un cambio en su patrón de compra.",
+   "data_quality_warning": null,
+   "requires_review": false,
+   "requires_review_reason": null,
+   "contributing_detectors": [
+    "customer_unusual_purchase"
+   ],
+   "contributing_anomaly_ids": [
+    "ANM-000003"
+   ],
+   "n_merged": 1,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   },
+   "finding_id": "FND-000003",
+   "priority_rank": 3
+  },
+  {
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-22",
+   "severity": "MEDIUM",
+   "business_priority": "REVIEW",
+   "impact_score": 66.0,
+   "impact_components": {
+    "monetary": 35.0,
+    "deviation": 8.6,
+    "confidence": 10.6,
+    "scope": 1.8,
+    "data_quality": 10.0,
+    "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+    "p95_reference": 222.91,
+    "n_affected": 1,
+    "n_merged": 1
+   },
+   "confidence_score": 53,
+   "evidence_quality": "LOW",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-22",
+    "label": "cliente CLI-22"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 332.91,
+   "expected_value": 108.95,
+   "difference": 223.96,
+   "percentage_difference": 205.56,
+   "statistical_explanation": "El cliente CLI-22 realizó una compra de £332.91, 3.1 veces superior a su compra habitual (£108.95). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "recommended_review": "Revisar el historial y las transacciones recientes del cliente CLI-22 para determinar si el comportamiento observado refleja un pedido legítimo o un cambio en su patrón de compra.",
+   "data_quality_warning": null,
+   "requires_review": false,
+   "requires_review_reason": null,
+   "contributing_detectors": [
+    "customer_unusual_purchase"
+   ],
+   "contributing_anomaly_ids": [
+    "ANM-000004"
+   ],
+   "n_merged": 1,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   },
+   "finding_id": "FND-000004",
+   "priority_rank": 4
+  }
+ ],
+ "statistics": {
+  "p95_difference_reference": 222.91,
+  "top_limit_presentation_only": 100,
+  "all_findings_computed": 4,
+  "elapsed_seconds": 0.0
+ },
+ "methods": {
+  "phase_2a_vs_2b": {
+   "fase_2a": "Anomalía estadística: ¿qué comportamiento es inusual? (z robusto, IQR, MAD).",
+   "fase_2b": "Hallazgo empresarial: ¿qué tan importante podría ser para el negocio? (impact_score, business_priority, evidencia).",
+   "note": "Una anomalía estadística NO es automáticamente un riesgo empresarial."
+  },
+  "impact_score": {
+   "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (0-100)",
+   "components": {
+    "M": "magnitud monetaria: log10(1+|diff|)/log10(1+P95), P95 guiado por los datos",
+    "D": "desviación estadística: min(dev/12, 1)",
+    "C": "confianza: confidence_score/100 (FASE 2A)",
+    "S": "alcance: log10(1+n_affected)/log10(1+50)",
+    "Q": "calidad: 1 - null_fraction"
+   },
+   "note": "No se usa solo el z-score."
+  },
+  "business_priority": {
+   "levels": [
+    "MONITOR",
+    "REVIEW",
+    "IMPORTANT",
+    "URGENT"
+   ],
+   "rules": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT."
+  },
+  "dedup": {
+   "rule": "Misma (tipo_hallazgo, entidad) = mismo evento → un solo hallazgo. Se guardan los detectores y anomalías contribuyentes. La diferencia total es la suma de |diferencias| (transacciones distintas)."
+  },
+  "monetary_language": {
+   "rule": "La diferencia monetaria se llama 'desviación respecto al comportamiento esperado'. NUNCA 'pérdida', 'ganancia' ni 'dinero perdido'."
+  },
+  "finding_types": {
+   "PRODUCT_ANOMALY": "ventas inusuales de un producto vs su historial",
+   "PRICE_ANOMALY": "precios atípicos vs rango habitual del producto",
+   "QUANTITY_ANOMALY": "cantidades extraordinarias vs rango habitual",
+   "CUSTOMER_ANOMALY": "comportamiento de compra inusual del cliente",
+   "TEMPORAL_ANOMALY": "período con ventas fuera de patrón",
+   "SALES_ANOMALY": "reservado: ventas agregadas (sin uso actual)"
+  }
+ },
+ "trace": {
+  "dataset": "Ventas E2E F8",
+  "company_id": "CMP-966a4d28742c",
+  "source": "AnomalyReport FASE 2A",
+  "notes": "Cada hallazgo conserva el trace de su anomalía 2A más los parámetros de FASE 2B (fórmula de impacto, calidad de evidencia, regla de prioridad, deduplicación)."
+ }
+}

@@ -1,0 +1,4958 @@
+{
+ "report_metadata": {
+  "generated_at": "2026-10-08T01:32:05.596655+00:00",
+  "company_id": "demo-retail",
+  "dataset": "Demo Dataset — UCI Online Retail II",
+  "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+  "parquet": "data/processed/demo-retail/online_retail_II_full.parquet",
+  "n_rows_input": 1047877,
+  "runtime_seconds": 1.6,
+  "phase": "4A — Prediction Engine MVP"
+ },
+ "summary": {
+  "n_predictions": 38,
+  "n_ok": 35,
+  "n_insufficient_data": 3,
+  "methods_used": {
+   "naive": 20,
+   "moving_average": 14,
+   "rolling_median": 1
+  },
+  "confidence": {
+   "min": 43.4,
+   "max": 80.4,
+   "mean": 62.1,
+   "distribution": {
+    "0-39": 0,
+    "40-69": 27,
+    "70-100": 8
+   }
+  },
+  "trends": {
+   "UPWARD": 17,
+   "DOWNWARD": 5,
+   "STABLE": 5,
+   "UNSTABLE": 8,
+   "INSUFFICIENT_DATA": 0
+  },
+  "decline_risk": {
+   "LOW": 30,
+   "MEDIUM": 2,
+   "HIGH": 3,
+   "INSUFFICIENT_DATA": 0
+  }
+ },
+ "predictions": [
+  {
+   "prediction_id": "PRED-000001",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "GLOBAL",
+    "id": null,
+    "label": "negocio completo"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 1916432.04,
+   "lower_bound": 235139.1,
+   "upper_bound": 3597724.98,
+   "confidence_score": 73.5,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 322358.26,
+    "rmse": 360010.21,
+    "mape": 34.64,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.327
+   },
+   "evidence_quality": "HIGH",
+   "explanation": "ZAYVERO estima revenue de £1,916,432 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 322,358.3, RMSE 360,010.2). Confianza estimada: 73.5/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 34.6% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 322358.25933333335,
+     "rmse": 360010.2078287501,
+     "mape": 34.64316254211835,
+     "mape_valid": true,
+     "relative_rmse": 0.32695640708366275
+    },
+    "observed_data": {
+     "train_last_6": [
+      537808.62,
+      770536.02,
+      761739.9,
+      719221.19,
+      737014.26,
+      1058590.17
+     ],
+     "validation_actual": [
+      1154979.3,
+      1509496.33,
+      638810.68
+     ],
+     "validation_predicted": [
+      1058590.17,
+      1058590.17,
+      1058590.17
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      638810.68,
+      638810.68,
+      638810.68
+     ],
+     "lower_bound": [
+      78379.7,
+      78379.7,
+      78379.7
+     ],
+     "upper_bound": [
+      1199241.66,
+      1199241.66,
+      1199241.66
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.768,
+     "E": 0.673,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 70309.2505,
+     "relative_slope": 0.092,
+     "cv_recent": 0.2195,
+     "n_recent": 6,
+     "detail": "pendiente relativa +9.2% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000002",
+   "prediction_type": "DEMAND_QUANTITY",
+   "entity": {
+    "kind": "GLOBAL",
+    "id": null,
+    "label": "negocio completo"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 929745.0,
+   "lower_bound": 67569.41,
+   "upper_bound": 1791920.59,
+   "confidence_score": 75.9,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 160273.0,
+    "rmse": 183381.87,
+    "mape": 37.38,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.3318
+   },
+   "evidence_quality": "HIGH",
+   "explanation": "ZAYVERO estima unidades de uds929,745 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 160,273.0, RMSE 183,381.9). Confianza estimada: 75.9/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 37.4% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_QUANTITY)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 160273.0,
+     "rmse": 183381.8715240595,
+     "mape": 37.383393700225916,
+     "mape_valid": true,
+     "relative_rmse": 0.33183381008578866
+    },
+    "observed_data": {
+     "train_last_6": [
+      302743.0,
+      386259.0,
+      348985.0,
+      397144.0,
+      418545.0,
+      557246.0
+     ],
+     "validation_actual": [
+      595073.0,
+      752907.0,
+      309915.0
+     ],
+     "validation_predicted": [
+      557246.0,
+      557246.0,
+      557246.0
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      309915.0,
+      309915.0,
+      309915.0
+     ],
+     "lower_bound": [
+      22523.14,
+      22523.14,
+      22523.14
+     ],
+     "upper_bound": [
+      597306.86,
+      597306.86,
+      597306.86
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.801,
+     "E": 0.668,
+     "T": 0.667,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 40500.9143,
+     "relative_slope": 0.1008,
+     "cv_recent": 0.215,
+     "n_recent": 6,
+     "detail": "pendiente relativa +10.1% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000003",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "GLOBAL",
+    "id": null,
+    "label": "negocio completo"
+   },
+   "period": "2011-12-12/2011-12-18 a 2012-01-02/2012-01-08",
+   "forecast_horizon": 4,
+   "prediction_status": "OK",
+   "predicted_value": 2017311.72,
+   "lower_bound": 1572699.86,
+   "upper_bound": 2461923.58,
+   "confidence_score": 80.4,
+   "trend": "STABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-11-30/2009-12-06 a 2011-11-07/2011-11-13",
+   "validation_period": "2011-11-14/2011-11-20 a 2011-12-05/2011-12-11",
+   "metrics": {
+    "mae": 63041.85,
+    "rmse": 76386.58,
+    "mape": 15.61,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.1992
+   },
+   "evidence_quality": "HIGH",
+   "explanation": "ZAYVERO estima revenue de £2,017,312 para los próximos 4 semanas (2011-12-12/2011-12-18 a 2012-01-02/2012-01-08) utilizando el historial de 102 semanas (2009-11-30/2009-12-06 a 2011-11-07/2011-11-13). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 63,041.8, RMSE 76,386.6). Confianza estimada: 80.4/100. Tendencia: STABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 15.6% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por semana (DEMAND_REVENUE)",
+    "n_periods": 106,
+    "series_start": "2009-11-30/2009-12-06",
+    "series_end": "2011-12-05/2011-12-11",
+    "forecast_horizon": 4,
+    "company_id": "demo-retail",
+    "training_period": "2009-11-30/2009-12-06 a 2011-11-07/2011-11-13 (102 semanas)",
+    "validation_period": "2011-11-14/2011-11-20 a 2011-12-05/2011-12-11 (4 semanas)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 63041.845,
+     "rmse": 76386.58440982651,
+     "mape": 15.609399912598846,
+     "mape_valid": true,
+     "relative_rmse": 0.19921737741904894
+    },
+    "observed_data": {
+     "train_last_6": [
+      319987.39,
+      228776.18,
+      276656.42,
+      260555.63,
+      301897.83,
+      370044.97
+     ],
+     "validation_actual": [
+      388622.44,
+      316412.16,
+      324370.83,
+      504327.93
+     ],
+     "validation_predicted": [
+      370044.97,
+      370044.97,
+      370044.97,
+      370044.97
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2011-12-12/2011-12-18",
+      "2011-12-19/2011-12-25",
+      "2011-12-26/2012-01-01",
+      "2012-01-02/2012-01-08"
+     ],
+     "values": [
+      504327.93,
+      504327.93,
+      504327.93,
+      504327.93
+     ],
+     "lower_bound": [
+      393174.96,
+      393174.96,
+      393174.96,
+      393174.96
+     ],
+     "upper_bound": [
+      615480.9,
+      615480.9,
+      615480.9,
+      615480.9
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 1.0,
+     "S": 0.687,
+     "E": 0.801,
+     "T": 0.831,
+     "Sea": 0.0,
+     "Q": 0.98
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "STABLE",
+     "slope": 12958.6303,
+     "relative_slope": 0.0442,
+     "cv_recent": 0.1685,
+     "n_recent": 6,
+     "detail": "pendiente relativa +4.4% por periodo (dentro de ±5%)"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000004",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "22423",
+    "label": "22423"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 33087.69,
+   "lower_bound": 16356.02,
+   "upper_bound": 49819.36,
+   "confidence_score": 70.6,
+   "trend": "DOWNWARD",
+   "decline_risk": "HIGH",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2010-03 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 3231.24,
+    "rmse": 3574.92,
+    "mape": 40.43,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.3241
+   },
+   "evidence_quality": "HIGH",
+   "explanation": "ZAYVERO estima revenue de £33,088 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 19 meses (2010-03 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 3,231.2, RMSE 3,574.9). Confianza estimada: 70.6/100. Tendencia: DOWNWARD. Riesgo de caída: HIGH.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 40.4% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "22423",
+     "label": "22423"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 22,
+    "series_start": "2010-03",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2010-03 a 2011-09 (19 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 3231.2400000000002,
+     "rmse": 3574.9168350326695,
+     "mape": 40.43304293844744,
+     "mape_valid": true,
+     "relative_rmse": 0.32413113472406224
+    },
+    "observed_data": {
+     "train_last_6": [
+      14812.95,
+      12645.97,
+      9745.39,
+      13987.11,
+      10534.05,
+      9619.53
+     ],
+     "validation_actual": [
+      13281.24,
+      13799.58,
+      6006.87
+     ],
+     "validation_predicted": [
+      11380.23,
+      11380.23,
+      11380.23
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      11029.23,
+      11029.23,
+      11029.23
+     ],
+     "lower_bound": [
+      5452.01,
+      5452.01,
+      5452.01
+     ],
+     "upper_bound": [
+      16606.45,
+      16606.45,
+      16606.45
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.792,
+     "S": 0.664,
+     "E": 0.676,
+     "T": 0.833,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "DOWNWARD",
+     "slope": -801.7469,
+     "relative_slope": -0.0674,
+     "cv_recent": 0.1884,
+     "n_recent": 6,
+     "detail": "pendiente relativa -6.7% por periodo"
+    },
+    "decline_signals": [
+     "tendencia descendente (pendiente relativa -6.7% por periodo)",
+     "caída de 47% vs. la ventana anterior",
+     "descenso estable (CV 0.19 < 0.4)"
+    ]
+   }
+  },
+  {
+   "prediction_id": "PRED-000005",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "M",
+    "label": "M"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 25299.19,
+   "lower_bound": 0.0,
+   "upper_bound": 69263.38,
+   "confidence_score": 48.9,
+   "trend": "DOWNWARD",
+   "decline_risk": "MEDIUM",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 8211.05,
+    "rmse": 9483.69,
+    "mape": 544.92,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 1.1246
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £25,299 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 8,211.1, RMSE 9,483.7). Confianza estimada: 48.9/100. Tendencia: DOWNWARD. Riesgo de caída: MEDIUM.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 544.9% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "M",
+     "label": "M"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 8211.053333333335,
+     "rmse": 9483.685789322632,
+     "mape": 544.9247781834662,
+     "mape_valid": true,
+     "relative_rmse": 1.1245837265132952
+    },
+    "observed_data": {
+     "train_last_6": [
+      10108.5,
+      5221.23,
+      4927.88,
+      11107.8,
+      3312.04,
+      6085.19
+     ],
+     "validation_actual": [
+      21548.67,
+      3312.42,
+      438.1
+     ],
+     "validation_predicted": [
+      6835.01,
+      6835.01,
+      6835.01
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      8433.06,
+      8433.06,
+      8433.06
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      23087.79,
+      23087.79,
+      23087.79
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.454,
+     "E": 0.0,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "DOWNWARD",
+     "slope": -561.8343,
+     "relative_slope": -0.0827,
+     "cv_recent": 0.4569,
+     "n_recent": 6,
+     "detail": "pendiente relativa -8.3% por periodo"
+    },
+    "decline_signals": [
+     "tendencia descendente (pendiente relativa -8.3% por periodo)",
+     "caída de 41% vs. la ventana anterior"
+    ]
+   }
+  },
+  {
+   "prediction_id": "PRED-000006",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "DOT",
+    "label": "DOT"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 59618.07,
+   "lower_bound": 19560.93,
+   "upper_bound": 99675.21,
+   "confidence_score": 68.3,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 9733.67,
+    "rmse": 12934.03,
+    "mape": 32.66,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.5192
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £59,618 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 9,733.7, RMSE 12,934.0). Confianza estimada: 68.3/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 32.7% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "DOT",
+     "label": "DOT"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 9733.673333333334,
+     "rmse": 12934.031546492635,
+     "mape": 32.65736576394641,
+     "mape_valid": true,
+     "relative_rmse": 0.5192081197555506
+    },
+    "observed_data": {
+     "train_last_6": [
+      7535.38,
+      10229.3,
+      11848.66,
+      12841.0,
+      13400.52,
+      15177.4
+     ],
+     "validation_actual": [
+      17955.13,
+      36905.4,
+      19872.69
+     ],
+     "validation_predicted": [
+      15177.4,
+      15177.4,
+      15177.4
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      19872.69,
+      19872.69,
+      19872.69
+     ],
+     "lower_bound": [
+      6520.31,
+      6520.31,
+      6520.31
+     ],
+     "upper_bound": [
+      33225.07,
+      33225.07,
+      33225.07
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.617,
+     "E": 0.481,
+     "T": 0.833,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 1391.8886,
+     "relative_slope": 0.1176,
+     "cv_recent": 0.2257,
+     "n_recent": 6,
+     "detail": "pendiente relativa +11.8% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000007",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "85123A",
+    "label": "85123A"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 21125.06,
+   "lower_bound": 0.0,
+   "upper_bound": 45216.78,
+   "confidence_score": 61.1,
+   "trend": "DOWNWARD",
+   "decline_risk": "HIGH",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 4725.24,
+    "rmse": 5122.63,
+    "mape": 104.5,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.7275
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £21,125 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 4,725.2, RMSE 5,122.6). Confianza estimada: 61.1/100. Tendencia: DOWNWARD. Riesgo de caída: HIGH.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 104.5% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "85123A",
+     "label": "85123A"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 4725.240000000001,
+     "rmse": 5122.62682902044,
+     "mape": 104.50022421125308,
+     "mape_valid": true,
+     "relative_rmse": 0.7274715663321817
+    },
+    "observed_data": {
+     "train_last_6": [
+      10017.79,
+      11216.42,
+      4680.81,
+      8504.11,
+      5620.57,
+      6957.46
+     ],
+     "validation_actual": [
+      4761.95,
+      14136.7,
+      2226.41
+     ],
+     "validation_predicted": [
+      7027.38,
+      7027.38,
+      7027.38
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      7041.69,
+      7041.69,
+      7041.69
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      15072.26,
+      15072.26,
+      15072.26
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.738,
+     "E": 0.273,
+     "T": 0.333,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "DOWNWARD",
+     "slope": -807.5971,
+     "relative_slope": -0.1031,
+     "cv_recent": 0.3243,
+     "n_recent": 6,
+     "detail": "pendiente relativa -10.3% por periodo"
+    },
+    "decline_signals": [
+     "tendencia descendente (pendiente relativa -10.3% por periodo)",
+     "caída de 34% vs. la ventana anterior",
+     "descenso estable (CV 0.32 < 0.4)"
+    ]
+   }
+  },
+  {
+   "prediction_id": "PRED-000008",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "85099B",
+    "label": "85099B"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 24354.08,
+   "lower_bound": 4637.69,
+   "upper_bound": 44070.47,
+   "confidence_score": 68.6,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 3751.79,
+    "rmse": 4225.26,
+    "mape": 110.5,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.5205
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £24,354 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 3,751.8, RMSE 4,225.3). Confianza estimada: 68.6/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 110.5% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "85099B",
+     "label": "85099B"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 3751.786666666667,
+     "rmse": 4225.264067290154,
+     "mape": 110.49996986761236,
+     "mape_valid": true,
+     "relative_rmse": 0.5204792052038287
+    },
+    "observed_data": {
+     "train_last_6": [
+      4878.08,
+      7122.73,
+      7247.98,
+      6253.87,
+      10796.56,
+      8884.33
+     ],
+     "validation_actual": [
+      10485.81,
+      11641.37,
+      2226.9
+     ],
+     "validation_predicted": [
+      8644.92,
+      8644.92,
+      8644.92
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      8118.03,
+      8118.03,
+      8118.03
+     ],
+     "lower_bound": [
+      1545.9,
+      1545.9,
+      1545.9
+     ],
+     "upper_bound": [
+      14690.16,
+      14690.16,
+      14690.16
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.763,
+     "E": 0.48,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 858.818,
+     "relative_slope": 0.114,
+     "cv_recent": 0.2748,
+     "n_recent": 6,
+     "detail": "pendiente relativa +11.4% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000009",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "23843",
+    "label": "23843"
+   },
+   "period": null,
+   "forecast_horizon": 3,
+   "prediction_status": "INSUFFICIENT_DATA",
+   "predicted_value": null,
+   "lower_bound": null,
+   "upper_bound": null,
+   "confidence_score": 0.0,
+   "trend": "INSUFFICIENT_DATA",
+   "decline_risk": "INSUFFICIENT_DATA",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": null,
+   "training_period": null,
+   "validation_period": null,
+   "metrics": null,
+   "evidence_quality": "LOW",
+   "explanation": "ZAYVERO no genera una estimación para 23843 (revenue, por mes): historial de 1 meses; se requieren al menos 15 (12 para entrenar + 3 para validar).",
+   "limitations": [
+    "historial de 1 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+    "no se generó ningún valor numérico por falta de evidencia"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "23843",
+     "label": "23843"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 1,
+    "series_start": "2011-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail"
+   }
+  },
+  {
+   "prediction_id": "PRED-000010",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "47566",
+    "label": "47566"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 2755.44,
+   "lower_bound": 0.0,
+   "upper_bound": 10353.04,
+   "confidence_score": 51.7,
+   "trend": "DOWNWARD",
+   "decline_risk": "HIGH",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 3277.71,
+    "rmse": 3654.19,
+    "mape": 234.82,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 1.1693
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £2,755 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,277.7, RMSE 3,654.2). Confianza estimada: 51.7/100. Tendencia: DOWNWARD. Riesgo de caída: HIGH.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 234.8% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "47566",
+     "label": "47566"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 3277.7099999999996,
+     "rmse": 3654.194295048727,
+     "mape": 234.82386984834454,
+     "mape_valid": true,
+     "relative_rmse": 1.1692523758331288
+    },
+    "observed_data": {
+     "train_last_6": [
+      10778.47,
+      19147.75,
+      12561.07,
+      14576.5,
+      9694.85,
+      6402.95
+     ],
+     "validation_actual": [
+      3716.48,
+      4740.76,
+      918.48
+     ],
+     "validation_predicted": [
+      6402.95,
+      6402.95,
+      6402.95
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      918.48,
+      918.48,
+      918.48
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      3451.01,
+      3451.01,
+      3451.01
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.568,
+     "E": 0.0,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "DOWNWARD",
+     "slope": -1377.7391,
+     "relative_slope": -0.113,
+     "cv_recent": 0.3593,
+     "n_recent": 6,
+     "detail": "pendiente relativa -11.3% por periodo"
+    },
+    "decline_signals": [
+     "aceleración negativa: la caída se intensifica en la ventana reciente",
+     "tendencia descendente (pendiente relativa -11.3% por periodo)",
+     "descenso estable (CV 0.36 < 0.4)"
+    ]
+   }
+  },
+  {
+   "prediction_id": "PRED-000011",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "84879",
+    "label": "84879"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 6488.22,
+   "lower_bound": 0.0,
+   "upper_bound": 18619.32,
+   "confidence_score": 65.9,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 2195.08,
+    "rmse": 2581.49,
+    "mape": 59.43,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.5065
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £6,488 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 2,195.1, RMSE 2,581.5). Confianza estimada: 65.9/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 59.4% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "84879",
+     "label": "84879"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 2195.08,
+     "rmse": 2581.49140526686,
+     "mape": 59.42728904520725,
+     "mape_valid": true,
+     "relative_rmse": 0.5065005347099428
+    },
+    "observed_data": {
+     "train_last_6": [
+      4174.24,
+      5052.12,
+      2627.64,
+      3129.49,
+      9882.25,
+      4993.52
+     ],
+     "validation_actual": [
+      4686.48,
+      8440.94,
+      2162.74
+     ],
+     "validation_predicted": [
+      4993.52,
+      4993.52,
+      4993.52
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      2162.74,
+      2162.74,
+      2162.74
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      6206.44,
+      6206.44,
+      6206.44
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.643,
+     "E": 0.493,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 545.3897,
+     "relative_slope": 0.1096,
+     "cv_recent": 0.5212,
+     "n_recent": 6,
+     "detail": "pendiente relativa +11.0% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000012",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "POST",
+    "label": "POST"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 8349.87,
+   "lower_bound": 0.0,
+   "upper_bound": 23238.71,
+   "confidence_score": 67.2,
+   "trend": "DOWNWARD",
+   "decline_risk": "MEDIUM",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 3232.81,
+    "rmse": 3370.55,
+    "mape": 60.48,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.4778
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £8,350 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,232.8, RMSE 3,370.6). Confianza estimada: 67.2/100. Tendencia: DOWNWARD. Riesgo de caída: MEDIUM.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 60.5% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "POST",
+     "label": "POST"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 3232.81,
+     "rmse": 3370.553426867265,
+     "mape": 60.4803593918015,
+     "mape_valid": true,
+     "relative_rmse": 0.47781638705381213
+    },
+    "observed_data": {
+     "train_last_6": [
+      3409.95,
+      13358.75,
+      5536.48,
+      5324.65,
+      5358.6,
+      5897.22
+     ],
+     "validation_actual": [
+      8025.96,
+      10352.98,
+      2783.29
+     ],
+     "validation_predicted": [
+      5897.22,
+      5897.22,
+      5897.22
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      2783.29,
+      2783.29,
+      2783.29
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      7746.24,
+      7746.24,
+      7746.24
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.665,
+     "E": 0.522,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "DOWNWARD",
+     "slope": -336.4551,
+     "relative_slope": -0.0519,
+     "cv_recent": 0.537,
+     "n_recent": 6,
+     "detail": "pendiente relativa -5.2% por periodo"
+    },
+    "decline_signals": [
+     "tendencia descendente (pendiente relativa -5.2% por periodo)"
+    ]
+   }
+  },
+  {
+   "prediction_id": "PRED-000013",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "22086",
+    "label": "22086"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 20612.13,
+   "lower_bound": 0.0,
+   "upper_bound": 66539.19,
+   "confidence_score": 43.8,
+   "trend": "UNSTABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 9289.61,
+    "rmse": 13478.16,
+    "mape": 44.0,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.8812
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £20,612 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 9,289.6, RMSE 13,478.2). Confianza estimada: 43.8/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 44.0% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "22086",
+     "label": "22086"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 9289.613333333335,
+     "rmse": 13478.157559050867,
+     "mape": 43.996520123707185,
+     "mape_valid": true,
+     "relative_rmse": 0.8811722124576211
+    },
+    "observed_data": {
+     "train_last_6": [
+      44.03,
+      65.19,
+      910.88,
+      1077.93,
+      1334.94,
+      6006.1
+     ],
+     "validation_actual": [
+      10031.39,
+      28985.04,
+      6870.71
+     ],
+     "validation_predicted": [
+      6006.1,
+      6006.1,
+      6006.1
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      6870.71,
+      6870.71,
+      6870.71
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      22179.73,
+      22179.73,
+      22179.73
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.341,
+     "E": 0.119,
+     "T": 0.0,
+     "Sea": 0.0,
+     "Q": 0.955
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UNSTABLE",
+     "slope": 965.3329,
+     "relative_slope": 0.6136,
+     "cv_recent": 1.4215,
+     "n_recent": 6,
+     "detail": "CV reciente 1.42 > 0.6: volatilidad domina la dirección"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000014",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "79321",
+    "label": "79321"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 7919.22,
+   "lower_bound": 0.0,
+   "upper_bound": 25707.39,
+   "confidence_score": 58.9,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 3282.26,
+    "rmse": 4584.36,
+    "mape": 42.89,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.7314
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £7,919 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,282.3, RMSE 4,584.4). Confianza estimada: 58.9/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 42.9% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "79321",
+     "label": "79321"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 3282.256666666666,
+     "rmse": 4584.357326623512,
+     "mape": 42.894584899538984,
+     "mape_valid": true,
+     "relative_rmse": 0.73140476949519
+    },
+    "observed_data": {
+     "train_last_6": [
+      357.5,
+      2296.75,
+      2310.29,
+      4294.99,
+      2260.33,
+      3677.39
+     ],
+     "validation_actual": [
+      4678.13,
+      11485.77,
+      2639.74
+     ],
+     "validation_predicted": [
+      3677.39,
+      3677.39,
+      3677.39
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      2639.74,
+      2639.74,
+      2639.74
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      8569.13,
+      8569.13,
+      8569.13
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.521,
+     "E": 0.269,
+     "T": 0.667,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 527.854,
+     "relative_slope": 0.2084,
+     "cv_recent": 0.5392,
+     "n_recent": 6,
+     "detail": "pendiente relativa +20.8% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000015",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "23166",
+    "label": "23166"
+   },
+   "period": null,
+   "forecast_horizon": 3,
+   "prediction_status": "INSUFFICIENT_DATA",
+   "predicted_value": null,
+   "lower_bound": null,
+   "upper_bound": null,
+   "confidence_score": 0.0,
+   "trend": "INSUFFICIENT_DATA",
+   "decline_risk": "INSUFFICIENT_DATA",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": null,
+   "training_period": null,
+   "validation_period": null,
+   "metrics": null,
+   "evidence_quality": "LOW",
+   "explanation": "ZAYVERO no genera una estimación para 23166 (revenue, por mes): historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar).",
+   "limitations": [
+    "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+    "no se generó ningún valor numérico por falta de evidencia"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "23166",
+     "label": "23166"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 12,
+    "series_start": "2011-01",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail"
+   }
+  },
+  {
+   "prediction_id": "PRED-000016",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "22197",
+    "label": "22197"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 16271.4,
+   "lower_bound": 0.0,
+   "upper_bound": 36428.76,
+   "confidence_score": 55.4,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 4537.32,
+    "rmse": 6241.59,
+    "mape": 44.38,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.7664
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £16,271 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 4,537.3, RMSE 6,241.6). Confianza estimada: 55.4/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 44.4% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "22197",
+     "label": "22197"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 4537.320000000001,
+     "rmse": 6241.591713182357,
+     "mape": 44.38448062680101,
+     "mape_valid": true,
+     "relative_rmse": 0.7663613519859975
+    },
+    "observed_data": {
+     "train_last_6": [
+      1495.57,
+      5151.63,
+      1706.91,
+      1540.0,
+      4133.35,
+      3607.13
+     ],
+     "validation_actual": [
+      4813.95,
+      14195.6,
+      5423.8
+     ],
+     "validation_predicted": [
+      3607.13,
+      3607.13,
+      3607.13
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      5423.8,
+      5423.8,
+      5423.8
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      12142.92,
+      12142.92,
+      12142.92
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.548,
+     "E": 0.234,
+     "T": 0.333,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 209.6014,
+     "relative_slope": 0.0713,
+     "cv_recent": 0.5342,
+     "n_recent": 6,
+     "detail": "pendiente relativa +7.1% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000017",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "22386",
+    "label": "22386"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 10460.94,
+   "lower_bound": 510.73,
+   "upper_bound": 20411.15,
+   "confidence_score": 64.1,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2010-01 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 2055.69,
+    "rmse": 2309.34,
+    "mape": 144.29,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.6623
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £10,461 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 21 meses (2010-01 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 2,055.7, RMSE 2,309.3). Confianza estimada: 64.1/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 144.3% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "22386",
+     "label": "22386"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 24,
+    "series_start": "2010-01",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2010-01 a 2011-09 (21 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 2055.6877777777777,
+     "rmse": 2309.344116643896,
+     "mape": 144.2928841904678,
+     "mape_valid": true,
+     "relative_rmse": 0.6622762724890582
+    },
+    "observed_data": {
+     "train_last_6": [
+      1316.46,
+      2953.27,
+      4199.19,
+      3125.27,
+      4728.73,
+      5383.93
+     ],
+     "validation_actual": [
+      6107.68,
+      3426.94,
+      926.32
+     ],
+     "validation_predicted": [
+      4412.64,
+      4412.64,
+      4412.64
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      3486.98,
+      3486.98,
+      3486.98
+     ],
+     "lower_bound": [
+      170.24,
+      170.24,
+      170.24
+     ],
+     "upper_bound": [
+      6803.72,
+      6803.72,
+      6803.72
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.875,
+     "S": 0.708,
+     "E": 0.338,
+     "T": 0.667,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 702.566,
+     "relative_slope": 0.1942,
+     "cv_recent": 0.4038,
+     "n_recent": 6,
+     "detail": "pendiente relativa +19.4% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000018",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "84347",
+    "label": "84347"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 8102.34,
+   "lower_bound": 0.0,
+   "upper_bound": 21961.37,
+   "confidence_score": 43.4,
+   "trend": "UNSTABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 3826.57,
+    "rmse": 4829.75,
+    "mape": 58.93,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.8645
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £8,102 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,826.6, RMSE 4,829.7). Confianza estimada: 43.4/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 58.9% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "84347",
+     "label": "84347"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 3826.57,
+     "rmse": 4829.748992577151,
+     "mape": 58.92590133466897,
+     "mape_valid": true,
+     "relative_rmse": 0.8644712476914288
+    },
+    "observed_data": {
+     "train_last_6": [
+      27.35,
+      153.0,
+      25.08,
+      272.4,
+      303.03,
+      1760.37
+     ],
+     "validation_actual": [
+      4426.5,
+      9633.54,
+      2700.78
+     ],
+     "validation_predicted": [
+      1760.37,
+      1760.37,
+      1760.37
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      2700.78,
+      2700.78,
+      2700.78
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      7320.46,
+      7320.46,
+      7320.46
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.307,
+     "E": 0.136,
+     "T": 0.0,
+     "Sea": 0.0,
+     "Q": 0.955
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UNSTABLE",
+     "slope": 267.5003,
+     "relative_slope": 0.6316,
+     "cv_recent": 1.5709,
+     "n_recent": 6,
+     "detail": "CV reciente 1.57 > 0.6: volatilidad domina la dirección"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000019",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "20725",
+    "label": "20725"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 2329.05,
+   "lower_bound": 0.0,
+   "upper_bound": 8568.21,
+   "confidence_score": 70.7,
+   "trend": "STABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 1155.38,
+    "rmse": 1435.78,
+    "mape": 109.4,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.568
+   },
+   "evidence_quality": "HIGH",
+   "explanation": "ZAYVERO estima revenue de £2,329 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 1,155.4, RMSE 1,435.8). Confianza estimada: 70.7/100. Tendencia: STABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 109.4% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "20725",
+     "label": "20725"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 1155.3766666666668,
+     "rmse": 1435.7829322823604,
+     "mape": 109.40325599663396,
+     "mape_valid": true,
+     "relative_rmse": 0.5680412402324575
+    },
+    "observed_data": {
+     "train_last_6": [
+      2406.94,
+      4177.18,
+      3104.14,
+      2927.83,
+      4015.21,
+      3076.72
+     ],
+     "validation_actual": [
+      2820.35,
+      3986.11,
+      776.35
+     ],
+     "validation_predicted": [
+      3076.72,
+      3076.72,
+      3076.72
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      776.35,
+      776.35,
+      776.35
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      2856.07,
+      2856.07,
+      2856.07
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.777,
+     "E": 0.432,
+     "T": 0.793,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "STABLE",
+     "slope": 76.7623,
+     "relative_slope": 0.0234,
+     "cv_recent": 0.2067,
+     "n_recent": 6,
+     "detail": "pendiente relativa +2.3% por periodo (dentro de ±5%)"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000020",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "21137",
+    "label": "21137"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 16747.29,
+   "lower_bound": 5813.29,
+   "upper_bound": 27681.29,
+   "confidence_score": 53.3,
+   "trend": "UNSTABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 2913.13,
+    "rmse": 3590.34,
+    "mape": 45.07,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.6847
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £16,747 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 2,913.1, RMSE 3,590.3). Confianza estimada: 53.3/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 45.1% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "21137",
+     "label": "21137"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 2913.126666666667,
+     "rmse": 3590.335521247747,
+     "mape": 45.07414774414543,
+     "mape_valid": true,
+     "relative_rmse": 0.6847294531222359
+    },
+    "observed_data": {
+     "train_last_6": [
+      858.27,
+      1774.51,
+      5744.52,
+      2204.83,
+      1270.13,
+      2507.49
+     ],
+     "validation_actual": [
+      2241.72,
+      7906.16,
+      5582.43
+     ],
+     "validation_predicted": [
+      2507.49,
+      2507.49,
+      2507.49
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      5582.43,
+      5582.43,
+      5582.43
+     ],
+     "lower_bound": [
+      1937.76,
+      1937.76,
+      1937.76
+     ],
+     "upper_bound": [
+      9227.1,
+      9227.1,
+      9227.1
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.517,
+     "E": 0.315,
+     "T": 0.0,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UNSTABLE",
+     "slope": 91.2363,
+     "relative_slope": 0.0381,
+     "cv_recent": 0.7304,
+     "n_recent": 6,
+     "detail": "CV reciente 0.73 > 0.6: volatilidad domina la dirección"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000021",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "85099F",
+    "label": "85099F"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 1732.71,
+   "lower_bound": 0.0,
+   "upper_bound": 7180.5,
+   "confidence_score": 61.4,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 1275.52,
+    "rmse": 1434.35,
+    "mape": 151.16,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.7503
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £1,733 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 1,275.5, RMSE 1,434.3). Confianza estimada: 61.4/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 151.2% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "85099F",
+     "label": "85099F"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 1275.5233333333333,
+     "rmse": 1434.3459924183796,
+     "mape": 151.15849383379046,
+     "mape_valid": true,
+     "relative_rmse": 0.7502999913262284
+    },
+    "observed_data": {
+     "train_last_6": [
+      1034.79,
+      1950.1,
+      3805.77,
+      2162.05,
+      4124.33,
+      2757.6
+     ],
+     "validation_actual": [
+      3402.03,
+      1755.49,
+      577.57
+     ],
+     "validation_predicted": [
+      2757.6,
+      2757.6,
+      2757.6
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      577.57,
+      577.57,
+      577.57
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      2393.5,
+      2393.5,
+      2393.5
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.706,
+     "E": 0.25,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 385.5149,
+     "relative_slope": 0.1461,
+     "cv_recent": 0.4437,
+     "n_recent": 6,
+     "detail": "pendiente relativa +14.6% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000022",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "20685",
+    "label": "20685"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 1968.18,
+   "lower_bound": 0.0,
+   "upper_bound": 5823.4,
+   "confidence_score": 66.9,
+   "trend": "STABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 704.77,
+    "rmse": 832.27,
+    "mape": 59.57,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.5071
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £1,968 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 704.8, RMSE 832.3). Confianza estimada: 66.9/100. Tendencia: STABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 59.6% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "20685",
+     "label": "20685"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 704.77,
+     "rmse": 832.2691748266702,
+     "mape": 59.56567230761935,
+     "mape_valid": true,
+     "relative_rmse": 0.5070916093895363
+    },
+    "observed_data": {
+     "train_last_6": [
+      980.21,
+      3400.98,
+      3789.2,
+      3496.36,
+      1372.0,
+      1497.35
+     ],
+     "validation_actual": [
+      1604.73,
+      2662.99,
+      656.06
+     ],
+     "validation_predicted": [
+      1497.35,
+      1497.35,
+      1497.35
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      656.06,
+      656.06,
+      656.06
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      1941.13,
+      1941.13,
+      1941.13
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.692,
+     "E": 0.493,
+     "T": 0.477,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "STABLE",
+     "slope": -108.4023,
+     "relative_slope": -0.0447,
+     "cv_recent": 0.5227,
+     "n_recent": 6,
+     "detail": "pendiente relativa -4.5% por periodo (dentro de ±5%)"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000023",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "48138",
+    "label": "48138"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 4056.63,
+   "lower_bound": 1946.17,
+   "upper_bound": 6167.09,
+   "confidence_score": 70.3,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "rolling_median",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 387.66,
+    "rmse": 450.92,
+    "mape": 45.61,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.3696
+   },
+   "evidence_quality": "HIGH",
+   "explanation": "ZAYVERO estima revenue de £4,057 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: mediana móvil de 3 periodos, elegido por backtesting temporal (MAE 387.7, RMSE 450.9). Confianza estimada: 70.3/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 45.6% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "48138",
+     "label": "48138"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "rolling_median",
+    "method_description": "mediana móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 387.6566666666667,
+     "rmse": 450.92339404825736,
+     "mape": 45.614627509824416,
+     "mape_valid": true,
+     "relative_rmse": 0.3695780363260959
+    },
+    "observed_data": {
+     "train_last_6": [
+      2253.77,
+      2311.25,
+      3101.43,
+      1264.36,
+      961.53,
+      4484.76
+     ],
+     "validation_actual": [
+      1352.21,
+      1691.61,
+      616.49
+     ],
+     "validation_predicted": [
+      1264.36,
+      1264.36,
+      1264.36
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      1352.21,
+      1352.21,
+      1352.21
+     ],
+     "lower_bound": [
+      648.72,
+      648.72,
+      648.72
+     ],
+     "upper_bound": [
+      2055.7,
+      2055.7,
+      2055.7
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.683,
+     "E": 0.63,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 150.5349,
+     "relative_slope": 0.0628,
+     "cv_recent": 0.5353,
+     "n_recent": 6,
+     "detail": "pendiente relativa +6.3% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000024",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "23084",
+    "label": "23084"
+   },
+   "period": null,
+   "forecast_horizon": 3,
+   "prediction_status": "INSUFFICIENT_DATA",
+   "predicted_value": null,
+   "lower_bound": null,
+   "upper_bound": null,
+   "confidence_score": 0.0,
+   "trend": "INSUFFICIENT_DATA",
+   "decline_risk": "INSUFFICIENT_DATA",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": null,
+   "training_period": null,
+   "validation_period": null,
+   "metrics": null,
+   "evidence_quality": "LOW",
+   "explanation": "ZAYVERO no genera una estimación para 23084 (revenue, por mes): historial de 8 meses; se requieren al menos 15 (12 para entrenar + 3 para validar).",
+   "limitations": [
+    "historial de 8 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+    "no se generó ningún valor numérico por falta de evidencia"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "23084",
+     "label": "23084"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 8,
+    "series_start": "2011-05",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail"
+   }
+  },
+  {
+   "prediction_id": "PRED-000025",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "21843",
+    "label": "21843"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 5833.11,
+   "lower_bound": 708.89,
+   "upper_bound": 10957.33,
+   "confidence_score": 65.6,
+   "trend": "STABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 982.3,
+    "rmse": 1097.72,
+    "mape": 52.26,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.5646
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £5,833 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 982.3, RMSE 1,097.7). Confianza estimada: 65.6/100. Tendencia: STABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 52.3% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "21843",
+     "label": "21843"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 982.2966666666666,
+     "rmse": 1097.7210450292005,
+     "mape": 52.256327237082665,
+     "mape_valid": true,
+     "relative_rmse": 0.5645638664601904
+    },
+    "observed_data": {
+     "train_last_6": [
+      1074.29,
+      1370.82,
+      1147.5,
+      2921.94,
+      1498.71,
+      1011.63
+     ],
+     "validation_actual": [
+      1212.09,
+      3484.62,
+      1136.4
+     ],
+     "validation_predicted": [
+      1810.76,
+      1810.76,
+      1810.76
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      1944.37,
+      1944.37,
+      1944.37
+     ],
+     "lower_bound": [
+      236.3,
+      236.3,
+      236.3
+     ],
+     "upper_bound": [
+      3652.44,
+      3652.44,
+      3652.44
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.679,
+     "E": 0.435,
+     "T": 0.522,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "STABLE",
+     "slope": 52.7089,
+     "relative_slope": 0.035,
+     "cv_recent": 0.4778,
+     "n_recent": 6,
+     "detail": "pendiente relativa +3.5% por periodo (dentro de ±5%)"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000026",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "22114",
+    "label": "22114"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 11204.4,
+   "lower_bound": 0.0,
+   "upper_bound": 24522.53,
+   "confidence_score": 54.4,
+   "trend": "UNSTABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 2283.65,
+    "rmse": 3007.56,
+    "mape": 32.34,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.473
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £11,204 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 2,283.7, RMSE 3,007.6). Confianza estimada: 54.4/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 32.3% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "22114",
+     "label": "22114"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 2283.653333333333,
+     "rmse": 3007.5632004110344,
+     "mape": 32.34237677330484,
+     "mape_valid": true,
+     "relative_rmse": 0.4729505044559468
+    },
+    "observed_data": {
+     "train_last_6": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      368.94,
+      5346.13
+     ],
+     "validation_actual": [
+      5051.51,
+      10291.14,
+      3734.8
+     ],
+     "validation_predicted": [
+      5346.13,
+      5346.13,
+      5346.13
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      3734.8,
+      3734.8,
+      3734.8
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      8174.18,
+      8174.18,
+      8174.18
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.385,
+     "E": 0.527,
+     "T": 0.0,
+     "Sea": 0.0,
+     "Q": 0.818
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UNSTABLE",
+     "slope": 795.3563,
+     "relative_slope": 0.835,
+     "cv_recent": 2.265,
+     "n_recent": 6,
+     "detail": "CV reciente 2.27 > 0.6: volatilidad domina la dirección"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000027",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "82484",
+    "label": "82484"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 6774.89,
+   "lower_bound": 5622.03,
+   "upper_bound": 7927.75,
+   "confidence_score": 67.6,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2010-01 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 442.58,
+    "rmse": 505.93,
+    "mape": 21.11,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.224
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £6,775 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 21 meses (2010-01 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 442.6, RMSE 505.9). Confianza estimada: 67.6/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 21.1% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "82484",
+     "label": "82484"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 24,
+    "series_start": "2010-01",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2010-01 a 2011-09 (21 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 442.5766666666668,
+     "rmse": 505.92825265380606,
+     "mape": 21.107227130822707,
+     "mape_valid": true,
+     "relative_rmse": 0.2240309079500063
+    },
+    "observed_data": {
+     "train_last_6": [
+      1517.77,
+      2149.96,
+      3382.36,
+      2860.33,
+      2074.51,
+      3167.78
+     ],
+     "validation_actual": [
+      1924.94,
+      2507.37,
+      2342.58
+     ],
+     "validation_predicted": [
+      2700.87,
+      2700.87,
+      2700.87
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      2258.3,
+      2258.3,
+      2258.3
+     ],
+     "lower_bound": [
+      1874.01,
+      1874.01,
+      1874.01
+     ],
+     "upper_bound": [
+      2642.58,
+      2642.58,
+      2642.58
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.875,
+     "S": 0.505,
+     "E": 0.776,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 0.857
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 214.3334,
+     "relative_slope": 0.0849,
+     "cv_recent": 0.2866,
+     "n_recent": 6,
+     "detail": "pendiente relativa +8.5% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000028",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "PRODUCT",
+    "id": "21931",
+    "label": "21931"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 6196.09,
+   "lower_bound": 2080.81,
+   "upper_bound": 10311.37,
+   "confidence_score": 63.9,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 977.87,
+    "rmse": 1312.21,
+    "mape": 96.27,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.6353
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £6,196 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 977.9, RMSE 1,312.2). Confianza estimada: 63.9/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 96.3% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "PRODUCT",
+     "id": "21931",
+     "label": "21931"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 977.8700000000002,
+     "rmse": 1312.2144834803325,
+     "mape": 96.2733299214777,
+     "mape_valid": true,
+     "relative_rmse": 0.6353431681013345
+    },
+    "observed_data": {
+     "train_last_6": [
+      1427.23,
+      2775.68,
+      2624.7,
+      2487.19,
+      3574.42,
+      3068.09
+     ],
+     "validation_actual": [
+      2850.54,
+      2501.11,
+      844.44
+     ],
+     "validation_predicted": [
+      3043.23,
+      3043.23,
+      3043.23
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      2065.36,
+      2065.36,
+      2065.36
+     ],
+     "lower_bound": [
+      693.6,
+      693.6,
+      693.6
+     ],
+     "upper_bound": [
+      3437.12,
+      3437.12,
+      3437.12
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.758,
+     "E": 0.365,
+     "T": 0.333,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 298.9431,
+     "relative_slope": 0.1124,
+     "cv_recent": 0.2694,
+     "n_recent": 6,
+     "detail": "pendiente relativa +11.2% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000029",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "United Kingdom",
+    "label": "United Kingdom"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 1777866.27,
+   "lower_bound": 370336.73,
+   "upper_bound": 3185395.81,
+   "confidence_score": 71.7,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 258207.55,
+    "rmse": 304336.94,
+    "mape": 29.38,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.3196
+   },
+   "evidence_quality": "HIGH",
+   "explanation": "ZAYVERO estima revenue de £1,777,866 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 258,207.6, RMSE 304,336.9). Confianza estimada: 71.7/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 29.4% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "United Kingdom",
+     "label": "United Kingdom"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 258207.55266666668,
+     "rmse": 304336.9441327205,
+     "mape": 29.38335922808686,
+     "mape_valid": true,
+     "relative_rmse": 0.319576111014314
+    },
+    "observed_data": {
+     "train_last_6": [
+      476517.76,
+      639314.36,
+      619510.67,
+      601994.84,
+      585923.36,
+      897076.47
+     ],
+     "validation_actual": [
+      938975.01,
+      1325346.21,
+      592622.09
+     ],
+     "validation_predicted": [
+      897076.47,
+      897076.47,
+      897076.47
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      592622.09,
+      592622.09,
+      592622.09
+     ],
+     "lower_bound": [
+      123445.58,
+      123445.58,
+      123445.58
+     ],
+     "upper_bound": [
+      1061798.6,
+      1061798.6,
+      1061798.6
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.754,
+     "E": 0.68,
+     "T": 0.333,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 55002.9922,
+     "relative_slope": 0.0864,
+     "cv_recent": 0.2194,
+     "n_recent": 6,
+     "detail": "pendiente relativa +8.6% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000030",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "EIRE",
+    "label": "EIRE"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 62397.24,
+   "lower_bound": 15974.85,
+   "upper_bound": 108819.63,
+   "confidence_score": 60.4,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 13944.3,
+    "rmse": 17084.36,
+    "mape": 143.06,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.8214
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £62,397 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 13,944.3, RMSE 17,084.4). Confianza estimada: 60.4/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 143.1% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "EIRE",
+     "label": "EIRE"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 13944.30333333333,
+     "rmse": 17084.364955520326,
+     "mape": 143.0621254178762,
+     "mape_valid": true,
+     "relative_rmse": 0.8214000309398457
+    },
+    "observed_data": {
+     "train_last_6": [
+      7570.5,
+      18008.76,
+      24863.61,
+      42789.85,
+      18353.75,
+      43086.55
+     ],
+     "validation_actual": [
+      24317.92,
+      30738.43,
+      7340.89
+     ],
+     "validation_predicted": [
+      34743.38,
+      34743.38,
+      34743.38
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      20799.08,
+      20799.08,
+      20799.08
+     ],
+     "lower_bound": [
+      5324.95,
+      5324.95,
+      5324.95
+     ],
+     "upper_bound": [
+      36273.21,
+      36273.21,
+      36273.21
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.67,
+     "E": 0.179,
+     "T": 0.667,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 5615.4703,
+     "relative_slope": 0.2178,
+     "cv_recent": 0.5586,
+     "n_recent": 6,
+     "detail": "pendiente relativa +21.8% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000031",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "Netherlands",
+    "label": "Netherlands"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 35184.06,
+   "lower_bound": 0.0,
+   "upper_bound": 90832.11,
+   "confidence_score": 62.4,
+   "trend": "UNSTABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 10014.63,
+    "rmse": 11861.74,
+    "mape": 55.87,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.4544
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £35,184 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 10,014.6, RMSE 11,861.7). Confianza estimada: 62.4/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 55.9% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "Netherlands",
+     "label": "Netherlands"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 10014.626666666667,
+     "rmse": 11861.74051972981,
+     "mape": 55.87380519511756,
+     "mape_valid": true,
+     "relative_rmse": 0.4544108359062829
+    },
+    "observed_data": {
+     "train_last_6": [
+      2976.56,
+      29185.88,
+      26858.09,
+      26.02,
+      40327.81,
+      26937.26
+     ],
+     "validation_actual": [
+      40708.65,
+      25874.01,
+      11728.02
+     ],
+     "validation_predicted": [
+      26937.26,
+      26937.26,
+      26937.26
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      11728.02,
+      11728.02,
+      11728.02
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      30277.37,
+      30277.37,
+      30277.37
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.65,
+     "E": 0.546,
+     "T": 0.0,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UNSTABLE",
+     "slope": 3611.3491,
+     "relative_slope": 0.1715,
+     "cv_recent": 0.7585,
+     "n_recent": 6,
+     "detail": "CV reciente 0.76 > 0.6: volatilidad domina la dirección"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000032",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "Germany",
+    "label": "Germany"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 23952.51,
+   "lower_bound": 0.0,
+   "upper_bound": 72883.41,
+   "confidence_score": 70.8,
+   "trend": "STABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 11196.02,
+    "rmse": 11319.0,
+    "mape": 68.28,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.502
+   },
+   "evidence_quality": "HIGH",
+   "explanation": "ZAYVERO estima revenue de £23,953 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 11,196.0, RMSE 11,319.0). Confianza estimada: 70.8/100. Tendencia: STABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 68.3% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "Germany",
+     "label": "Germany"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 11196.016666666665,
+     "rmse": 11319.002753224331,
+     "mape": 68.2845405447384,
+     "mape_valid": true,
+     "relative_rmse": 0.5019690756210454
+    },
+    "observed_data": {
+     "train_last_6": [
+      12315.54,
+      25751.2,
+      13274.1,
+      16440.98,
+      19220.77,
+      18091.22
+     ],
+     "validation_actual": [
+      31638.42,
+      28025.02,
+      7984.17
+     ],
+     "validation_predicted": [
+      18091.22,
+      18091.22,
+      18091.22
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      7984.17,
+      7984.17,
+      7984.17
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      24294.47,
+      24294.47,
+      24294.47
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.743,
+     "E": 0.498,
+     "T": 0.724,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "STABLE",
+     "slope": 355.8283,
+     "relative_slope": 0.0203,
+     "cv_recent": 0.2765,
+     "n_recent": 6,
+     "detail": "pendiente relativa +2.0% por periodo (dentro de ±5%)"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000033",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "France",
+    "label": "France"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 21884.76,
+   "lower_bound": 0.0,
+   "upper_bound": 78133.5,
+   "confidence_score": 68.4,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "naive",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 11507.07,
+    "rmse": 11983.73,
+    "mape": 92.47,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.4956
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £21,885 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 11,507.1, RMSE 11,983.7). Confianza estimada: 68.4/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 92.5% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "France",
+     "label": "France"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "naive",
+    "method_description": "naive (repite el último valor)",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 11507.066666666666,
+     "rmse": 11983.72673658463,
+     "mape": 92.4739476958298,
+     "mape_valid": true,
+     "relative_rmse": 0.4956111961959524
+    },
+    "observed_data": {
+     "train_last_6": [
+      5529.61,
+      17614.88,
+      16348.41,
+      10000.19,
+      13810.96,
+      23428.04
+     ],
+     "validation_actual": [
+      33485.45,
+      31758.71,
+      7294.92
+     ],
+     "validation_predicted": [
+      23428.04,
+      23428.04,
+      23428.04
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      7294.92,
+      7294.92,
+      7294.92
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      26044.5,
+      26044.5,
+      26044.5
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.733,
+     "E": 0.504,
+     "T": 0.5,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 2049.4906,
+     "relative_slope": 0.1418,
+     "cv_recent": 0.4309,
+     "n_recent": 6,
+     "detail": "pendiente relativa +14.2% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000034",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "Australia",
+    "label": "Australia"
+   },
+   "period": "2011-12 a 2012-02",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 29499.98,
+   "lower_bound": 4823.17,
+   "upper_bound": 54176.79,
+   "confidence_score": 43.5,
+   "trend": "UNSTABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-08",
+   "validation_period": "2011-09 a 2011-11",
+   "metrics": {
+    "mae": 7713.79,
+    "rmse": 9329.19,
+    "mape": 129.4,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.9487
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £29,500 para los próximos 3 meses (2011-12 a 2012-02) utilizando el historial de 21 meses (2009-12 a 2011-08). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 7,713.8, RMSE 9,329.2). Confianza estimada: 43.5/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 129.4% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "Australia",
+     "label": "Australia"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 24,
+    "series_start": "2009-12",
+    "series_end": "2011-11",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-08 (21 meses)",
+    "validation_period": "2011-09 a 2011-11 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 7713.790000000002,
+     "rmse": 9329.185246032417,
+     "mape": 129.3975137774679,
+     "mape_valid": true,
+     "relative_rmse": 0.9487313461940399
+    },
+    "observed_data": {
+     "train_last_6": [
+      17223.99,
+      771.6,
+      13638.41,
+      25187.77,
+      4964.38,
+      22489.2
+     ],
+     "validation_actual": [
+      5106.73,
+      17150.53,
+      7242.72
+     ],
+     "validation_predicted": [
+      17547.12,
+      17547.12,
+      17547.12
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2011-12",
+      "2012-01",
+      "2012-02"
+     ],
+     "values": [
+      9833.33,
+      9833.33,
+      9833.33
+     ],
+     "lower_bound": [
+      1607.72,
+      1607.72,
+      1607.72
+     ],
+     "upper_bound": [
+      18058.93,
+      18058.93,
+      18058.93
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.875,
+     "S": 0.447,
+     "E": 0.051,
+     "T": 0.0,
+     "Sea": 0.0,
+     "Q": 0.952
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UNSTABLE",
+     "slope": 1441.5357,
+     "relative_slope": 0.1026,
+     "cv_recent": 0.6861,
+     "n_recent": 6,
+     "detail": "CV reciente 0.69 > 0.6: volatilidad domina la dirección"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000035",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "Spain",
+    "label": "Spain"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 17632.11,
+   "lower_bound": 0.0,
+   "upper_bound": 36126.13,
+   "confidence_score": 61.2,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 3870.89,
+    "rmse": 3962.83,
+    "mape": 559.73,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.6743
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £17,632 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 3,870.9, RMSE 3,962.8). Confianza estimada: 61.2/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 559.7% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "Spain",
+     "label": "Spain"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 3870.8888888888887,
+     "rmse": 3962.825306063564,
+     "mape": 559.7267502039597,
+     "mape_valid": true,
+     "relative_rmse": 0.674251460442947
+    },
+    "observed_data": {
+     "train_last_6": [
+      1785.65,
+      3257.6,
+      3333.21,
+      7624.92,
+      3346.91,
+      5189.24
+     ],
+     "validation_actual": [
+      8636.94,
+      8678.96,
+      316.21
+     ],
+     "validation_predicted": [
+      5387.02,
+      5387.02,
+      5387.02
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      5877.37,
+      5877.37,
+      5877.37
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      12042.04,
+      12042.04,
+      12042.04
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.555,
+     "E": 0.326,
+     "T": 0.667,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 616.5026,
+     "relative_slope": 0.1507,
+     "cv_recent": 0.4991,
+     "n_recent": 6,
+     "detail": "pendiente relativa +15.1% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000036",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "Switzerland",
+    "label": "Switzerland"
+   },
+   "period": "2011-12 a 2012-02",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 24469.0,
+   "lower_bound": 24029.28,
+   "upper_bound": 24908.72,
+   "confidence_score": 67.6,
+   "trend": "UPWARD",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-08",
+   "validation_period": "2011-09 a 2011-11",
+   "metrics": {
+    "mae": 2532.12,
+    "rmse": 2533.84,
+    "mape": 31.04,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.3107
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £24,469 para los próximos 3 meses (2011-12 a 2012-02) utilizando el historial de 21 meses (2009-12 a 2011-08). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 2,532.1, RMSE 2,533.8). Confianza estimada: 67.6/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 31.0% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "Switzerland",
+     "label": "Switzerland"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 24,
+    "series_start": "2009-12",
+    "series_end": "2011-11",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-08 (21 meses)",
+    "validation_period": "2011-09 a 2011-11 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 2532.1166666666663,
+     "rmse": 2533.8422235214252,
+     "mape": 31.035784411535623,
+     "mape_valid": true,
+     "relative_rmse": 0.31065947405142325
+    },
+    "observed_data": {
+     "train_last_6": [
+      1870.23,
+      2076.94,
+      3610.01,
+      7904.15,
+      3998.61,
+      4969.89
+     ],
+     "validation_actual": [
+      8284.86,
+      8065.18,
+      8118.96
+     ],
+     "validation_predicted": [
+      5624.22,
+      5624.22,
+      5624.22
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2011-12",
+      "2012-01",
+      "2012-02"
+     ],
+     "values": [
+      8156.33,
+      8156.33,
+      8156.33
+     ],
+     "lower_bound": [
+      8009.76,
+      8009.76,
+      8009.76
+     ],
+     "upper_bound": [
+      8302.91,
+      8302.91,
+      8302.91
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.875,
+     "S": 0.508,
+     "E": 0.689,
+     "T": 0.667,
+     "Sea": 0.0,
+     "Q": 0.952
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UPWARD",
+     "slope": 730.2129,
+     "relative_slope": 0.1793,
+     "cv_recent": 0.5441,
+     "n_recent": 6,
+     "detail": "pendiente relativa +17.9% por periodo"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000037",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "Sweden",
+    "label": "Sweden"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 8726.39,
+   "lower_bound": 0.0,
+   "upper_bound": 19358.58,
+   "confidence_score": 47.1,
+   "trend": "UNSTABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 2355.11,
+    "rmse": 2633.42,
+    "mape": 590.75,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.9053
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £8,726 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 2,355.1, RMSE 2,633.4). Confianza estimada: 47.1/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 590.8% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "Sweden",
+     "label": "Sweden"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 2355.1055555555554,
+     "rmse": 2633.4240840122116,
+     "mape": 590.7521316116157,
+     "mape_valid": true,
+     "relative_rmse": 0.9053310993476839
+    },
+    "observed_data": {
+     "train_last_6": [
+      809.1,
+      2681.98,
+      832.0,
+      6802.09,
+      1400.86,
+      4575.21
+     ],
+     "validation_actual": [
+      5766.16,
+      2722.23,
+      238.0
+     ],
+     "validation_predicted": [
+      4259.39,
+      4259.39,
+      4259.39
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      2908.8,
+      2908.8,
+      2908.8
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      6452.86,
+      6452.86,
+      6452.86
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.49,
+     "E": 0.095,
+     "T": 0.0,
+     "Sea": 0.0,
+     "Q": 1.0
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UNSTABLE",
+     "slope": 598.7794,
+     "relative_slope": 0.2101,
+     "cv_recent": 0.8444,
+     "n_recent": 6,
+     "detail": "CV reciente 0.84 > 0.6: volatilidad domina la dirección"
+    },
+    "decline_signals": []
+   }
+  },
+  {
+   "prediction_id": "PRED-000038",
+   "prediction_type": "DEMAND_REVENUE",
+   "entity": {
+    "kind": "COUNTRY",
+    "id": "Denmark",
+    "label": "Denmark"
+   },
+   "period": "2012-01 a 2012-03",
+   "forecast_horizon": 3,
+   "prediction_status": "OK",
+   "predicted_value": 4359.23,
+   "lower_bound": 0.0,
+   "upper_bound": 9219.73,
+   "confidence_score": 48.5,
+   "trend": "UNSTABLE",
+   "decline_risk": "LOW",
+   "stockout_status": "NOT_AVAILABLE",
+   "method": "moving_average",
+   "training_period": "2009-12 a 2011-09",
+   "validation_period": "2011-10 a 2011-12",
+   "metrics": {
+    "mae": 919.92,
+    "rmse": 1067.36,
+    "mape": 323.31,
+    "mape_valid": true,
+    "mape_invalid_reason": null,
+    "relative_rmse": 0.7346
+   },
+   "evidence_quality": "MEDIUM",
+   "explanation": "ZAYVERO estima revenue de £4,359 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 919.9, RMSE 1,067.4). Confianza estimada: 48.5/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "limitations": [
+    "esto es una estimación basada en historial, no un hecho",
+    "MAPE 323.3% en validación",
+    "el intervalo ±1.28·std(residuos) es empírico (~80%), no una garantía",
+    "eventos no presentes en el historial (cambios de catálogo, mercado) no están modelados"
+   ],
+   "trace": {
+    "dataset": "Demo Dataset — UCI Online Retail II",
+    "dataset_doi": "https://doi.org/10.24432/C5CG6D",
+    "entity": {
+     "kind": "COUNTRY",
+     "id": "Denmark",
+     "label": "Denmark"
+    },
+    "source_records": "filas completed del Parquet normalizado FASE 1C",
+    "filters": {
+     "transaction_status": "completed"
+    },
+    "aggregation": "suma por mes (DEMAND_REVENUE)",
+    "n_periods": 25,
+    "series_start": "2009-12",
+    "series_end": "2011-12",
+    "forecast_horizon": 3,
+    "company_id": "demo-retail",
+    "training_period": "2009-12 a 2011-09 (22 meses)",
+    "validation_period": "2011-10 a 2011-12 (3 meses)",
+    "method": "moving_average",
+    "method_description": "promedio móvil de 3 periodos",
+    "candidate_methods": [
+     "naive",
+     "moving_average",
+     "rolling_median"
+    ],
+    "baseline": "selección por menor RMSE en validación temporal",
+    "metrics": {
+     "mae": 919.9200000000001,
+     "rmse": 1067.3611399146964,
+     "mape": 323.3080936131611,
+     "mape_valid": true,
+     "relative_rmse": 0.7345525287135777
+    },
+    "observed_data": {
+     "train_last_6": [
+      0.0,
+      515.7,
+      3261.15,
+      376.24,
+      213.15,
+      4570.16
+     ],
+     "validation_actual": [
+      1490.76,
+      2699.57,
+      168.9
+     ],
+     "validation_predicted": [
+      1719.85,
+      1719.85,
+      1719.85
+     ]
+    },
+    "predicted_data": {
+     "periods": [
+      "2012-01",
+      "2012-02",
+      "2012-03"
+     ],
+     "values": [
+      1453.08,
+      1453.08,
+      1453.08
+     ],
+     "lower_bound": [
+      0.0,
+      0.0,
+      0.0
+     ],
+     "upper_bound": [
+      3073.24,
+      3073.24,
+      3073.24
+     ],
+     "interval": "±1.28·std(residuos de validación), límite inferior acotado a 0"
+    },
+    "confidence_factors": {
+     "H": 0.917,
+     "S": 0.403,
+     "E": 0.265,
+     "T": 0.0,
+     "Sea": 0.0,
+     "Q": 0.864
+    },
+    "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
+    "trend_detail": {
+     "trend": "UNSTABLE",
+     "slope": 544.5211,
+     "relative_slope": 0.3656,
+     "cv_recent": 1.2972,
+     "n_recent": 6,
+     "detail": "CV reciente 1.30 > 0.6: volatilidad domina la dirección"
+    },
+    "decline_signals": []
+   }
+  }
+ ],
+ "methods": {
+  "baselines": [
+   "naive",
+   "moving_average",
+   "rolling_median",
+   "seasonal_naive"
+  ],
+  "selection": "menor RMSE en validación temporal (últimos H periodos); desempate por simplicidad",
+  "backtesting": "split temporal estricto: train < validation, sin fuga de información futura",
+  "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q)",
+  "interval": "±1.28·std(residuos de validación) (~80% empírico), límite inferior acotado a 0"
+ },
+ "trace": {
+  "input": "data/processed/demo-retail/online_retail_II_full.parquet",
+  "filters": {
+   "transaction_status": "completed"
+  },
+  "note": "solo filas completed; las canceladas son reversiones, no demanda"
+ }
+}

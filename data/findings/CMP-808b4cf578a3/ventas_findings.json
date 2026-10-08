@@ -1,0 +1,81 @@
+{
+ "report_metadata": {
+  "engine": "zayvero-business-findings-2B",
+  "dataset_label": "Ventas 7A",
+  "company_id": "CMP-808b4cf578a3",
+  "generated_at_utc": "2026-10-08T21:28:55.838057+00:00",
+  "elapsed_seconds": 0.0,
+  "anomalies_consumed": 0
+ },
+ "summary": {
+  "total_findings": 0,
+  "anomalies_deduped": 0,
+  "dedup_note": "0 anomalías 2A → 0 hallazgos (misma entidad+tipo = mismo evento)",
+  "by_priority": {
+   "MONITOR": 0,
+   "REVIEW": 0,
+   "IMPORTANT": 0,
+   "URGENT": 0
+  },
+  "by_type": {},
+  "by_severity": {},
+  "avg_impact_score": 0.0,
+  "avg_confidence": 0.0,
+  "note": "Un hallazgo es una desviación priorizada por su importancia potencial para el negocio; NO implica fraude, robo, pérdida ni error humano."
+ },
+ "top_findings": [],
+ "findings": [],
+ "statistics": {
+  "p95_difference_reference": 1.0,
+  "top_limit_presentation_only": 100,
+  "all_findings_computed": 0,
+  "elapsed_seconds": 0.0
+ },
+ "methods": {
+  "phase_2a_vs_2b": {
+   "fase_2a": "Anomalía estadística: ¿qué comportamiento es inusual? (z robusto, IQR, MAD).",
+   "fase_2b": "Hallazgo empresarial: ¿qué tan importante podría ser para el negocio? (impact_score, business_priority, evidencia).",
+   "note": "Una anomalía estadística NO es automáticamente un riesgo empresarial."
+  },
+  "impact_score": {
+   "formula": "35*M + 25*D + 20*C + 10*S + 10*Q (0-100)",
+   "components": {
+    "M": "magnitud monetaria: log10(1+|diff|)/log10(1+P95), P95 guiado por los datos",
+    "D": "desviación estadística: min(dev/12, 1)",
+    "C": "confianza: confidence_score/100 (FASE 2A)",
+    "S": "alcance: log10(1+n_affected)/log10(1+50)",
+    "Q": "calidad: 1 - null_fraction"
+   },
+   "note": "No se usa solo el z-score."
+  },
+  "business_priority": {
+   "levels": [
+    "MONITOR",
+    "REVIEW",
+    "IMPORTANT",
+    "URGENT"
+   ],
+   "rules": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT."
+  },
+  "dedup": {
+   "rule": "Misma (tipo_hallazgo, entidad) = mismo evento → un solo hallazgo. Se guardan los detectores y anomalías contribuyentes. La diferencia total es la suma de |diferencias| (transacciones distintas)."
+  },
+  "monetary_language": {
+   "rule": "La diferencia monetaria se llama 'desviación respecto al comportamiento esperado'. NUNCA 'pérdida', 'ganancia' ni 'dinero perdido'."
+  },
+  "finding_types": {
+   "PRODUCT_ANOMALY": "ventas inusuales de un producto vs su historial",
+   "PRICE_ANOMALY": "precios atípicos vs rango habitual del producto",
+   "QUANTITY_ANOMALY": "cantidades extraordinarias vs rango habitual",
+   "CUSTOMER_ANOMALY": "comportamiento de compra inusual del cliente",
+   "TEMPORAL_ANOMALY": "período con ventas fuera de patrón",
+   "SALES_ANOMALY": "reservado: ventas agregadas (sin uso actual)"
+  }
+ },
+ "trace": {
+  "dataset": "Ventas 7A",
+  "company_id": "CMP-808b4cf578a3",
+  "source": "AnomalyReport FASE 2A",
+  "notes": "Cada hallazgo conserva el trace de su anomalía 2A más los parámetros de FASE 2B (fórmula de impacto, calidad de evidencia, regla de prioridad, deduplicación)."
+ }
+}

@@ -1,0 +1,142 @@
+{
+  "file_name": "online_retail_II.xlsx",
+  "company_id": "demo-retail",
+  "processed_at_utc": "2026-10-07T23:51:07.783532+00:00",
+  "n_original_rows": 525461,
+  "n_processed_rows": 525461,
+  "rows_dropped": 0,
+  "ingestion_summary": {
+    "file_name": "online_retail_II.xlsx",
+    "format": "xlsx",
+    "n_rows": 525461,
+    "n_cols": 8,
+    "columns": [
+      "Invoice",
+      "StockCode",
+      "Description",
+      "Quantity",
+      "InvoiceDate",
+      "Price",
+      "Customer ID",
+      "Country"
+    ],
+    "dtypes": {
+      "Invoice": "object",
+      "StockCode": "object",
+      "Description": "object",
+      "Quantity": "int64",
+      "InvoiceDate": "datetime64[us]",
+      "Price": "float64",
+      "Customer ID": "float64",
+      "Country": "str"
+    },
+    "empty_columns": [],
+    "null_counts": {
+      "Invoice": 0,
+      "StockCode": 0,
+      "Description": 2928,
+      "Quantity": 0,
+      "InvoiceDate": 0,
+      "Price": 0,
+      "Customer ID": 107927,
+      "Country": 0
+    },
+    "null_pct": {
+      "Invoice": 0.0,
+      "StockCode": 0.0,
+      "Description": 0.56,
+      "Quantity": 0.0,
+      "InvoiceDate": 0.0,
+      "Price": 0.0,
+      "Customer ID": 20.54,
+      "Country": 0.0
+    },
+    "duplicate_rows": 6865
+  },
+  "column_resolution": {
+    "renamed": {
+      "Invoice": "Invoice",
+      "StockCode": "StockCode",
+      "Description": "Description",
+      "Quantity": "Quantity",
+      "InvoiceDate": "InvoiceDate",
+      "Price": "UnitPrice",
+      "Customer ID": "CustomerID",
+      "Country": "Country"
+    },
+    "unmapped": [],
+    "missing_canonical": []
+  },
+  "quality_report": {
+    "n_rows": 525461,
+    "n_cols": 8,
+    "columns": [
+      "Invoice",
+      "StockCode",
+      "Description",
+      "Quantity",
+      "InvoiceDate",
+      "UnitPrice",
+      "CustomerID",
+      "Country"
+    ],
+    "dtypes": {
+      "Invoice": "object",
+      "StockCode": "object",
+      "Description": "object",
+      "Quantity": "int64",
+      "InvoiceDate": "datetime64[us]",
+      "UnitPrice": "float64",
+      "CustomerID": "float64",
+      "Country": "str"
+    },
+    "null_counts": {
+      "Invoice": 0,
+      "StockCode": 0,
+      "Description": 2928,
+      "Quantity": 0,
+      "InvoiceDate": 0,
+      "UnitPrice": 0,
+      "CustomerID": 107927,
+      "Country": 0
+    },
+    "null_pct": {
+      "Invoice": 0.0,
+      "StockCode": 0.0,
+      "Description": 0.56,
+      "Quantity": 0.0,
+      "InvoiceDate": 0.0,
+      "UnitPrice": 0.0,
+      "CustomerID": 20.54,
+      "Country": 0.0
+    },
+    "duplicate_rows": 6865,
+    "invalid_dates": {
+      "InvoiceDate": 0
+    },
+    "invalid_quantities": 0,
+    "invalid_prices": 0,
+    "negative_quantities": 12326,
+    "zero_or_negative_prices": 3690,
+    "notes": []
+  },
+  "transformations": [
+    "map:Invoice->Transaction",
+    "map:StockCode->Product",
+    "map:CustomerID->Customer",
+    "map:InvoiceDate->Date",
+    "map:Quantity->Quantity",
+    "map:UnitPrice->UnitPrice",
+    "map:Country->Country",
+    "keep:orig_Description",
+    "coerce:Date a datetime (no parseables -> NaT: 0)",
+    "coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "coerce:Transaction,Product,Customer,Country a string",
+    "calc:Revenue=Quantity*UnitPrice (525461 filas con Revenue válido)",
+    "status:transaction_status con reglas {'invoice_prefix': 'C'} -> {'completed': 515255, 'cancelled': 10206}",
+    "multiempresa:company_id='demo-retail' asignado a todas las filas"
+  ],
+  "errors": [],
+  "warnings": [],
+  "output_path": "/home/hatch/workspace/zayvero-business/data/processed/demo-retail/online_retail_II.parquet"
+}

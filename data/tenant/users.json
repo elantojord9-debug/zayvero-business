@@ -1,0 +1,178 @@
+[
+  {
+    "user_id": "USR-b755b189eb58",
+    "company_id": "demo-retail",
+    "email": "demo@zayvero.com",
+    "name": "Demo Owner",
+    "status": "active",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$689e9b6447fb75908ec023da2f08e130$6bac3ab8c9f9da388f29de483b4abd96c43a0e5261740257a1cfc16a3f85ad3b",
+    "created_at": "2026-10-08T02:39:18Z",
+    "updated_at": "2026-10-08T02:39:18Z"
+  },
+  {
+    "user_id": "USR-c4d59835315d",
+    "company_id": "demo-retail",
+    "email": "viewer@zayvero.com",
+    "name": "Demo Viewer",
+    "status": "active",
+    "role_id": "viewer",
+    "password_hash": "pbkdf2_sha256$260000$09d68df945246b15f0e26b3eb984ddda$e78ea401192c596916b15d152d0a625fa55c1d12c6925a85d6bb1e0d160b6e7e",
+    "created_at": "2026-10-08T02:39:18Z",
+    "updated_at": "2026-10-08T02:39:18Z"
+  },
+  {
+    "user_id": "USR-52fe7b1211e5",
+    "company_id": "CMP-4bba738298a3",
+    "email": "owner_a@test.com",
+    "name": "Owner Empresa A",
+    "status": "active",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$e0a90628fd7d0c0345ad5dbe4d71d5bf$70be25127a29a8c0e20124738d06542a2d10cf93f3e17f7bf71442c71779da79",
+    "created_at": "2026-10-08T02:39:47Z",
+    "updated_at": "2026-10-08T02:39:47Z"
+  },
+  {
+    "user_id": "USR-4f3bc659fb39",
+    "company_id": "CMP-74644179b87d",
+    "email": "owner_b@test.com",
+    "name": "Owner Empresa B",
+    "status": "active",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$c8a201d6c1d50e05d64284d7b9a2f58a$21af5157cfea508660eb7e1c7beeabd505df27f3bfbcbf995796018414c66715",
+    "created_at": "2026-10-08T02:39:47Z",
+    "updated_at": "2026-10-08T02:39:47Z"
+  },
+  {
+    "user_id": "USR-a1d2c667c2c9",
+    "company_id": "CMP-966a4d28742c",
+    "email": "ownera@e2e.test",
+    "name": "ownerA@e2e.test",
+    "status": "active",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$fb46324cdb8998695dc7cfeda639f611$52166e2dd870625a52acc11af8f04384daa1021cc74094800d09903de870f047",
+    "created_at": "2026-10-08T03:13:15Z",
+    "updated_at": "2026-10-08T03:13:15Z"
+  },
+  {
+    "user_id": "USR-2d9d1a1d6c87",
+    "company_id": "CMP-d7546f6fe56d",
+    "email": "ownerb@e2e.test",
+    "name": "ownerB@e2e.test",
+    "status": "active",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$62faea6542bbd142a0c9c3b4e8a29bff$303b70e9f02885d9a0f5fcad338a42ce388eb48459039c5bb202e73a238d828a",
+    "created_at": "2026-10-08T03:13:15Z",
+    "updated_at": "2026-10-08T03:13:15Z"
+  },
+  {
+    "user_id": "USR-1403290b0f51",
+    "company_id": "CMP-4bba738298a3",
+    "email": "v7c_a@t.do",
+    "name": "Owner 7C",
+    "status": "disabled",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$7b7e09a47c082271051618caefbfcb74$80fe48a6136a8373c86e3f6fe7add4a48da60fc3702315b90031033d769dd017",
+    "created_at": "2026-10-08T12:12:06Z",
+    "updated_at": "2026-10-08T12:15:42Z"
+  },
+  {
+    "user_id": "USR-85cf3e4ff6f4",
+    "company_id": "CMP-74644179b87d",
+    "email": "v7c_b@t.do",
+    "name": "Owner 7C",
+    "status": "disabled",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$9438d3d1ca2ddafe9f4d7065b1239c83$c04a53da2b080a543a5957adbff06bccd3d6ddf31559c7a9b90420fefb038545",
+    "created_at": "2026-10-08T12:12:06Z",
+    "updated_at": "2026-10-08T12:15:42Z"
+  },
+  {
+    "user_id": "USR-31adf35e8cd9",
+    "company_id": "CMP-e0741a0abb4f",
+    "email": "v7c_c@t.do",
+    "name": "Owner 7C",
+    "status": "disabled",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$b05847e9bf83031c7586bb9f7c7c4c30$65ed6f1170cacd785f9812953fdd7b4969f4d393fd727173d09c9bde2995e19a",
+    "created_at": "2026-10-08T12:12:07Z",
+    "updated_at": "2026-10-08T12:15:42Z"
+  },
+  {
+    "user_id": "USR-544c789435a6",
+    "company_id": "CMP-4bba738298a3",
+    "email": "v7c_viewer@t.do",
+    "name": "V",
+    "status": "disabled",
+    "role_id": "viewer",
+    "password_hash": "pbkdf2_sha256$260000$1c5730018539bacbf7fdc114cd3bce1e$b2d2015c5d94e57ab97341f8e89b4f756c9c6752535e7fba2abdcec22a377fc5",
+    "created_at": "2026-10-08T12:15:22Z",
+    "updated_at": "2026-10-08T12:15:42Z"
+  },
+  {
+    "user_id": "USR-6cad1fa2f6a2",
+    "company_id": "CMP-966a4d28742c",
+    "email": "e2e_a@f8.do",
+    "name": "E2E A",
+    "status": "disabled",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$e14053402a3e8250589204d775de9442$a9686c55ed254df575c41cf2e080248ac02a65e4a6d5707cea704224640f0674",
+    "created_at": "2026-10-08T21:11:17Z",
+    "updated_at": "2026-10-08T21:12:04Z"
+  },
+  {
+    "user_id": "USR-2ffbeab010e7",
+    "company_id": "CMP-d7546f6fe56d",
+    "email": "e2e_b@f8.do",
+    "name": "E2E B",
+    "status": "disabled",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$0763bf71695849cb1dbe6b4dbc4eb5c0$87abf13da7ea6ffb55a0b18bc95b900b6cc8fb8448e7b36884178334e00a1fec",
+    "created_at": "2026-10-08T21:11:18Z",
+    "updated_at": "2026-10-08T21:12:04Z"
+  },
+  {
+    "user_id": "USR-636600f99957",
+    "company_id": "CMP-966a4d28742c",
+    "email": "audit_a@f8.do",
+    "name": "Audit A",
+    "status": "disabled",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$272eb3bf68ab9b9980bc9cbe0b1efd73$0b040054403765a66a01648b3d5cc0423cd52bedbc077ed804d522abb3eb73c7",
+    "created_at": "2026-10-08T21:27:15Z",
+    "updated_at": "2026-10-08T21:27:18Z"
+  },
+  {
+    "user_id": "USR-5d4f3ea5214d",
+    "company_id": "CMP-d7546f6fe56d",
+    "email": "audit_b@f8.do",
+    "name": "Audit B",
+    "status": "disabled",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$6f04e3898fc1193b20f0f75841f0bce7$261aa623e37de108e0a3370546d9fc44d4ac3b41fce49c6ef0b89435fdb8c60c",
+    "created_at": "2026-10-08T21:27:15Z",
+    "updated_at": "2026-10-08T21:27:18Z"
+  },
+  {
+    "user_id": "USR-d354bf53eb0c",
+    "company_id": "CMP-966a4d28742c",
+    "email": "fix_a@f8.do",
+    "name": "Fix A",
+    "status": "disabled",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$8bd0dc5bcff35df7f60d52c6a5db13dd$d82e720edfafb18f9713b0a8de1d56f329bf3fef67cc148d6fdb3614f0187da7",
+    "created_at": "2026-10-08T21:31:49Z",
+    "updated_at": "2026-10-08T21:31:51Z"
+  },
+  {
+    "user_id": "USR-a5e08712d238",
+    "company_id": "CMP-d7546f6fe56d",
+    "email": "fix_b@f8.do",
+    "name": "Fix B",
+    "status": "disabled",
+    "role_id": "owner",
+    "password_hash": "pbkdf2_sha256$260000$927b457a11e3784e20f1f42085104484$6b020ebed48fc931bb035425b55e3ac4eb3cdc135f91a726b0cfb59eb3e1e1ab",
+    "created_at": "2026-10-08T21:31:49Z",
+    "updated_at": "2026-10-08T21:31:51Z"
+  }
+]

@@ -1,0 +1,203 @@
+{
+  "file_name": "work.csv",
+  "company_id": "CMP-a54f3fc6bb66",
+  "processed_at_utc": "2026-10-08T04:21:08.325179+00:00",
+  "n_original_rows": 1320,
+  "n_processed_rows": 1320,
+  "rows_dropped": 0,
+  "ingestion_summary": {
+    "sheets_processed": [
+      null
+    ],
+    "per_sheet": [
+      {
+        "sheet": null,
+        "n_original_rows": 1320,
+        "n_processed_rows": 1320,
+        "rows_dropped": 0,
+        "duplicate_rows": 0
+      }
+    ]
+  },
+  "column_resolution": {
+    "renamed": {
+      "Invoice": "Invoice",
+      "StockCode": "StockCode",
+      "Quantity": "Quantity",
+      "InvoiceDate": "InvoiceDate",
+      "UnitPrice": "UnitPrice",
+      "CustomerID": "CustomerID",
+      "Country": "Country"
+    },
+    "unmapped": [
+      "product"
+    ],
+    "missing_canonical": [
+      "Description"
+    ]
+  },
+  "quality_report": {
+    "n_rows": 1320,
+    "n_cols": 8,
+    "columns": [
+      "Invoice",
+      "StockCode",
+      "product",
+      "Quantity",
+      "InvoiceDate",
+      "UnitPrice",
+      "CustomerID",
+      "Country"
+    ],
+    "dtypes": {
+      "Invoice": "str",
+      "StockCode": "str",
+      "product": "str",
+      "Quantity": "int64",
+      "InvoiceDate": "str",
+      "UnitPrice": "float64",
+      "CustomerID": "str",
+      "Country": "str"
+    },
+    "null_counts": {
+      "Invoice": 0,
+      "StockCode": 0,
+      "product": 0,
+      "Quantity": 0,
+      "InvoiceDate": 0,
+      "UnitPrice": 0,
+      "CustomerID": 0,
+      "Country": 0
+    },
+    "null_pct": {
+      "Invoice": 0.0,
+      "StockCode": 0.0,
+      "product": 0.0,
+      "Quantity": 0.0,
+      "InvoiceDate": 0.0,
+      "UnitPrice": 0.0,
+      "CustomerID": 0.0,
+      "Country": 0.0
+    },
+    "duplicate_rows": 0,
+    "invalid_dates": {
+      "InvoiceDate": 0
+    },
+    "invalid_quantities": 0,
+    "invalid_prices": 0,
+    "negative_quantities": 0,
+    "zero_or_negative_prices": 0,
+    "notes": []
+  },
+  "transformations": [
+    "[(única)] map:Invoice->Transaction",
+    "[(única)] map:StockCode->Product",
+    "[(única)] map:CustomerID->Customer",
+    "[(única)] map:InvoiceDate->Date",
+    "[(única)] map:Quantity->Quantity",
+    "[(única)] map:UnitPrice->UnitPrice",
+    "[(única)] map:Country->Country",
+    "[(única)] coerce:Date a datetime (no parseables -> NaT: 0)",
+    "[(única)] coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "[(única)] coerce:Transaction,Product,Customer,Country a string",
+    "[(única)] calc:Revenue=Quantity*UnitPrice (1320 filas con Revenue válido)",
+    "[(única)] status:transaction_status con reglas {'invoice_prefix': 'C'} -> {'completed': 1320}",
+    "[(única)] trace:source_sheet='None', source_file='work.csv' asignados a 1320 filas",
+    "[(única)] multiempresa:company_id='CMP-a54f3fc6bb66' asignado a todas las filas"
+  ],
+  "errors": [],
+  "warnings": [
+    "[(única)] Columnas sin mapear: ['product']",
+    "[(única)] Columnas canónicas ausentes: ['Description']"
+  ],
+  "output_path": "/home/hatch/workspace/zayvero-business/data/processed/CMP-a54f3fc6bb66/ventas.parquet",
+  "sheets": [
+    {
+      "sheet": null,
+      "n_original_rows": 1320,
+      "n_processed_rows": 1320,
+      "rows_dropped": 0,
+      "columns": [
+        "Invoice",
+        "StockCode",
+        "product",
+        "Quantity",
+        "InvoiceDate",
+        "UnitPrice",
+        "CustomerID",
+        "Country"
+      ],
+      "duplicate_rows": 0,
+      "quality": {
+        "n_rows": 1320,
+        "n_cols": 8,
+        "columns": [
+          "Invoice",
+          "StockCode",
+          "product",
+          "Quantity",
+          "InvoiceDate",
+          "UnitPrice",
+          "CustomerID",
+          "Country"
+        ],
+        "dtypes": {
+          "Invoice": "str",
+          "StockCode": "str",
+          "product": "str",
+          "Quantity": "int64",
+          "InvoiceDate": "str",
+          "UnitPrice": "float64",
+          "CustomerID": "str",
+          "Country": "str"
+        },
+        "null_counts": {
+          "Invoice": 0,
+          "StockCode": 0,
+          "product": 0,
+          "Quantity": 0,
+          "InvoiceDate": 0,
+          "UnitPrice": 0,
+          "CustomerID": 0,
+          "Country": 0
+        },
+        "null_pct": {
+          "Invoice": 0.0,
+          "StockCode": 0.0,
+          "product": 0.0,
+          "Quantity": 0.0,
+          "InvoiceDate": 0.0,
+          "UnitPrice": 0.0,
+          "CustomerID": 0.0,
+          "Country": 0.0
+        },
+        "duplicate_rows": 0,
+        "invalid_dates": {
+          "InvoiceDate": 0
+        },
+        "invalid_quantities": 0,
+        "invalid_prices": 0,
+        "negative_quantities": 0,
+        "zero_or_negative_prices": 0,
+        "notes": []
+      },
+      "column_resolution": {
+        "renamed": {
+          "Invoice": "Invoice",
+          "StockCode": "StockCode",
+          "Quantity": "Quantity",
+          "InvoiceDate": "InvoiceDate",
+          "UnitPrice": "UnitPrice",
+          "CustomerID": "CustomerID",
+          "Country": "Country"
+        },
+        "unmapped": [
+          "product"
+        ],
+        "missing_canonical": [
+          "Description"
+        ]
+      }
+    }
+  ]
+}

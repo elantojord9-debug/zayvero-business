@@ -1,0 +1,108 @@
+[
+  {
+    "dataset_id": "DS-d48ec72ef646",
+    "company_id": "CMP-2b76aacdff83",
+    "nombre": "Ventas B",
+    "source": "csv",
+    "created_at": "2026-10-08T21:28:53Z",
+    "updated_at": "2026-10-08T21:28:53Z",
+    "status": "DATA_UPLOADED",
+    "is_active": false,
+    "is_demo": false,
+    "base_name": "b",
+    "upload": {
+      "filename": "b.csv",
+      "size_bytes": 853,
+      "format": "csv",
+      "uploaded_at": "2026-10-08T21:28:53Z",
+      "uploaded_by": "USR-7a1bcfd6d563",
+      "path": "/home/hatch/workspace/zayvero-business/data/uploads/CMP-2b76aacdff83/DS-d48ec72ef646/original.csv"
+    },
+    "review": {
+      "ok": true,
+      "checks": [
+        {
+          "key": "file",
+          "label": "Archivo recibido",
+          "ok": true
+        },
+        {
+          "key": "format",
+          "label": "Formato reconocido",
+          "ok": true
+        },
+        {
+          "key": "columns",
+          "label": "Columnas detectadas",
+          "ok": true,
+          "detail": "6 columnas"
+        },
+        {
+          "key": "dates",
+          "label": "Fechas detectadas",
+          "ok": true,
+          "detail": "2024-01-15 → 2024-12-15"
+        },
+        {
+          "key": "rows",
+          "label": "Registros detectados",
+          "ok": true,
+          "detail": "20 registros"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "missing_columns",
+          "label": "Columnas faltantes",
+          "detail": "No encontramos estas columnas esperadas: StockCode, Description, Country. El análisis puede quedar limitado."
+        },
+        {
+          "type": "unmapped_columns",
+          "label": "Columnas no reconocidas",
+          "detail": "Estas columnas no se reconocieron y no se usarán: producto"
+        }
+      ],
+      "total_rows": 20,
+      "columns": [
+        "factura",
+        "producto",
+        "cantidad",
+        "fecha_venta",
+        "precio",
+        "cliente"
+      ],
+      "sheets": [
+        {
+          "sheet": "única",
+          "rows": 20,
+          "columns": [
+            "factura",
+            "producto",
+            "cantidad",
+            "fecha_venta",
+            "precio",
+            "cliente"
+          ],
+          "columns_detected": 6
+        }
+      ],
+      "date_min": "2024-01-15T00:00:00",
+      "date_max": "2024-12-15T00:00:00",
+      "missing_canonical": [
+        "StockCode",
+        "Description",
+        "Country"
+      ],
+      "unmapped": [
+        "producto"
+      ]
+    },
+    "mapping": {},
+    "row_count": null,
+    "period_start": null,
+    "period_end": null,
+    "processing": {},
+    "outputs": {},
+    "warnings": []
+  }
+]

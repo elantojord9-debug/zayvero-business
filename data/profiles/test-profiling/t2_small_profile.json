@@ -1,0 +1,1156 @@
+{
+  "dataset_metadata": {
+    "dataset_label": "Demo Dataset — UCI Online Retail II",
+    "engine": "zayvero-business-profiling-1B",
+    "generated_at_utc": "2026-10-08T02:07:04.767380+00:00",
+    "company_id": "test-profiling",
+    "source_parquet": "/home/hatch/workspace/zayvero-business/data/processed/test-profiling/t2_small.parquet",
+    "n_rows": 200,
+    "audit_record_found": true,
+    "trace": {
+      "formula": "perfil construido del Parquet normalizado de FASE 1A",
+      "filters": "company_id == 'test-profiling'",
+      "rows_considered": 200,
+      "period": [
+        "2024-01-15T10:00:00"
+      ],
+      "notes": "Etiqueta del dataset: 'Demo Dataset — UCI Online Retail II' (nunca como cliente)."
+    }
+  },
+  "date_range": {
+    "min_date": "2024-01-15T10:00:00",
+    "max_date": "2024-12-15T10:00:00",
+    "days_with_activity": 12,
+    "trace": {
+      "formula": "min/max de Date; días = COUNT DISTINCT DATE(Date)",
+      "filters": "Date válida (no NaT)",
+      "rows_considered": 200,
+      "period": "2024-01-15 → 2024-12-15",
+      "notes": "Días con actividad = días que tienen ≥1 fila con fecha válida."
+    }
+  },
+  "transactions": {
+    "total_rows": 200,
+    "unique_transactions": 200,
+    "completed_rows": 200,
+    "cancelled_rows": 0,
+    "unknown_rows": 0,
+    "trace": {
+      "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+      "filters": "ninguno (todas las filas)",
+      "rows_considered": 200,
+      "period": "2024-01-15 → 2024-12-15",
+      "notes": ""
+    }
+  },
+  "entities": {
+    "customers": 30,
+    "products": 20,
+    "countries": 1,
+    "trace": {
+      "formula": "COUNT DISTINCT de Customer / Product / Country",
+      "filters": "valores no nulos",
+      "rows_considered": 200,
+      "period": "2024-01-15 → 2024-12-15",
+      "notes": "Los nulos no se cuentan como entidad."
+    }
+  },
+  "customers": {
+    "total_customers": 30,
+    "unknown_customer_rows": 0,
+    "active_customers": 15,
+    "single_purchase_customers": 0,
+    "recurrent_customers": 30,
+    "active_window_days": 90,
+    "top_customers": [
+      {
+        "customer": "1004",
+        "purchases": 7,
+        "units": 35.0,
+        "revenue": 455.0,
+        "first_purchase": "2024-05-15T10:00:00",
+        "last_purchase": "2024-11-15T10:00:00",
+        "frequency_per_30d": 1.141,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1009",
+        "purchases": 7,
+        "units": 35.0,
+        "revenue": 455.0,
+        "first_purchase": "2024-04-15T10:00:00",
+        "last_purchase": "2024-10-15T10:00:00",
+        "frequency_per_30d": 1.148,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1014",
+        "purchases": 7,
+        "units": 35.0,
+        "revenue": 455.0,
+        "first_purchase": "2024-03-15T10:00:00",
+        "last_purchase": "2024-09-15T10:00:00",
+        "frequency_per_30d": 1.141,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1019",
+        "purchases": 7,
+        "units": 35.0,
+        "revenue": 455.0,
+        "first_purchase": "2024-02-15T10:00:00",
+        "last_purchase": "2024-08-15T10:00:00",
+        "frequency_per_30d": 1.154,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1024",
+        "purchases": 6,
+        "units": 30.0,
+        "revenue": 400.0,
+        "first_purchase": "2024-01-15T10:00:00",
+        "last_purchase": "2024-07-15T10:00:00",
+        "frequency_per_30d": 0.989,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1029",
+        "purchases": 6,
+        "units": 30.0,
+        "revenue": 375.0,
+        "first_purchase": "2024-06-15T10:00:00",
+        "last_purchase": "2024-12-15T10:00:00",
+        "frequency_per_30d": 0.984,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1003",
+        "purchases": 7,
+        "units": 28.0,
+        "revenue": 364.0,
+        "first_purchase": "2024-04-15T10:00:00",
+        "last_purchase": "2024-10-15T10:00:00",
+        "frequency_per_30d": 1.148,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1008",
+        "purchases": 7,
+        "units": 28.0,
+        "revenue": 364.0,
+        "first_purchase": "2024-03-15T10:00:00",
+        "last_purchase": "2024-09-15T10:00:00",
+        "frequency_per_30d": 1.141,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1013",
+        "purchases": 7,
+        "units": 28.0,
+        "revenue": 364.0,
+        "first_purchase": "2024-02-15T10:00:00",
+        "last_purchase": "2024-08-15T10:00:00",
+        "frequency_per_30d": 1.154,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1018",
+        "purchases": 7,
+        "units": 28.0,
+        "revenue": 364.0,
+        "first_purchase": "2024-01-15T10:00:00",
+        "last_purchase": "2024-07-15T10:00:00",
+        "frequency_per_30d": 1.154,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1023",
+        "purchases": 6,
+        "units": 24.0,
+        "revenue": 324.0,
+        "first_purchase": "2024-06-15T10:00:00",
+        "last_purchase": "2024-12-15T10:00:00",
+        "frequency_per_30d": 0.984,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1028",
+        "purchases": 6,
+        "units": 24.0,
+        "revenue": 304.0,
+        "first_purchase": "2024-05-15T10:00:00",
+        "last_purchase": "2024-11-15T10:00:00",
+        "frequency_per_30d": 0.978,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1002",
+        "purchases": 7,
+        "units": 21.0,
+        "revenue": 273.0,
+        "first_purchase": "2024-03-15T10:00:00",
+        "last_purchase": "2024-09-15T10:00:00",
+        "frequency_per_30d": 1.141,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1007",
+        "purchases": 7,
+        "units": 21.0,
+        "revenue": 273.0,
+        "first_purchase": "2024-02-15T10:00:00",
+        "last_purchase": "2024-08-15T10:00:00",
+        "frequency_per_30d": 1.154,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1012",
+        "purchases": 7,
+        "units": 21.0,
+        "revenue": 273.0,
+        "first_purchase": "2024-01-15T10:00:00",
+        "last_purchase": "2024-07-15T10:00:00",
+        "frequency_per_30d": 1.154,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1017",
+        "purchases": 7,
+        "units": 21.0,
+        "revenue": 273.0,
+        "first_purchase": "2024-06-15T10:00:00",
+        "last_purchase": "2024-12-15T10:00:00",
+        "frequency_per_30d": 1.148,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1027",
+        "purchases": 6,
+        "units": 18.0,
+        "revenue": 231.0,
+        "first_purchase": "2024-04-15T10:00:00",
+        "last_purchase": "2024-10-15T10:00:00",
+        "frequency_per_30d": 0.984,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1022",
+        "purchases": 6,
+        "units": 18.0,
+        "revenue": 225.0,
+        "first_purchase": "2024-05-15T10:00:00",
+        "last_purchase": "2024-11-15T10:00:00",
+        "frequency_per_30d": 0.978,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1001",
+        "purchases": 7,
+        "units": 14.0,
+        "revenue": 182.0,
+        "first_purchase": "2024-02-15T10:00:00",
+        "last_purchase": "2024-08-15T10:00:00",
+        "frequency_per_30d": 1.154,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1006",
+        "purchases": 7,
+        "units": 14.0,
+        "revenue": 182.0,
+        "first_purchase": "2024-01-15T10:00:00",
+        "last_purchase": "2024-07-15T10:00:00",
+        "frequency_per_30d": 1.154,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1011",
+        "purchases": 7,
+        "units": 14.0,
+        "revenue": 182.0,
+        "first_purchase": "2024-06-15T10:00:00",
+        "last_purchase": "2024-12-15T10:00:00",
+        "frequency_per_30d": 1.148,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1016",
+        "purchases": 7,
+        "units": 14.0,
+        "revenue": 182.0,
+        "first_purchase": "2024-05-15T10:00:00",
+        "last_purchase": "2024-11-15T10:00:00",
+        "frequency_per_30d": 1.141,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1026",
+        "purchases": 6,
+        "units": 12.0,
+        "revenue": 156.0,
+        "first_purchase": "2024-03-15T10:00:00",
+        "last_purchase": "2024-09-15T10:00:00",
+        "frequency_per_30d": 0.978,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1021",
+        "purchases": 6,
+        "units": 12.0,
+        "revenue": 152.0,
+        "first_purchase": "2024-04-15T10:00:00",
+        "last_purchase": "2024-10-15T10:00:00",
+        "frequency_per_30d": 0.984,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1000",
+        "purchases": 7,
+        "units": 7.0,
+        "revenue": 91.0,
+        "first_purchase": "2024-01-15T10:00:00",
+        "last_purchase": "2024-07-15T10:00:00",
+        "frequency_per_30d": 1.154,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1005",
+        "purchases": 7,
+        "units": 7.0,
+        "revenue": 91.0,
+        "first_purchase": "2024-06-15T10:00:00",
+        "last_purchase": "2024-12-15T10:00:00",
+        "frequency_per_30d": 1.148,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1010",
+        "purchases": 7,
+        "units": 7.0,
+        "revenue": 91.0,
+        "first_purchase": "2024-05-15T10:00:00",
+        "last_purchase": "2024-11-15T10:00:00",
+        "frequency_per_30d": 1.141,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1015",
+        "purchases": 7,
+        "units": 7.0,
+        "revenue": 91.0,
+        "first_purchase": "2024-04-15T10:00:00",
+        "last_purchase": "2024-10-15T10:00:00",
+        "frequency_per_30d": 1.148,
+        "countries": [
+          "España"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "1025",
+        "purchases": 6,
+        "units": 6.0,
+        "revenue": 79.0,
+        "first_purchase": "2024-02-15T10:00:00",
+        "last_purchase": "2024-08-15T10:00:00",
+        "frequency_per_30d": 0.989,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "1020",
+        "purchases": 6,
+        "units": 6.0,
+        "revenue": 77.0,
+        "first_purchase": "2024-03-15T10:00:00",
+        "last_purchase": "2024-09-15T10:00:00",
+        "frequency_per_30d": 0.978,
+        "countries": [
+          "España"
+        ],
+        "is_active": false
+      }
+    ],
+    "trace": {
+      "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+      "filters": "transaction_status='completed'; Customer no nulo",
+      "rows_considered": 200,
+      "period": "2024-01-15 → 2024-12-15",
+      "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+    }
+  },
+  "products": {
+    "total_products": 20,
+    "with_completed_transactions": 20,
+    "activity_classes": {
+      "alta_actividad": 2,
+      "media_actividad": 6,
+      "baja_actividad": 12,
+      "sin_actividad_suficiente": 0
+    },
+    "classification_rule": "alta_actividad: decil superior de revenue (≥p90); media_actividad: p60–p90; baja_actividad: resto con ≥1 transacción completada y revenue>0; sin_actividad_suficiente: sin transacciones completadas o sin revenue válido. NO equivale a 'producto muerto' (módulo futuro).",
+    "top_products": [
+      {
+        "product": "P0019",
+        "description": "Producto 19",
+        "units": 50.0,
+        "transactions": 10,
+        "revenue": 665.0,
+        "avg_price": 13.3,
+        "first_sale": "2024-04-15T10:00:00",
+        "last_sale": "2024-12-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "alta_actividad"
+      },
+      {
+        "product": "P0014",
+        "description": "Producto 14",
+        "units": 50.0,
+        "transactions": 10,
+        "revenue": 660.0,
+        "avg_price": 13.2,
+        "first_sale": "2024-03-15T10:00:00",
+        "last_sale": "2024-11-15T10:00:00",
+        "frequency_per_30d": 1.224,
+        "activity_class": "alta_actividad"
+      },
+      {
+        "product": "P0004",
+        "description": "Producto 4",
+        "units": 50.0,
+        "transactions": 10,
+        "revenue": 650.0,
+        "avg_price": 13.0,
+        "first_sale": "2024-01-15T10:00:00",
+        "last_sale": "2024-09-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "media_actividad"
+      },
+      {
+        "product": "P0009",
+        "description": "Producto 9",
+        "units": 50.0,
+        "transactions": 10,
+        "revenue": 620.0,
+        "avg_price": 12.4,
+        "first_sale": "2024-02-15T10:00:00",
+        "last_sale": "2024-10-15T10:00:00",
+        "frequency_per_30d": 1.235,
+        "activity_class": "media_actividad"
+      },
+      {
+        "product": "P0013",
+        "description": "Producto 13",
+        "units": 40.0,
+        "transactions": 10,
+        "revenue": 544.0,
+        "avg_price": 13.6,
+        "first_sale": "2024-02-15T10:00:00",
+        "last_sale": "2024-10-15T10:00:00",
+        "frequency_per_30d": 1.235,
+        "activity_class": "media_actividad"
+      },
+      {
+        "product": "P0018",
+        "description": "Producto 18",
+        "units": 40.0,
+        "transactions": 10,
+        "revenue": 520.0,
+        "avg_price": 13.0,
+        "first_sale": "2024-03-15T10:00:00",
+        "last_sale": "2024-11-15T10:00:00",
+        "frequency_per_30d": 1.224,
+        "activity_class": "media_actividad"
+      },
+      {
+        "product": "P0008",
+        "description": "Producto 8",
+        "units": 40.0,
+        "transactions": 10,
+        "revenue": 512.0,
+        "avg_price": 12.8,
+        "first_sale": "2024-01-15T10:00:00",
+        "last_sale": "2024-09-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "media_actividad"
+      },
+      {
+        "product": "P0003",
+        "description": "Producto 3",
+        "units": 40.0,
+        "transactions": 10,
+        "revenue": 508.0,
+        "avg_price": 12.7,
+        "first_sale": "2024-04-15T10:00:00",
+        "last_sale": "2024-12-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "media_actividad"
+      },
+      {
+        "product": "P0012",
+        "description": "Producto 12",
+        "units": 30.0,
+        "transactions": 10,
+        "revenue": 399.0,
+        "avg_price": 13.3,
+        "first_sale": "2024-01-15T10:00:00",
+        "last_sale": "2024-09-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0007",
+        "description": "Producto 7",
+        "units": 30.0,
+        "transactions": 10,
+        "revenue": 396.0,
+        "avg_price": 13.2,
+        "first_sale": "2024-04-15T10:00:00",
+        "last_sale": "2024-12-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0017",
+        "description": "Producto 17",
+        "units": 30.0,
+        "transactions": 10,
+        "revenue": 381.0,
+        "avg_price": 12.7,
+        "first_sale": "2024-02-15T10:00:00",
+        "last_sale": "2024-10-15T10:00:00",
+        "frequency_per_30d": 1.235,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0002",
+        "description": "Producto 2",
+        "units": 30.0,
+        "transactions": 10,
+        "revenue": 372.0,
+        "avg_price": 12.4,
+        "first_sale": "2024-03-15T10:00:00",
+        "last_sale": "2024-11-15T10:00:00",
+        "frequency_per_30d": 1.224,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0006",
+        "description": "Producto 6",
+        "units": 20.0,
+        "transactions": 10,
+        "revenue": 272.0,
+        "avg_price": 13.6,
+        "first_sale": "2024-03-15T10:00:00",
+        "last_sale": "2024-11-15T10:00:00",
+        "frequency_per_30d": 1.224,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0011",
+        "description": "Producto 11",
+        "units": 20.0,
+        "transactions": 10,
+        "revenue": 260.0,
+        "avg_price": 13.0,
+        "first_sale": "2024-04-15T10:00:00",
+        "last_sale": "2024-12-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0001",
+        "description": "Producto 1",
+        "units": 20.0,
+        "transactions": 10,
+        "revenue": 256.0,
+        "avg_price": 12.8,
+        "first_sale": "2024-02-15T10:00:00",
+        "last_sale": "2024-10-15T10:00:00",
+        "frequency_per_30d": 1.235,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0016",
+        "description": "Producto 16",
+        "units": 20.0,
+        "transactions": 10,
+        "revenue": 248.0,
+        "avg_price": 12.4,
+        "first_sale": "2024-01-15T10:00:00",
+        "last_sale": "2024-09-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0005",
+        "description": "Producto 5",
+        "units": 10.0,
+        "transactions": 10,
+        "revenue": 133.0,
+        "avg_price": 13.3,
+        "first_sale": "2024-02-15T10:00:00",
+        "last_sale": "2024-10-15T10:00:00",
+        "frequency_per_30d": 1.235,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0000",
+        "description": "Producto 0",
+        "units": 10.0,
+        "transactions": 10,
+        "revenue": 132.0,
+        "avg_price": 13.2,
+        "first_sale": "2024-01-15T10:00:00",
+        "last_sale": "2024-09-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0015",
+        "description": "Producto 15",
+        "units": 10.0,
+        "transactions": 10,
+        "revenue": 128.0,
+        "avg_price": 12.8,
+        "first_sale": "2024-04-15T10:00:00",
+        "last_sale": "2024-12-15T10:00:00",
+        "frequency_per_30d": 1.23,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0010",
+        "description": "Producto 10",
+        "units": 10.0,
+        "transactions": 10,
+        "revenue": 127.0,
+        "avg_price": 12.7,
+        "first_sale": "2024-03-15T10:00:00",
+        "last_sale": "2024-11-15T10:00:00",
+        "frequency_per_30d": 1.224,
+        "activity_class": "baja_actividad"
+      }
+    ],
+    "trace": {
+      "formula": "por Product: units=ΣQuantity|completed, transactions=COUNT|completed, revenue=ΣRevenue|completed, avg_price=MEAN(UnitPrice), frequency=transactions/días_activos*30; clases por deciles de revenue (p90=651.0, p60=442.6)",
+      "filters": "transaction_status='completed'; Quantity/Revenue nulos se ignoran",
+      "rows_considered": 200,
+      "period": "2024-01-15 → 2024-12-15",
+      "notes": "20 productos con transacciones completadas; 20 productos distintos en total. Top 50 incluidos en el perfil; la tabla completa puede regenerarse del Parquet."
+    }
+  },
+  "countries": {
+    "total_countries": 1,
+    "ranking": [
+      {
+        "country": "España",
+        "revenue": 7783.0,
+        "customers": 30,
+        "units": 600.0,
+        "transactions": 200
+      }
+    ],
+    "top_markets": [
+      "España"
+    ],
+    "small_markets": [],
+    "growth_6m_vs_prev_6m": [
+      {
+        "country": "España",
+        "revenue_prev_6m": 3269.0,
+        "revenue_last_6m": 3897.0,
+        "pct_change": 19.21,
+        "trend": "crecimiento"
+      }
+    ],
+    "growth_note": "Variación = revenue últimos 6 meses completos vs 6 anteriores. ±5% = estable. Solo variación observada, sin interpretación causal.",
+    "trace": {
+      "formula": "por Country: revenue=ΣRevenue, customers=COUNT DISTINCT Customer, units=ΣQuantity, transactions=COUNT DISTINCT Transaction; top_markets=corte Pareto 80% del revenue",
+      "filters": "transaction_status IN (completed, cancelled); Country no nulo",
+      "rows_considered": 200,
+      "period": "2024-01-15 → 2024-12-15",
+      "notes": "Crecimiento/decrecimiento solo descriptivo cuando hay ≥12 meses."
+    }
+  },
+  "sales": {
+    "gross_revenue": 7783.0,
+    "cancelled_revenue": 0.0,
+    "net_revenue": 7783.0,
+    "unknown_status_revenue": 0.0,
+    "units_sold_gross": 600.0,
+    "units_sold_net": 600.0,
+    "trace": {
+      "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+      "filters": "Revenue no nulo; transaction_status según bloque",
+      "rows_considered": 200,
+      "period": "2024-01-15 → 2024-12-15",
+      "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    }
+  },
+  "cancellations": {
+    "count": 0,
+    "pct_of_rows": 0.0,
+    "units": 0.0,
+    "value": 0.0,
+    "top_products": [],
+    "top_periods": [],
+    "top_customers": [],
+    "trace": {
+      "formula": "count=filas cancelled; pct=count/total; units=ΣQuantity|signed; value=Σ|Revenue|; tops por Σ|Revenue|",
+      "filters": "transaction_status='cancelled'",
+      "rows_considered": 0,
+      "period": "2024-01-15 → 2024-12-15",
+      "notes": "Descriptivo únicamente. No se afirma fraude ni anomalía: la detección de anomalías es una fase posterior."
+    }
+  },
+  "data_quality": {
+    "score": 100.0,
+    "grade": "excelente",
+    "deductions": [],
+    "explanation": "Score 100.0/100 (excelente): sin problemas detectados en los componentes evaluados.",
+    "components_evaluated": [
+      "missing_critical",
+      "duplicates",
+      "invalid_dates",
+      "invalid_quantities",
+      "invalid_prices",
+      "negative_quantities",
+      "non_positive_prices",
+      "unmapped_columns"
+    ],
+    "trace": {
+      "formula": "score = 100 − Σ penalizaciones (topes: missing 30, duplicados 20, fechas/cantidades/precios inválidos 15 c/u, negativos 10, precios≤0 10, unmapped 10)",
+      "filters": "todas las filas del Parquet normalizado + reporte de calidad del audit de FASE 1A",
+      "rows_considered": 200,
+      "period": "n/a (calidad, no temporal)",
+      "notes": "El score describe calidad de datos, no del negocio."
+    }
+  },
+  "temporal_metrics": {
+    "daily": [
+      {
+        "period": "2024-01-15",
+        "revenue": 635.0,
+        "units": 49.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 37.35,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-02-15",
+        "revenue": 658.0,
+        "units": 51.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 38.71,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-03-15",
+        "revenue": 675.0,
+        "units": 53.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 39.71,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-04-15",
+        "revenue": 645.0,
+        "units": 50.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 37.94,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-05-15",
+        "revenue": 656.0,
+        "units": 52.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 38.59,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-06-15",
+        "revenue": 628.0,
+        "units": 49.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 36.94,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-07-15",
+        "revenue": 675.0,
+        "units": 51.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 39.71,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-08-15",
+        "revenue": 695.0,
+        "units": 53.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 40.88,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-09-15",
+        "revenue": 650.0,
+        "units": 49.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 40.62,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-10-15",
+        "revenue": 648.0,
+        "units": 50.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 40.5,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-11-15",
+        "revenue": 601.0,
+        "units": 46.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 37.56,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-12-15",
+        "revenue": 617.0,
+        "units": 47.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 38.56,
+        "products_sold": 5
+      }
+    ],
+    "weekly": [
+      {
+        "period": "2024-W03",
+        "revenue": 635.0,
+        "units": 49.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 37.35,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W07",
+        "revenue": 658.0,
+        "units": 51.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 38.71,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W11",
+        "revenue": 675.0,
+        "units": 53.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 39.71,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W16",
+        "revenue": 645.0,
+        "units": 50.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 37.94,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W20",
+        "revenue": 656.0,
+        "units": 52.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 38.59,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W24",
+        "revenue": 628.0,
+        "units": 49.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 36.94,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W29",
+        "revenue": 675.0,
+        "units": 51.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 39.71,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W33",
+        "revenue": 695.0,
+        "units": 53.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 40.88,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W37",
+        "revenue": 650.0,
+        "units": 49.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 40.62,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W42",
+        "revenue": 648.0,
+        "units": 50.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 40.5,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W46",
+        "revenue": 601.0,
+        "units": 46.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 37.56,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-W50",
+        "revenue": 617.0,
+        "units": 47.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 38.56,
+        "products_sold": 5
+      }
+    ],
+    "monthly": [
+      {
+        "period": "2024-01",
+        "revenue": 635.0,
+        "units": 49.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 37.35,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-02",
+        "revenue": 658.0,
+        "units": 51.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 38.71,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-03",
+        "revenue": 675.0,
+        "units": 53.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 39.71,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-04",
+        "revenue": 645.0,
+        "units": 50.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 37.94,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-05",
+        "revenue": 656.0,
+        "units": 52.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 38.59,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-06",
+        "revenue": 628.0,
+        "units": 49.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 36.94,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-07",
+        "revenue": 675.0,
+        "units": 51.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 39.71,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-08",
+        "revenue": 695.0,
+        "units": 53.0,
+        "transactions": 17,
+        "customers": 5,
+        "avg_ticket": 40.88,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-09",
+        "revenue": 650.0,
+        "units": 49.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 40.62,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-10",
+        "revenue": 648.0,
+        "units": 50.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 40.5,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-11",
+        "revenue": 601.0,
+        "units": 46.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 37.56,
+        "products_sold": 5
+      },
+      {
+        "period": "2024-12",
+        "revenue": 617.0,
+        "units": 47.0,
+        "transactions": 16,
+        "customers": 5,
+        "avg_ticket": 38.56,
+        "products_sold": 5
+      }
+    ],
+    "n_periods": {
+      "daily": 12,
+      "weekly": 12,
+      "monthly": 12
+    },
+    "trace": {
+      "formula": "por período: revenue=ΣRevenue(signo), units=ΣQuantity, transactions=COUNT DISTINCT Transaction, customers=COUNT DISTINCT Customer, avg_ticket=revenue/transactions, products_sold=COUNT DISTINCT Product",
+      "filters": "Date válida; Revenue/Quantity nulos se ignoran en la suma",
+      "rows_considered": 200,
+      "period": "2024-01-15 → 2024-12-15",
+      "notes": "200 de 200 filas tienen fecha válida y entran en las series. Listas ordenadas cronológicamente, listas para cálculo de tendencias en fases futuras."
+    }
+  }
+}

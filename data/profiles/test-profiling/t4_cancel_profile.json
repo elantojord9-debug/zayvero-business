@@ -1,0 +1,269 @@
+{
+  "dataset_metadata": {
+    "dataset_label": "Demo Dataset — UCI Online Retail II",
+    "engine": "zayvero-business-profiling-1B",
+    "generated_at_utc": "2026-10-08T02:07:08.162538+00:00",
+    "company_id": "test-profiling",
+    "source_parquet": "/home/hatch/workspace/zayvero-business/data/processed/test-profiling/t4_cancel.parquet",
+    "n_rows": 120,
+    "audit_record_found": true,
+    "trace": {
+      "formula": "perfil construido del Parquet normalizado de FASE 1A",
+      "filters": "company_id == 'test-profiling'",
+      "rows_considered": 120,
+      "period": [
+        "2024-05-01T10:00:00"
+      ],
+      "notes": "Etiqueta del dataset: 'Demo Dataset — UCI Online Retail II' (nunca como cliente)."
+    }
+  },
+  "date_range": {
+    "min_date": "2024-05-01T10:00:00",
+    "max_date": "2024-05-01T10:00:00",
+    "days_with_activity": 1,
+    "trace": {
+      "formula": "min/max de Date; días = COUNT DISTINCT DATE(Date)",
+      "filters": "Date válida (no NaT)",
+      "rows_considered": 120,
+      "period": "2024-05-01 → 2024-05-01",
+      "notes": "Días con actividad = días que tienen ≥1 fila con fecha válida."
+    }
+  },
+  "transactions": {
+    "total_rows": 120,
+    "unique_transactions": 120,
+    "completed_rows": 90,
+    "cancelled_rows": 30,
+    "unknown_rows": 0,
+    "trace": {
+      "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+      "filters": "ninguno (todas las filas)",
+      "rows_considered": 120,
+      "period": "2024-05-01 → 2024-05-01",
+      "notes": ""
+    }
+  },
+  "entities": {
+    "customers": 1,
+    "products": 1,
+    "countries": 1,
+    "trace": {
+      "formula": "COUNT DISTINCT de Customer / Product / Country",
+      "filters": "valores no nulos",
+      "rows_considered": 120,
+      "period": "2024-05-01 → 2024-05-01",
+      "notes": "Los nulos no se cuentan como entidad."
+    }
+  },
+  "customers": {
+    "total_customers": 1,
+    "unknown_customer_rows": 0,
+    "active_customers": 1,
+    "single_purchase_customers": 0,
+    "recurrent_customers": 1,
+    "active_window_days": 90,
+    "top_customers": [
+      {
+        "customer": "3001",
+        "purchases": 90,
+        "units": 180.0,
+        "revenue": 4500.0,
+        "first_purchase": "2024-05-01T10:00:00",
+        "last_purchase": "2024-05-01T10:00:00",
+        "frequency_per_30d": 2700.0,
+        "countries": [
+          "Chile"
+        ],
+        "is_active": true
+      }
+    ],
+    "trace": {
+      "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+      "filters": "transaction_status='completed'; Customer no nulo",
+      "rows_considered": 90,
+      "period": "2024-05-01 → 2024-05-01",
+      "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+    }
+  },
+  "products": {
+    "total_products": 1,
+    "with_completed_transactions": 1,
+    "activity_classes": {
+      "alta_actividad": 1,
+      "media_actividad": 0,
+      "baja_actividad": 0,
+      "sin_actividad_suficiente": 0
+    },
+    "classification_rule": "alta_actividad: decil superior de revenue (≥p90); media_actividad: p60–p90; baja_actividad: resto con ≥1 transacción completada y revenue>0; sin_actividad_suficiente: sin transacciones completadas o sin revenue válido. NO equivale a 'producto muerto' (módulo futuro).",
+    "top_products": [
+      {
+        "product": "P0001",
+        "description": "Prod",
+        "units": 180.0,
+        "transactions": 90,
+        "revenue": 4500.0,
+        "avg_price": 25.0,
+        "first_sale": "2024-05-01T10:00:00",
+        "last_sale": "2024-05-01T10:00:00",
+        "frequency_per_30d": 2700.0,
+        "activity_class": "alta_actividad"
+      }
+    ],
+    "trace": {
+      "formula": "por Product: units=ΣQuantity|completed, transactions=COUNT|completed, revenue=ΣRevenue|completed, avg_price=MEAN(UnitPrice), frequency=transactions/días_activos*30; clases por deciles de revenue (p90=4500.0, p60=4500.0)",
+      "filters": "transaction_status='completed'; Quantity/Revenue nulos se ignoran",
+      "rows_considered": 90,
+      "period": "2024-05-01 → 2024-05-01",
+      "notes": "1 productos con transacciones completadas; 1 productos distintos en total. Top 50 incluidos en el perfil; la tabla completa puede regenerarse del Parquet."
+    }
+  },
+  "countries": {
+    "total_countries": 1,
+    "ranking": [
+      {
+        "country": "Chile",
+        "revenue": 3000.0,
+        "customers": 1,
+        "units": 120.0,
+        "transactions": 120
+      }
+    ],
+    "top_markets": [
+      "Chile"
+    ],
+    "small_markets": [],
+    "growth_6m_vs_prev_6m": [],
+    "growth_note": "Historial insuficiente (<12 meses): no se calcula variación.",
+    "trace": {
+      "formula": "por Country: revenue=ΣRevenue, customers=COUNT DISTINCT Customer, units=ΣQuantity, transactions=COUNT DISTINCT Transaction; top_markets=corte Pareto 80% del revenue",
+      "filters": "transaction_status IN (completed, cancelled); Country no nulo",
+      "rows_considered": 120,
+      "period": "2024-05-01 → 2024-05-01",
+      "notes": "Crecimiento/decrecimiento solo descriptivo cuando hay ≥12 meses."
+    }
+  },
+  "sales": {
+    "gross_revenue": 4500.0,
+    "cancelled_revenue": 1500.0,
+    "net_revenue": 3000.0,
+    "unknown_status_revenue": 0.0,
+    "units_sold_gross": 180.0,
+    "units_sold_net": 120.0,
+    "trace": {
+      "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+      "filters": "Revenue no nulo; transaction_status según bloque",
+      "rows_considered": 120,
+      "period": "2024-05-01 → 2024-05-01",
+      "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    }
+  },
+  "cancellations": {
+    "count": 30,
+    "pct_of_rows": 25.0,
+    "units": -60.0,
+    "value": 1500.0,
+    "top_products": [
+      {
+        "product": "P0001",
+        "cancelled_value": 1500.0,
+        "cancelled_rows": 30
+      }
+    ],
+    "top_periods": [
+      {
+        "month": "2024-05",
+        "cancelled_rows": 30
+      }
+    ],
+    "top_customers": [
+      {
+        "customer": "3001",
+        "cancelled_value": 1500.0,
+        "cancelled_rows": 30
+      }
+    ],
+    "trace": {
+      "formula": "count=filas cancelled; pct=count/total; units=ΣQuantity|signed; value=Σ|Revenue|; tops por Σ|Revenue|",
+      "filters": "transaction_status='cancelled'",
+      "rows_considered": 30,
+      "period": "2024-05-01 → 2024-05-01",
+      "notes": "Descriptivo únicamente. No se afirma fraude ni anomalía: la detección de anomalías es una fase posterior."
+    }
+  },
+  "data_quality": {
+    "score": 90.0,
+    "grade": "excelente",
+    "deductions": [
+      {
+        "component": "negative_quantities",
+        "points": 10,
+        "detail": "30 cantidades negativas (25.0%); suelen corresponder a devoluciones/cancelaciones, pero se señalan."
+      }
+    ],
+    "explanation": "Score 90.0/100 (excelente): −10 por negative_quantities: 30 cantidades negativas (25.0%); suelen corresponder a devoluciones/cancelaciones, pero se señalan..",
+    "components_evaluated": [
+      "missing_critical",
+      "duplicates",
+      "invalid_dates",
+      "invalid_quantities",
+      "invalid_prices",
+      "negative_quantities",
+      "non_positive_prices",
+      "unmapped_columns"
+    ],
+    "trace": {
+      "formula": "score = 100 − Σ penalizaciones (topes: missing 30, duplicados 20, fechas/cantidades/precios inválidos 15 c/u, negativos 10, precios≤0 10, unmapped 10)",
+      "filters": "todas las filas del Parquet normalizado + reporte de calidad del audit de FASE 1A",
+      "rows_considered": 120,
+      "period": "n/a (calidad, no temporal)",
+      "notes": "El score describe calidad de datos, no del negocio."
+    }
+  },
+  "temporal_metrics": {
+    "daily": [
+      {
+        "period": "2024-05-01",
+        "revenue": 3000.0,
+        "units": 120.0,
+        "transactions": 120,
+        "customers": 1,
+        "avg_ticket": 25.0,
+        "products_sold": 1
+      }
+    ],
+    "weekly": [
+      {
+        "period": "2024-W18",
+        "revenue": 3000.0,
+        "units": 120.0,
+        "transactions": 120,
+        "customers": 1,
+        "avg_ticket": 25.0,
+        "products_sold": 1
+      }
+    ],
+    "monthly": [
+      {
+        "period": "2024-05",
+        "revenue": 3000.0,
+        "units": 120.0,
+        "transactions": 120,
+        "customers": 1,
+        "avg_ticket": 25.0,
+        "products_sold": 1
+      }
+    ],
+    "n_periods": {
+      "daily": 1,
+      "weekly": 1,
+      "monthly": 1
+    },
+    "trace": {
+      "formula": "por período: revenue=ΣRevenue(signo), units=ΣQuantity, transactions=COUNT DISTINCT Transaction, customers=COUNT DISTINCT Customer, avg_ticket=revenue/transactions, products_sold=COUNT DISTINCT Product",
+      "filters": "Date válida; Revenue/Quantity nulos se ignoran en la suma",
+      "rows_considered": 120,
+      "period": "2024-05-01 → 2024-05-01",
+      "notes": "120 de 120 filas tienen fecha válida y entran en las series. Listas ordenadas cronológicamente, listas para cálculo de tendencias en fases futuras."
+    }
+  }
+}

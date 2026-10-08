@@ -1,0 +1,27 @@
+{
+ "report_metadata": {
+  "engine": "zayvero-business-context-2C",
+  "company_id": "CMP-808b4cf578a3",
+  "dataset": "Ventas 7A",
+  "generated_at": "2026-10-08T21:28:55.905343+00:00",
+  "n_findings_in": 0,
+  "n_contextualized": 0
+ },
+ "summary": {
+  "total": 0,
+  "by_context_status": {},
+  "by_recurrence": {},
+  "note": "Cada hallazgo contextualizado distingue FACT / OBSERVATION / POSSIBLE_EXPLANATION / RECOMMENDATION. Ninguna hipótesis se presenta como hecho y no se afirma causalidad."
+ },
+ "context_findings": [],
+ "methods": {
+  "context_engine": "Ventanas antes/durante/después (90d), recurrencia por umbral ≥50% del evento, concentración top-3 transacciones, tendencia post-evento.",
+  "explanations": "Hipótesis basadas en patrones observables; cada una documenta su basis y se etiqueta POSSIBLE_EXPLANATION.",
+  "recommendations": "Solo recomendaciones de REVISIÓN; nunca acciones."
+ },
+ "trace": {
+  "parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-808b4cf578a3/ventas.parquet",
+  "findings_source": "findings_report_2B",
+  "rows_in_dataset": 60
+ }
+}

@@ -1,0 +1,197 @@
+{
+  "file_name": "t3_missing.csv",
+  "company_id": "test-profiling",
+  "processed_at_utc": "2026-10-08T00:46:35.870606+00:00",
+  "n_original_rows": 100,
+  "n_processed_rows": 100,
+  "rows_dropped": 0,
+  "ingestion_summary": {
+    "sheets_processed": [
+      null
+    ],
+    "per_sheet": [
+      {
+        "sheet": null,
+        "n_original_rows": 100,
+        "n_processed_rows": 100,
+        "rows_dropped": 0,
+        "duplicate_rows": 3
+      }
+    ]
+  },
+  "column_resolution": {
+    "renamed": {
+      "Invoice": "Invoice",
+      "StockCode": "StockCode",
+      "Description": "Description",
+      "Quantity": "Quantity",
+      "InvoiceDate": "InvoiceDate",
+      "UnitPrice": "UnitPrice",
+      "Customer ID": "CustomerID",
+      "Country": "Country"
+    },
+    "unmapped": [],
+    "missing_canonical": []
+  },
+  "quality_report": {
+    "n_rows": 100,
+    "n_cols": 8,
+    "columns": [
+      "Invoice",
+      "StockCode",
+      "Description",
+      "Quantity",
+      "InvoiceDate",
+      "UnitPrice",
+      "CustomerID",
+      "Country"
+    ],
+    "dtypes": {
+      "Invoice": "str",
+      "StockCode": "str",
+      "Description": "str",
+      "Quantity": "float64",
+      "InvoiceDate": "str",
+      "UnitPrice": "float64",
+      "CustomerID": "float64",
+      "Country": "str"
+    },
+    "null_counts": {
+      "Invoice": 10,
+      "StockCode": 0,
+      "Description": 0,
+      "Quantity": 15,
+      "InvoiceDate": 0,
+      "UnitPrice": 34,
+      "CustomerID": 25,
+      "Country": 0
+    },
+    "null_pct": {
+      "Invoice": 10.0,
+      "StockCode": 0.0,
+      "Description": 0.0,
+      "Quantity": 15.0,
+      "InvoiceDate": 0.0,
+      "UnitPrice": 34.0,
+      "CustomerID": 25.0,
+      "Country": 0.0
+    },
+    "duplicate_rows": 3,
+    "invalid_dates": {
+      "InvoiceDate": 20
+    },
+    "invalid_quantities": 0,
+    "invalid_prices": 0,
+    "negative_quantities": 0,
+    "zero_or_negative_prices": 0,
+    "notes": []
+  },
+  "transformations": [
+    "[(única)] map:Invoice->Transaction",
+    "[(única)] map:StockCode->Product",
+    "[(única)] map:CustomerID->Customer",
+    "[(única)] map:InvoiceDate->Date",
+    "[(única)] map:Quantity->Quantity",
+    "[(única)] map:UnitPrice->UnitPrice",
+    "[(única)] map:Country->Country",
+    "[(única)] keep:orig_Description",
+    "[(única)] coerce:Date a datetime (no parseables -> NaT: 20)",
+    "[(única)] coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "[(única)] coerce:Transaction,Product,Customer,Country a string",
+    "[(única)] calc:Revenue=Quantity*UnitPrice (56 filas con Revenue válido)",
+    "[(única)] status:transaction_status con reglas {'invoice_prefix': 'C'} -> {'completed': 100}",
+    "[(única)] trace:source_sheet='None', source_file='t3_missing.csv' asignados a 100 filas",
+    "[(única)] multiempresa:company_id='test-profiling' asignado a todas las filas"
+  ],
+  "errors": [],
+  "warnings": [
+    "El Parquet /home/hatch/workspace/zayvero-business/data/processed/test-profiling/t3_missing.parquet ya existía y será sobrescrito. Use --output-name para no perder la versión anterior."
+  ],
+  "output_path": "/home/hatch/workspace/zayvero-business/data/processed/test-profiling/t3_missing.parquet",
+  "sheets": [
+    {
+      "sheet": null,
+      "n_original_rows": 100,
+      "n_processed_rows": 100,
+      "rows_dropped": 0,
+      "columns": [
+        "Invoice",
+        "StockCode",
+        "Description",
+        "Quantity",
+        "InvoiceDate",
+        "UnitPrice",
+        "Customer ID",
+        "Country"
+      ],
+      "duplicate_rows": 3,
+      "quality": {
+        "n_rows": 100,
+        "n_cols": 8,
+        "columns": [
+          "Invoice",
+          "StockCode",
+          "Description",
+          "Quantity",
+          "InvoiceDate",
+          "UnitPrice",
+          "CustomerID",
+          "Country"
+        ],
+        "dtypes": {
+          "Invoice": "str",
+          "StockCode": "str",
+          "Description": "str",
+          "Quantity": "float64",
+          "InvoiceDate": "str",
+          "UnitPrice": "float64",
+          "CustomerID": "float64",
+          "Country": "str"
+        },
+        "null_counts": {
+          "Invoice": 10,
+          "StockCode": 0,
+          "Description": 0,
+          "Quantity": 15,
+          "InvoiceDate": 0,
+          "UnitPrice": 34,
+          "CustomerID": 25,
+          "Country": 0
+        },
+        "null_pct": {
+          "Invoice": 10.0,
+          "StockCode": 0.0,
+          "Description": 0.0,
+          "Quantity": 15.0,
+          "InvoiceDate": 0.0,
+          "UnitPrice": 34.0,
+          "CustomerID": 25.0,
+          "Country": 0.0
+        },
+        "duplicate_rows": 3,
+        "invalid_dates": {
+          "InvoiceDate": 20
+        },
+        "invalid_quantities": 0,
+        "invalid_prices": 0,
+        "negative_quantities": 0,
+        "zero_or_negative_prices": 0,
+        "notes": []
+      },
+      "column_resolution": {
+        "renamed": {
+          "Invoice": "Invoice",
+          "StockCode": "StockCode",
+          "Description": "Description",
+          "Quantity": "Quantity",
+          "InvoiceDate": "InvoiceDate",
+          "UnitPrice": "UnitPrice",
+          "Customer ID": "CustomerID",
+          "Country": "Country"
+        },
+        "unmapped": [],
+        "missing_canonical": []
+      }
+    }
+  ]
+}

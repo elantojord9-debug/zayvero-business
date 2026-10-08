@@ -1,0 +1,552 @@
+{
+  "dataset_metadata": {
+    "dataset_label": "Demo Dataset — UCI Online Retail II",
+    "engine": "zayvero-business-profiling-1B",
+    "generated_at_utc": "2026-10-08T02:07:06.523672+00:00",
+    "company_id": "test-profiling",
+    "source_parquet": "/home/hatch/workspace/zayvero-business/data/processed/test-profiling/t3_missing.parquet",
+    "n_rows": 100,
+    "audit_record_found": true,
+    "trace": {
+      "formula": "perfil construido del Parquet normalizado de FASE 1A",
+      "filters": "company_id == 'test-profiling'",
+      "rows_considered": 100,
+      "period": [
+        "2024-03-10T10:00:00"
+      ],
+      "notes": "Etiqueta del dataset: 'Demo Dataset — UCI Online Retail II' (nunca como cliente)."
+    }
+  },
+  "date_range": {
+    "min_date": "2024-03-10T10:00:00",
+    "max_date": "2024-03-10T10:00:00",
+    "days_with_activity": 1,
+    "trace": {
+      "formula": "min/max de Date; días = COUNT DISTINCT DATE(Date)",
+      "filters": "Date válida (no NaT)",
+      "rows_considered": 100,
+      "period": "2024-03-10 → 2024-03-10",
+      "notes": "Días con actividad = días que tienen ≥1 fila con fecha válida."
+    }
+  },
+  "transactions": {
+    "total_rows": 100,
+    "unique_transactions": 90,
+    "completed_rows": 100,
+    "cancelled_rows": 0,
+    "unknown_rows": 0,
+    "trace": {
+      "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+      "filters": "ninguno (todas las filas)",
+      "rows_considered": 100,
+      "period": "2024-03-10 → 2024-03-10",
+      "notes": ""
+    }
+  },
+  "entities": {
+    "customers": 15,
+    "products": 10,
+    "countries": 1,
+    "trace": {
+      "formula": "COUNT DISTINCT de Customer / Product / Country",
+      "filters": "valores no nulos",
+      "rows_considered": 100,
+      "period": "2024-03-10 → 2024-03-10",
+      "notes": "Los nulos no se cuentan como entidad."
+    }
+  },
+  "customers": {
+    "total_customers": 15,
+    "unknown_customer_rows": 25,
+    "active_customers": 12,
+    "single_purchase_customers": 0,
+    "recurrent_customers": 15,
+    "active_window_days": 90,
+    "top_customers": [
+      {
+        "customer": "2011.0",
+        "purchases": 5,
+        "units": 16.0,
+        "revenue": 159.84,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2004.0",
+        "purchases": 5,
+        "units": 14.0,
+        "revenue": 139.86,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2007.0",
+        "purchases": 6,
+        "units": 14.0,
+        "revenue": 139.86,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 180.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2008.0",
+        "purchases": 5,
+        "units": 13.0,
+        "revenue": 129.87,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2002.0",
+        "purchases": 5,
+        "units": 12.0,
+        "revenue": 119.88,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2001.0",
+        "purchases": 5,
+        "units": 11.0,
+        "revenue": 109.89,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2005.0",
+        "purchases": 5,
+        "units": 11.0,
+        "revenue": 109.89,
+        "first_purchase": null,
+        "last_purchase": null,
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "2010.0",
+        "purchases": 5,
+        "units": 11.0,
+        "revenue": 109.89,
+        "first_purchase": null,
+        "last_purchase": null,
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "2013.0",
+        "purchases": 4,
+        "units": 11.0,
+        "revenue": 109.89,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 120.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2014.0",
+        "purchases": 5,
+        "units": 11.0,
+        "revenue": 109.89,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2000.0",
+        "purchases": 5,
+        "units": 16.0,
+        "revenue": 0.0,
+        "first_purchase": null,
+        "last_purchase": null,
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": false
+      },
+      {
+        "customer": "2003.0",
+        "purchases": 6,
+        "units": 14.0,
+        "revenue": 0.0,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 180.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2006.0",
+        "purchases": 5,
+        "units": 12.0,
+        "revenue": 0.0,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2009.0",
+        "purchases": 5,
+        "units": 15.0,
+        "revenue": 0.0,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 150.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      },
+      {
+        "customer": "2012.0",
+        "purchases": 4,
+        "units": 10.0,
+        "revenue": 0.0,
+        "first_purchase": "2024-03-10T10:00:00",
+        "last_purchase": "2024-03-10T10:00:00",
+        "frequency_per_30d": 120.0,
+        "countries": [
+          "México"
+        ],
+        "is_active": true
+      }
+    ],
+    "trace": {
+      "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+      "filters": "transaction_status='completed'; Customer no nulo",
+      "rows_considered": 75,
+      "period": "2024-03-10 → 2024-03-10",
+      "notes": "25 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+    }
+  },
+  "products": {
+    "total_products": 10,
+    "with_completed_transactions": 10,
+    "activity_classes": {
+      "alta_actividad": 2,
+      "media_actividad": 2,
+      "baja_actividad": 6,
+      "sin_actividad_suficiente": 0
+    },
+    "classification_rule": "alta_actividad: decil superior de revenue (≥p90); media_actividad: p60–p90; baja_actividad: resto con ≥1 transacción completada y revenue>0; sin_actividad_suficiente: sin transacciones completadas o sin revenue válido. NO equivale a 'producto muerto' (módulo futuro).",
+    "top_products": [
+      {
+        "product": "P0001",
+        "description": "Producto 1",
+        "units": 24.0,
+        "transactions": 10,
+        "revenue": 179.82,
+        "avg_price": 9.99,
+        "first_sale": "2024-03-10T10:00:00",
+        "last_sale": "2024-03-10T10:00:00",
+        "frequency_per_30d": 300.0,
+        "activity_class": "alta_actividad"
+      },
+      {
+        "product": "P0003",
+        "description": "Producto 3",
+        "units": 26.0,
+        "transactions": 10,
+        "revenue": 179.82,
+        "avg_price": 9.99,
+        "first_sale": "2024-03-10T10:00:00",
+        "last_sale": "2024-03-10T10:00:00",
+        "frequency_per_30d": 300.0,
+        "activity_class": "alta_actividad"
+      },
+      {
+        "product": "P0005",
+        "description": "Producto 5",
+        "units": 26.0,
+        "transactions": 10,
+        "revenue": 159.84,
+        "avg_price": 9.99,
+        "first_sale": null,
+        "last_sale": null,
+        "frequency_per_30d": 300.0,
+        "activity_class": "media_actividad"
+      },
+      {
+        "product": "P0009",
+        "description": "Producto 9",
+        "units": 28.0,
+        "transactions": 10,
+        "revenue": 159.84,
+        "avg_price": 9.99,
+        "first_sale": "2024-03-10T10:00:00",
+        "last_sale": "2024-03-10T10:00:00",
+        "frequency_per_30d": 300.0,
+        "activity_class": "media_actividad"
+      },
+      {
+        "product": "P0002",
+        "description": "Producto 2",
+        "units": 17.0,
+        "transactions": 10,
+        "revenue": 149.85,
+        "avg_price": 9.99,
+        "first_sale": "2024-03-10T10:00:00",
+        "last_sale": "2024-03-10T10:00:00",
+        "frequency_per_30d": 300.0,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0007",
+        "description": "Producto 7",
+        "units": 24.0,
+        "transactions": 10,
+        "revenue": 139.86,
+        "avg_price": 9.99,
+        "first_sale": "2024-03-10T10:00:00",
+        "last_sale": "2024-03-10T10:00:00",
+        "frequency_per_30d": 300.0,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0004",
+        "description": "Producto 4",
+        "units": 16.0,
+        "transactions": 10,
+        "revenue": 119.88,
+        "avg_price": 9.99,
+        "first_sale": "2024-03-10T10:00:00",
+        "last_sale": "2024-03-10T10:00:00",
+        "frequency_per_30d": 300.0,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0006",
+        "description": "Producto 6",
+        "units": 19.0,
+        "transactions": 10,
+        "revenue": 109.89,
+        "avg_price": 9.99,
+        "first_sale": "2024-03-10T10:00:00",
+        "last_sale": "2024-03-10T10:00:00",
+        "frequency_per_30d": 300.0,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0000",
+        "description": "Producto 0",
+        "units": 16.0,
+        "transactions": 10,
+        "revenue": 89.91,
+        "avg_price": 9.99,
+        "first_sale": null,
+        "last_sale": null,
+        "frequency_per_30d": 300.0,
+        "activity_class": "baja_actividad"
+      },
+      {
+        "product": "P0008",
+        "description": "Producto 8",
+        "units": 16.0,
+        "transactions": 10,
+        "revenue": 89.91,
+        "avg_price": 9.99,
+        "first_sale": "2024-03-10T10:00:00",
+        "last_sale": "2024-03-10T10:00:00",
+        "frequency_per_30d": 300.0,
+        "activity_class": "baja_actividad"
+      }
+    ],
+    "trace": {
+      "formula": "por Product: units=ΣQuantity|completed, transactions=COUNT|completed, revenue=ΣRevenue|completed, avg_price=MEAN(UnitPrice), frequency=transactions/días_activos*30; clases por deciles de revenue (p90=179.82, p60=153.85)",
+      "filters": "transaction_status='completed'; Quantity/Revenue nulos se ignoran",
+      "rows_considered": 100,
+      "period": "2024-03-10 → 2024-03-10",
+      "notes": "10 productos con transacciones completadas; 10 productos distintos en total. Top 50 incluidos en el perfil; la tabla completa puede regenerarse del Parquet."
+    }
+  },
+  "countries": {
+    "total_countries": 1,
+    "ranking": [
+      {
+        "country": "México",
+        "revenue": 1378.62,
+        "customers": 15,
+        "units": 212.0,
+        "transactions": 90
+      }
+    ],
+    "top_markets": [
+      "México"
+    ],
+    "small_markets": [],
+    "growth_6m_vs_prev_6m": [],
+    "growth_note": "Historial insuficiente (<12 meses): no se calcula variación.",
+    "trace": {
+      "formula": "por Country: revenue=ΣRevenue, customers=COUNT DISTINCT Customer, units=ΣQuantity, transactions=COUNT DISTINCT Transaction; top_markets=corte Pareto 80% del revenue",
+      "filters": "transaction_status IN (completed, cancelled); Country no nulo",
+      "rows_considered": 100,
+      "period": "2024-03-10 → 2024-03-10",
+      "notes": "Crecimiento/decrecimiento solo descriptivo cuando hay ≥12 meses."
+    }
+  },
+  "sales": {
+    "gross_revenue": 1378.62,
+    "cancelled_revenue": 0.0,
+    "net_revenue": 1378.62,
+    "unknown_status_revenue": 0.0,
+    "units_sold_gross": 212.0,
+    "units_sold_net": 212.0,
+    "trace": {
+      "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+      "filters": "Revenue no nulo; transaction_status según bloque",
+      "rows_considered": 56,
+      "period": "2024-03-10 → 2024-03-10",
+      "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    }
+  },
+  "cancellations": {
+    "count": 0,
+    "pct_of_rows": 0.0,
+    "units": 0.0,
+    "value": 0.0,
+    "top_products": [],
+    "top_periods": [],
+    "top_customers": [],
+    "trace": {
+      "formula": "count=filas cancelled; pct=count/total; units=ΣQuantity|signed; value=Σ|Revenue|; tops por Σ|Revenue|",
+      "filters": "transaction_status='cancelled'",
+      "rows_considered": 0,
+      "period": "2024-03-10 → 2024-03-10",
+      "notes": "Descriptivo únicamente. No se afirma fraude ni anomalía: la detección de anomalías es una fase posterior."
+    }
+  },
+  "data_quality": {
+    "score": 49.0,
+    "grade": "baja",
+    "deductions": [
+      {
+        "component": "missing_critical",
+        "points": 30,
+        "detail": "55 filas (55.0%) con algún campo crítico nulo ['Transaction', 'Date', 'Quantity', 'UnitPrice']."
+      },
+      {
+        "component": "duplicates",
+        "points": 6.0,
+        "detail": "3 filas duplicadas (3.0%)."
+      },
+      {
+        "component": "invalid_dates",
+        "points": 15,
+        "detail": "20 fechas no parseables (20.0%)."
+      }
+    ],
+    "explanation": "Score 49.0/100 (baja): −30 por missing_critical: 55 filas (55.0%) con algún campo crítico nulo ['Transaction', 'Date', 'Quantity', 'UnitPrice'].; −6.0 por duplicates: 3 filas duplicadas (3.0%).; −15 por invalid_dates: 20 fechas no parseables (20.0%)..",
+    "components_evaluated": [
+      "missing_critical",
+      "duplicates",
+      "invalid_dates",
+      "invalid_quantities",
+      "invalid_prices",
+      "negative_quantities",
+      "non_positive_prices",
+      "unmapped_columns"
+    ],
+    "trace": {
+      "formula": "score = 100 − Σ penalizaciones (topes: missing 30, duplicados 20, fechas/cantidades/precios inválidos 15 c/u, negativos 10, precios≤0 10, unmapped 10)",
+      "filters": "todas las filas del Parquet normalizado + reporte de calidad del audit de FASE 1A",
+      "rows_considered": 100,
+      "period": "n/a (calidad, no temporal)",
+      "notes": "El score describe calidad de datos, no del negocio."
+    }
+  },
+  "temporal_metrics": {
+    "daily": [
+      {
+        "period": "2024-03-10",
+        "revenue": 1128.87,
+        "units": 170.0,
+        "transactions": 80,
+        "customers": 12,
+        "avg_ticket": 14.11,
+        "products_sold": 8
+      }
+    ],
+    "weekly": [
+      {
+        "period": "2024-W10",
+        "revenue": 1128.87,
+        "units": 170.0,
+        "transactions": 80,
+        "customers": 12,
+        "avg_ticket": 14.11,
+        "products_sold": 8
+      }
+    ],
+    "monthly": [
+      {
+        "period": "2024-03",
+        "revenue": 1128.87,
+        "units": 170.0,
+        "transactions": 80,
+        "customers": 12,
+        "avg_ticket": 14.11,
+        "products_sold": 8
+      }
+    ],
+    "n_periods": {
+      "daily": 1,
+      "weekly": 1,
+      "monthly": 1
+    },
+    "trace": {
+      "formula": "por período: revenue=ΣRevenue(signo), units=ΣQuantity, transactions=COUNT DISTINCT Transaction, customers=COUNT DISTINCT Customer, avg_ticket=revenue/transactions, products_sold=COUNT DISTINCT Product",
+      "filters": "Date válida; Revenue/Quantity nulos se ignoran en la suma",
+      "rows_considered": 80,
+      "period": "2024-03-10 → 2024-03-10",
+      "notes": "80 de 100 filas tienen fecha válida y entran en las series. Listas ordenadas cronológicamente, listas para cálculo de tendencias en fases futuras."
+    }
+  }
+}

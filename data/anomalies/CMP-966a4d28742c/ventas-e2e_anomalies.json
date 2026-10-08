@@ -1,0 +1,299 @@
+{
+ "report_metadata": {
+  "engine": "zayvero-business-anomaly-2A",
+  "dataset_label": "Ventas E2E F8",
+  "company_id": "CMP-966a4d28742c",
+  "source_parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-966a4d28742c/ventas-e2e.parquet",
+  "generated_at_utc": "2026-10-08T21:11:59.596643+00:00",
+  "n_rows_analyzed": 200,
+  "period_analyzed": "2024-01-15 → 2024-12-15",
+  "elapsed_seconds": 0.1
+ },
+ "summary": {
+  "total_anomalies": 4,
+  "anomalies_in_report": 4,
+  "by_severity": {
+   "INFO": 0,
+   "LOW": 0,
+   "MEDIUM": 4,
+   "HIGH": 0,
+   "CRITICAL": 0
+  },
+  "by_type": {
+   "customer_unusual_purchase": 4
+  },
+  "avg_confidence": 56.0,
+  "note": "Una anomalía es una desviación de un patrón esperado; NO implica fraude, robo, pérdida ni error humano."
+ },
+ "anomalies": [
+  {
+   "type": "customer_unusual_purchase",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-17",
+    "label": "cliente CLI-17"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed": 332.91,
+   "expected": 144.44,
+   "difference": 188.47,
+   "ratio": 2.305,
+   "z_robust": 5.19,
+   "deviation": 5.19,
+   "evidence": {
+    "transaction": "F00017",
+    "customer_history_transactions": 8,
+    "customer_median_purchase": 144.44
+   },
+   "explanation": "El cliente CLI-17 realizó una compra de £332.91, 2.3 veces superior a su compra habitual (£144.44). Requiere revisión.",
+   "confidence_score": 59,
+   "confidence_factors": {
+    "history_points": 8,
+    "history_contribution": 4.0,
+    "deviation": 5.19,
+    "magnitude_contribution": 30.3,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 59/100: historial 8 puntos (4/30), desviación 5.2 (30/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z."
+   },
+   "anomaly_id": "ANM-000001",
+   "priority_rank": 1
+  },
+  {
+   "type": "customer_unusual_purchase",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-23",
+    "label": "cliente CLI-23"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed": 341.91,
+   "expected": 124.95,
+   "difference": 216.96,
+   "ratio": 2.736,
+   "z_robust": 4.72,
+   "deviation": 4.72,
+   "evidence": {
+    "transaction": "F00098",
+    "customer_history_transactions": 8,
+    "customer_median_purchase": 124.95
+   },
+   "explanation": "El cliente CLI-23 realizó una compra de £341.91, 2.7 veces superior a su compra habitual (£124.95). Requiere revisión.",
+   "confidence_score": 57,
+   "confidence_factors": {
+    "history_points": 8,
+    "history_contribution": 4.0,
+    "deviation": 4.72,
+    "magnitude_contribution": 27.6,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 57/100: historial 8 puntos (4/30), desviación 4.7 (28/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z."
+   },
+   "anomaly_id": "ANM-000002",
+   "priority_rank": 2
+  },
+  {
+   "type": "customer_unusual_purchase",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-16",
+    "label": "cliente CLI-16"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed": 323.91,
+   "expected": 127.94,
+   "difference": 195.96,
+   "ratio": 2.532,
+   "z_robust": 4.48,
+   "deviation": 4.48,
+   "evidence": {
+    "transaction": "F00116",
+    "customer_history_transactions": 8,
+    "customer_median_purchase": 127.94
+   },
+   "explanation": "El cliente CLI-16 realizó una compra de £323.91, 2.5 veces superior a su compra habitual (£127.94). Requiere revisión.",
+   "confidence_score": 55,
+   "confidence_factors": {
+    "history_points": 8,
+    "history_contribution": 4.0,
+    "deviation": 4.48,
+    "magnitude_contribution": 26.2,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 55/100: historial 8 puntos (4/30), desviación 4.5 (26/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z."
+   },
+   "anomaly_id": "ANM-000003",
+   "priority_rank": 3
+  },
+  {
+   "type": "customer_unusual_purchase",
+   "severity": "MEDIUM",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-22",
+    "label": "cliente CLI-22"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed": 332.91,
+   "expected": 108.95,
+   "difference": 223.96,
+   "ratio": 3.055,
+   "z_robust": 4.14,
+   "deviation": 4.14,
+   "evidence": {
+    "transaction": "F00197",
+    "customer_history_transactions": 8,
+    "customer_median_purchase": 108.95
+   },
+   "explanation": "El cliente CLI-22 realizó una compra de £332.91, 3.1 veces superior a su compra habitual (£108.95). Requiere revisión.",
+   "confidence_score": 53,
+   "confidence_factors": {
+    "history_points": 8,
+    "history_contribution": 4.0,
+    "deviation": 4.14,
+    "magnitude_contribution": 24.2,
+    "sustained_pattern": false,
+    "consistency_contribution": 10.0,
+    "null_fraction": 0.0,
+    "data_quality_contribution": 15.0,
+    "explanation": "Confianza 53/100: historial 8 puntos (4/30), desviación 4.1 (24/35), patrón puntual (10/20), calidad de datos (15/15)."
+   },
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z."
+   },
+   "anomaly_id": "ANM-000004",
+   "priority_rank": 4
+  }
+ ],
+ "statistics": {
+  "rows_analyzed": 200,
+  "detectors_run": 6,
+  "emission_threshold": "|z| >= 2.5 (o equivalente)",
+  "max_anomalies_cap": 1000,
+  "truncated": false,
+  "elapsed_seconds": 0.1
+ },
+ "methods": {
+  "temporal": {
+   "description": "Picos, caídas y cambios bruscos de ventas por día, semana ISO y mes.",
+   "method": "Serie de revenue (solo completed). Baseline: mediana móvil + MAD móvil (ventanas 30d/12sem/6m). z robusto = 0.6745*(x - mediana_móvil)/MAD_móvil. Emisión si |z| >= 2.5.",
+   "why_robust": "La mediana no se contamina con el propio evento; el MAD es insensible a valores extremos, a diferencia de la desviación estándar.",
+   "exclusions": "transaction_status != 'completed' excluidas (las cancelaciones son reversiones, no ventas). Huecos = 0."
+  },
+  "product_sales_change": {
+   "description": "Cambios bruscos de ventas de un producto vs su propio historial.",
+   "method": "Ventana reciente: últimos 30 días. Baseline: mediana del revenue diario histórico del producto (mín. 30 días activos y 10 transacciones). z robusto con MAD del historial. Emisión si |z| >= 2.5.",
+   "why_robust": "Comparación contra sí mismo: un producto que vende poco pero estable no genera anomalía."
+  },
+  "price_outlier": {
+   "description": "Precios extremadamente diferentes del histórico del producto.",
+   "method": "Por producto (completed, UnitPrice > 0, mín. 10 precios): límites Q1 - 3*IQR / Q3 + 3*IQR. Máx. 5 casos por producto.",
+   "distinction": "'Precio diferente' (aquí) vs 'precio inválido' (<=0 o no numérico: Data Quality Engine, excluido)."
+  },
+  "quantity_outlier": {
+   "description": "Cantidades extraordinarias por producto.",
+   "method": "Por producto (completed, Quantity > 0, mín. 10): límite Q3 + 3*IQR (solo cola superior).",
+   "distinction": "Quantity <= 0 excluida: pertenece a la lógica de cancelación/devolución, no es anomalía."
+  },
+  "customer_unusual_purchase": {
+   "description": "Compras excepcionalmente grandes vs el historial del propio cliente.",
+   "method": "Clientes con >= 5 transacciones. z robusto por transacción vs mediana/MAD del cliente. Emisión si z >= 4 (umbral alto: en wholesale una compra grande aislada puede ser normal). Top 100."
+  },
+  "customer_frequency_burst": {
+   "description": "Concentración inusual de compras en ventana corta.",
+   "method": "Clientes con >= 10 transacciones e intervalo mediano > 30 días. Ráfaga: >= 4 compras en 7 días (two-pointer).",
+   "note": "Descriptivo; no es modelo de churn."
+  },
+  "severity": {
+   "levels": [
+    "INFO",
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "rule": "Umbrales absolutos: HIGH dev>=6, MEDIUM dev>=4, LOW dev>=2.5, INFO dev>=1.5 (dev = |z| robusto, IQRs más allá del cuartil, o equivalente). CRITICAL: solo por ranking — top 25 por prioridad entre dev>=12 y confidence>=75. Así CRITICAL es excepcional y accionable, nunca una categoría masiva."
+  },
+  "confidence": {
+   "rule": "0-100 ponderado: historial (30) + magnitud (35) + consistencia (20) + calidad de datos (15). Cada anomalía explica sus factores."
+  },
+  "ranking": {
+   "rule": "priority = peso_severidad * (0.5 + confidence/100) * (1 + log10(1 + |impacto|)). Orden descendente."
+  }
+ },
+ "trace": {
+  "dataset": "Ventas E2E F8",
+  "company_id": "CMP-966a4d28742c",
+  "source_parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-966a4d28742c/ventas-e2e.parquet",
+  "filters_global": "detectores de ventas usan transaction_status == 'completed'; precios/cantidades usan valores > 0",
+  "rows_considered": 200,
+  "period_analyzed": "2024-01-15 → 2024-12-15",
+  "notes": "Toda anomalía individual incluye su propio bloque trace con baseline, fórmula y registros considerados."
+ }
+}

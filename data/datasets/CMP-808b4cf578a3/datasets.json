@@ -1,0 +1,370 @@
+[
+  {
+    "dataset_id": "DS-485b1cba6399",
+    "company_id": "CMP-808b4cf578a3",
+    "nombre": "Admin",
+    "source": "csv",
+    "created_at": "2026-10-08T21:28:52Z",
+    "updated_at": "2026-10-08T21:28:58Z",
+    "status": "DATA_UPLOADED",
+    "is_active": false,
+    "is_demo": false,
+    "base_name": "admin",
+    "upload": {
+      "filename": "admin.csv",
+      "size_bytes": 453,
+      "format": "csv",
+      "uploaded_at": "2026-10-08T21:28:52Z",
+      "uploaded_by": "USR-1fdf5cc62acb",
+      "path": "/home/hatch/workspace/zayvero-business/data/uploads/CMP-808b4cf578a3/DS-485b1cba6399/original.csv"
+    },
+    "review": {
+      "ok": true,
+      "checks": [
+        {
+          "key": "file",
+          "label": "Archivo recibido",
+          "ok": true
+        },
+        {
+          "key": "format",
+          "label": "Formato reconocido",
+          "ok": true
+        },
+        {
+          "key": "columns",
+          "label": "Columnas detectadas",
+          "ok": true,
+          "detail": "6 columnas"
+        },
+        {
+          "key": "dates",
+          "label": "Fechas detectadas",
+          "ok": true,
+          "detail": "2024-02-15 → 2024-11-15"
+        },
+        {
+          "key": "rows",
+          "label": "Registros detectados",
+          "ok": true,
+          "detail": "10 registros"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "missing_columns",
+          "label": "Columnas faltantes",
+          "detail": "No encontramos estas columnas esperadas: StockCode, Description, Country. El análisis puede quedar limitado."
+        },
+        {
+          "type": "unmapped_columns",
+          "label": "Columnas no reconocidas",
+          "detail": "Estas columnas no se reconocieron y no se usarán: producto"
+        }
+      ],
+      "total_rows": 10,
+      "columns": [
+        "factura",
+        "producto",
+        "cantidad",
+        "fecha_venta",
+        "precio",
+        "cliente"
+      ],
+      "sheets": [
+        {
+          "sheet": "única",
+          "rows": 10,
+          "columns": [
+            "factura",
+            "producto",
+            "cantidad",
+            "fecha_venta",
+            "precio",
+            "cliente"
+          ],
+          "columns_detected": 6
+        }
+      ],
+      "date_min": "2024-02-15T00:00:00",
+      "date_max": "2024-11-15T00:00:00",
+      "missing_canonical": [
+        "StockCode",
+        "Description",
+        "Country"
+      ],
+      "unmapped": [
+        "producto"
+      ]
+    },
+    "mapping": {},
+    "row_count": null,
+    "period_start": null,
+    "period_end": null,
+    "processing": {},
+    "outputs": {},
+    "warnings": []
+  },
+  {
+    "dataset_id": "DS-2e1d4e5600fd",
+    "company_id": "CMP-808b4cf578a3",
+    "nombre": "Ventas 7A",
+    "source": "csv",
+    "created_at": "2026-10-08T21:28:52Z",
+    "updated_at": "2026-10-08T21:28:58Z",
+    "status": "READY",
+    "is_active": true,
+    "is_demo": false,
+    "base_name": "ventas",
+    "upload": {
+      "filename": "ventas.csv",
+      "size_bytes": 2453,
+      "format": "csv",
+      "uploaded_at": "2026-10-08T21:28:52Z",
+      "uploaded_by": "USR-5c926d4b4fb5",
+      "path": "/home/hatch/workspace/zayvero-business/data/uploads/CMP-808b4cf578a3/DS-2e1d4e5600fd/original.csv"
+    },
+    "review": {
+      "ok": true,
+      "checks": [
+        {
+          "key": "file",
+          "label": "Archivo recibido",
+          "ok": true
+        },
+        {
+          "key": "format",
+          "label": "Formato reconocido",
+          "ok": true
+        },
+        {
+          "key": "columns",
+          "label": "Columnas detectadas",
+          "ok": true,
+          "detail": "6 columnas"
+        },
+        {
+          "key": "dates",
+          "label": "Fechas detectadas",
+          "ok": true,
+          "detail": "2024-01-15 → 2024-12-15"
+        },
+        {
+          "key": "rows",
+          "label": "Registros detectados",
+          "ok": true,
+          "detail": "60 registros"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "missing_columns",
+          "label": "Columnas faltantes",
+          "detail": "No encontramos estas columnas esperadas: StockCode, Description, Country. El análisis puede quedar limitado."
+        },
+        {
+          "type": "unmapped_columns",
+          "label": "Columnas no reconocidas",
+          "detail": "Estas columnas no se reconocieron y no se usarán: producto"
+        }
+      ],
+      "total_rows": 60,
+      "columns": [
+        "factura",
+        "producto",
+        "cantidad",
+        "fecha_venta",
+        "precio",
+        "cliente"
+      ],
+      "sheets": [
+        {
+          "sheet": "única",
+          "rows": 60,
+          "columns": [
+            "factura",
+            "producto",
+            "cantidad",
+            "fecha_venta",
+            "precio",
+            "cliente"
+          ],
+          "columns_detected": 6
+        }
+      ],
+      "date_min": "2024-01-15T00:00:00",
+      "date_max": "2024-12-15T00:00:00",
+      "missing_canonical": [
+        "StockCode",
+        "Description",
+        "Country"
+      ],
+      "unmapped": [
+        "producto"
+      ]
+    },
+    "mapping": {
+      "confirmed": true,
+      "mapping": {
+        "Invoice": "factura",
+        "StockCode": "producto",
+        "Quantity": "cantidad",
+        "InvoiceDate": "fecha_venta",
+        "UnitPrice": "precio",
+        "CustomerID": "cliente"
+      },
+      "confirmed_at": "2026-10-08T21:28:54Z",
+      "auto": false
+    },
+    "row_count": 60,
+    "period_start": "2024-01-15",
+    "period_end": "2024-12-15",
+    "processing": {
+      "started_at": "2026-10-08T21:28:55Z",
+      "finished_at": "2026-10-08T21:28:56Z",
+      "error": null,
+      "steps": [
+        "Datos preparados",
+        "Datos organizados",
+        "Perfil empresarial",
+        "Detección de comportamientos inusuales",
+        "Análisis de impacto",
+        "Contexto empresarial",
+        "Predicciones",
+        "Inteligencia de predicción",
+        "Validación de predicciones",
+        "Contexto unificado"
+      ]
+    },
+    "outputs": {
+      "parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-808b4cf578a3/ventas.parquet",
+      "profile": "/home/hatch/workspace/zayvero-business/data/profiles/CMP-808b4cf578a3/ventas_profile.json",
+      "anomalies": "/home/hatch/workspace/zayvero-business/data/anomalies/CMP-808b4cf578a3/ventas_anomalies.json",
+      "findings": "/home/hatch/workspace/zayvero-business/data/findings/CMP-808b4cf578a3/ventas_findings.json",
+      "context_findings": "data/context/CMP-808b4cf578a3/ventas_context.json",
+      "predictions": "/home/hatch/workspace/zayvero-business/data/predictions/CMP-808b4cf578a3/ventas_predictions.json",
+      "prediction_intelligence": "/home/hatch/workspace/zayvero-business/data/prediction_intelligence/CMP-808b4cf578a3/ventas_prediction_intelligence.json",
+      "prediction_validation": "/home/hatch/workspace/zayvero-business/data/prediction_validation/CMP-808b4cf578a3/ventas_prediction_validation.json",
+      "business_context": "/home/hatch/workspace/zayvero-business/data/business_context/CMP-808b4cf578a3/ventas_business_context.json"
+    },
+    "warnings": []
+  },
+  {
+    "dataset_id": "DS-c06cb3726e8c",
+    "company_id": "CMP-808b4cf578a3",
+    "nombre": "Segundo",
+    "source": "csv",
+    "created_at": "2026-10-08T21:28:58Z",
+    "updated_at": "2026-10-08T21:28:58Z",
+    "status": "DATA_UPLOADED",
+    "is_active": false,
+    "is_demo": false,
+    "base_name": "segundo",
+    "upload": {
+      "filename": "segundo.csv",
+      "size_bytes": 1653,
+      "format": "csv",
+      "uploaded_at": "2026-10-08T21:28:58Z",
+      "uploaded_by": "USR-5c926d4b4fb5",
+      "path": "/home/hatch/workspace/zayvero-business/data/uploads/CMP-808b4cf578a3/DS-c06cb3726e8c/original.csv"
+    },
+    "review": {
+      "ok": true,
+      "checks": [
+        {
+          "key": "file",
+          "label": "Archivo recibido",
+          "ok": true
+        },
+        {
+          "key": "format",
+          "label": "Formato reconocido",
+          "ok": true
+        },
+        {
+          "key": "columns",
+          "label": "Columnas detectadas",
+          "ok": true,
+          "detail": "6 columnas"
+        },
+        {
+          "key": "dates",
+          "label": "Fechas detectadas",
+          "ok": true,
+          "detail": "2024-01-15 → 2024-12-15"
+        },
+        {
+          "key": "rows",
+          "label": "Registros detectados",
+          "ok": true,
+          "detail": "40 registros"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "missing_columns",
+          "label": "Columnas faltantes",
+          "detail": "No encontramos estas columnas esperadas: StockCode, Description, Country. El análisis puede quedar limitado."
+        },
+        {
+          "type": "unmapped_columns",
+          "label": "Columnas no reconocidas",
+          "detail": "Estas columnas no se reconocieron y no se usarán: producto"
+        }
+      ],
+      "total_rows": 40,
+      "columns": [
+        "factura",
+        "producto",
+        "cantidad",
+        "fecha_venta",
+        "precio",
+        "cliente"
+      ],
+      "sheets": [
+        {
+          "sheet": "única",
+          "rows": 40,
+          "columns": [
+            "factura",
+            "producto",
+            "cantidad",
+            "fecha_venta",
+            "precio",
+            "cliente"
+          ],
+          "columns_detected": 6
+        }
+      ],
+      "date_min": "2024-01-15T00:00:00",
+      "date_max": "2024-12-15T00:00:00",
+      "missing_canonical": [
+        "StockCode",
+        "Description",
+        "Country"
+      ],
+      "unmapped": [
+        "producto"
+      ]
+    },
+    "mapping": {
+      "confirmed": true,
+      "mapping": {
+        "Invoice": "factura",
+        "StockCode": "producto",
+        "Quantity": "cantidad",
+        "InvoiceDate": "fecha_venta",
+        "UnitPrice": "precio",
+        "CustomerID": "cliente"
+      },
+      "confirmed_at": "2026-10-08T21:28:58Z",
+      "auto": false
+    },
+    "row_count": null,
+    "period_start": null,
+    "period_end": null,
+    "processing": {},
+    "outputs": {},
+    "warnings": []
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "dataset_id": "DS-demo-retail-001",
+    "company_id": "demo-retail",
+    "nombre": "Online Retail II — Datos de demostración",
+    "source": "demo",
+    "created_at": "2026-10-08T03:04:44Z",
+    "updated_at": "2026-10-08T03:04:44Z",
+    "status": "READY",
+    "is_active": true,
+    "is_demo": true,
+    "base_name": "online_retail_II_full",
+    "upload": {
+      "filename": "online_retail_II.xlsx",
+      "format": "xlsx",
+      "source": "Demo Dataset — UCI Online Retail II"
+    },
+    "review": {
+      "checks": [
+        "demo"
+      ]
+    },
+    "mapping": {
+      "confirmed": true,
+      "mapping": {},
+      "note": "demo"
+    },
+    "row_count": 1067371,
+    "period_start": "2009-12-01",
+    "period_end": "2011-12-09",
+    "processing": {},
+    "outputs": {},
+    "warnings": []
+  }
+]

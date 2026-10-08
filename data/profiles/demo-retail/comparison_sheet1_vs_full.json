@@ -1,0 +1,34 @@
+{
+  "primera_hoja": {
+    "registros": 525461,
+    "transacciones": 28816,
+    "clientes": 4314,
+    "productos": 4632,
+    "paises": 40,
+    "ventas_brutas": 10169340.0,
+    "cancelaciones": 10206,
+    "ventas_netas": 9539484.63,
+    "periodo": "2009-12-01T07:45:00 -> 2010-12-09T20:01:00"
+  },
+  "dataset_completo": {
+    "registros": 1067371,
+    "transacciones": 53628,
+    "clientes": 5881,
+    "productos": 5305,
+    "paises": 43,
+    "ventas_brutas": 20813918.43,
+    "cancelaciones": 19494,
+    "ventas_netas": 19287250.57,
+    "periodo": "2009-12-01T07:45:00 -> 2011-12-09T12:50:00"
+  },
+  "diferencia": {
+    "registros": 541910,
+    "transacciones": 24812,
+    "clientes": 1567,
+    "productos": 673,
+    "paises": 3,
+    "ventas_brutas": 10644578.43,
+    "cancelaciones": 9288,
+    "ventas_netas": 9747765.94
+  }
+}

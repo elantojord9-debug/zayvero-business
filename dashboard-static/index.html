@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZAYVERO Business — Inteligencia para tu negocio</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="brand-mark">Z</div>
+      <div>
+        <div class="brand-name">ZAYVERO BUSINESS</div>
+        <div class="brand-sub">Inteligencia para entender lo que está pasando en tu negocio.</div>
+      </div>
+    </div>
+    <div class="demo-badge">DEMO</div>
+  </div>
+</header>
+
+<main class="wrap">
+  <p class="intro">ZAYVERO convierte los datos de tu empresa en inteligencia para ayudarte a
+  detectar problemas, encontrar oportunidades y tomar mejores decisiones.</p>
+
+  <!-- Resumen superior -->
+  <section class="priority-cards" id="priority-cards" aria-label="Resumen por prioridad">
+    <div class="pcard urgent"><div class="pcard-label">URGENT</div><div class="pcard-value" id="count-urgent">—</div></div>
+    <div class="pcard important"><div class="pcard-label">IMPORTANT</div><div class="pcard-value" id="count-important">—</div></div>
+    <div class="pcard review"><div class="pcard-label">REVIEW</div><div class="pcard-value" id="count-review">—</div></div>
+  </section>
+
+  <!-- Panorama actual -->
+  <section class="panel" aria-label="Panorama actual">
+    <h2>Panorama actual</h2>
+    <div class="panorama-grid" id="panorama-grid">
+      <div class="pstat"><div class="pstat-v" id="pan-total">—</div><div class="pstat-l">Total de hallazgos</div></div>
+      <div class="pstat"><div class="pstat-v" id="pan-impact">—</div><div class="pstat-l">Impact score promedio</div></div>
+      <div class="pstat"><div class="pstat-v" id="pan-conf">—</div><div class="pstat-l">Confidence promedio</div></div>
+      <div class="pstat"><div class="pstat-v" id="pan-rec">—</div><div class="pstat-l">Hallazgos recurrentes</div></div>
+      <div class="pstat"><div class="pstat-v" id="pan-iso">—</div><div class="pstat-l">Hallazgos aislados</div></div>
+    </div>
+    <p class="dataset-note" id="dataset-note"></p>
+  </section>
+
+  <!-- Lo que necesita tu atención -->
+  <section aria-label="Lo que necesita tu atención">
+    <h2>Lo que necesita tu atención</h2>
+
+    <div class="controls">
+      <div class="control">
+        <label for="f-priority">Prioridad</label>
+        <select id="f-priority"><option value="all">Todas</option></select>
+      </div>
+      <div class="control">
+        <label for="f-type">Tipo</label>
+        <select id="f-type"><option value="all">Todos</option></select>
+      </div>
+      <div class="control">
+        <label for="f-period">Período</label>
+        <select id="f-period"><option value="all">Todos</option></select>
+      </div>
+      <div class="control control-search">
+        <label for="f-search">Buscar</label>
+        <input id="f-search" type="search" placeholder="Producto, cliente, tipo, título…" autocomplete="off">
+      </div>
+    </div>
+
+    <p class="results-count" id="results-count"></p>
+    <div class="cards" id="cards"></div>
+    <div class="more-wrap"><button class="btn" id="btn-more">Mostrar más</button></div>
+  </section>
+</main>
+
+<!-- Detalle del hallazgo -->
+<div class="detail-overlay" id="detail-overlay" hidden>
+  <div class="detail" role="dialog" aria-modal="true" aria-labelledby="d-title">
+    <button class="detail-close" id="detail-close" aria-label="Cerrar">✕</button>
+    <div id="detail-body"></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <p id="footer-disclaimer"></p>
+  <p class="footer-note">ZAYVERO Business — Dashboard MVP. Las recomendaciones son de revisión únicamente;
+  el sistema no ejecuta acciones, no modifica datos y no presenta hipótesis como hechos.</p>
+</footer>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

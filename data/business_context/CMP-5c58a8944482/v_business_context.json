@@ -1,0 +1,2115 @@
+{
+  "identity": {
+    "context_id": "CTX-9a260d10b3879e33",
+    "company_id": "CMP-5c58a8944482",
+    "dataset_id": "online_retail_II",
+    "dataset_label": "Demo Dataset — UCI Online Retail II",
+    "generated_at": "2026-10-08T03:03:13.075905+00:00"
+  },
+  "business_snapshot": {
+    "business_period": {
+      "start": "2024-01-15T00:00:00",
+      "end": "2024-12-15T00:00:00",
+      "days_with_activity": 12
+    },
+    "dataset_label": "Demo Dataset — UCI Online Retail II",
+    "metrics": [
+      {
+        "metric_name": "gross_revenue",
+        "value": 5709.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.sales",
+        "trace": {
+          "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+          "filters": "Revenue no nulo; transaction_status según bloque",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+        },
+        "evidence_id": "EV-0001"
+      },
+      {
+        "metric_name": "net_revenue",
+        "value": 5709.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.sales",
+        "trace": {
+          "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+          "filters": "Revenue no nulo; transaction_status según bloque",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+        },
+        "evidence_id": "EV-0002"
+      },
+      {
+        "metric_name": "cancelled_revenue",
+        "value": 0.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.sales",
+        "trace": {
+          "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+          "filters": "Revenue no nulo; transaction_status según bloque",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+        },
+        "evidence_id": "EV-0003"
+      },
+      {
+        "metric_name": "total_rows",
+        "value": 60,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.transactions",
+        "trace": {
+          "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+          "filters": "ninguno (todas las filas)",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": ""
+        },
+        "evidence_id": "EV-0004"
+      },
+      {
+        "metric_name": "unique_transactions",
+        "value": 60,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.transactions",
+        "trace": {
+          "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+          "filters": "ninguno (todas las filas)",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": ""
+        },
+        "evidence_id": "EV-0005"
+      },
+      {
+        "metric_name": "completed_rows",
+        "value": 60,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.transactions",
+        "trace": {
+          "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+          "filters": "ninguno (todas las filas)",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": ""
+        },
+        "evidence_id": "EV-0006"
+      },
+      {
+        "metric_name": "cancelled_rows",
+        "value": 0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.transactions",
+        "trace": {
+          "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+          "filters": "ninguno (todas las filas)",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": ""
+        },
+        "evidence_id": "EV-0007"
+      },
+      {
+        "metric_name": "total_customers",
+        "value": 8,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.customers",
+        "trace": {
+          "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+          "filters": "transaction_status='completed'; Customer no nulo",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+        },
+        "evidence_id": "EV-0008"
+      },
+      {
+        "metric_name": "active_customers",
+        "value": 6,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.customers",
+        "trace": {
+          "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+          "filters": "transaction_status='completed'; Customer no nulo",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+        },
+        "evidence_id": "EV-0009"
+      },
+      {
+        "metric_name": "total_products",
+        "value": 5,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.products",
+        "trace": {
+          "formula": "por Product: units=ΣQuantity|completed, transactions=COUNT|completed, revenue=ΣRevenue|completed, avg_price=MEAN(UnitPrice), frequency=transactions/días_activos*30; clases por deciles de revenue (p90=1217.4, p60=1177.8)",
+          "filters": "transaction_status='completed'; Quantity/Revenue nulos se ignoran",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "5 productos con transacciones completadas; 5 productos distintos en total. Top 50 incluidos en el perfil; la tabla completa puede regenerarse del Parquet."
+        },
+        "evidence_id": "EV-0010"
+      },
+      {
+        "metric_name": "total_countries",
+        "value": 0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.entities",
+        "trace": {
+          "formula": "COUNT DISTINCT de Customer / Product / Country",
+          "filters": "valores no nulos",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "Los nulos no se cuentan como entidad."
+        },
+        "evidence_id": "EV-0011"
+      },
+      {
+        "metric_name": "units_sold_net",
+        "value": 297.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.sales",
+        "trace": {
+          "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+          "filters": "Revenue no nulo; transaction_status según bloque",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+        },
+        "evidence_id": "EV-0012"
+      },
+      {
+        "metric_name": "data_quality_score",
+        "value": 100.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.data_quality",
+        "trace": {
+          "formula": "Data Quality Score 0-100 (FASE 1B)"
+        },
+        "evidence_id": "EV-0013"
+      },
+      {
+        "metric_name": "cancellations_count",
+        "value": 0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "source": "FASE_1B_1C.cancellations",
+        "trace": {
+          "formula": "count=filas cancelled; pct=count/total; units=ΣQuantity|signed; value=Σ|Revenue|; tops por Σ|Revenue|",
+          "filters": "transaction_status='cancelled'",
+          "rows_considered": 0,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "Descriptivo únicamente. No se afirma fraude ni anomalía: la detección de anomalías es una fase posterior."
+        },
+        "evidence_id": "EV-0014"
+      }
+    ]
+  },
+  "critical_findings": [],
+  "key_risks": [],
+  "key_opportunities": [],
+  "key_trends": [
+    {
+      "kind": "OBSERVATION",
+      "trend_id": "TRD-OBS-0001",
+      "trend_type": "OBSERVED_TREND",
+      "direction": "UPWARD",
+      "period": "2024-07 → 2024-12",
+      "value": {
+        "last_3m_revenue": 1402.0,
+        "prev_3m_revenue": 1309.0,
+        "pct_change": 7.1
+      },
+      "confidence": null,
+      "source": "FASE_1B:data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "interpretation": "OBSERVADO: el comportamiento histórico muestra que los ingresos de los últimos 3 meses variaron 7.1% respecto a los 3 meses anteriores (dirección: UPWARD). Es una descripción del pasado, no una proyección.",
+      "evidence_id": "EV-0015",
+      "trace": {
+        "formula": "Σ revenue últimos 3 meses vs Σ revenue 3 anteriores",
+        "threshold": "|pct| <= 5 → STABLE"
+      }
+    }
+  ],
+  "prediction_intelligence": {
+    "kind": "PREDICTION",
+    "source": "FASE_4B",
+    "summary": {
+      "total_predictions": 8,
+      "high_quality": 0,
+      "moderate_quality": 0,
+      "low_quality": 0,
+      "insufficient": 8,
+      "high_uncertainty": 0,
+      "medium_uncertainty": 0,
+      "low_uncertainty": 0,
+      "urgent": 0,
+      "important": 0,
+      "review": 0,
+      "monitor": 8,
+      "high_decline_risk": 0,
+      "medium_decline_risk": 0,
+      "low_decline_risk": 0,
+      "average_confidence": 0.0,
+      "average_attention_score": 0.0,
+      "predictions_with_high_uncertainty": [],
+      "predictions_requiring_review": []
+    },
+    "evidence_id": "EV-0016",
+    "note": "Resumen consumido de FASE 4B sin recalcular."
+  },
+  "prediction_validation": {
+    "kind": "OBSERVATION",
+    "source": "FASE_4C",
+    "summary": {
+      "total_predictions": 8,
+      "validated": 0,
+      "pending": 0,
+      "not_available": 8,
+      "invalid": 0,
+      "accuracy_rate": "INSUFFICIENT_DATA",
+      "interval_hit_rate": "INSUFFICIENT_DATA",
+      "mean_absolute_error": "INSUFFICIENT_DATA",
+      "median_absolute_error": "INSUFFICIENT_DATA",
+      "mean_percentage_error": "INSUFFICIENT_DATA",
+      "mean_signed_error": "INSUFFICIENT_DATA",
+      "overprediction_rate": "INSUFFICIENT_DATA",
+      "underprediction_rate": "INSUFFICIENT_DATA",
+      "model_performance_status": "INSUFFICIENT_DATA"
+    },
+    "model_performance_status": "INSUFFICIENT_DATA",
+    "validation_note": "No existen suficientes resultados reales posteriores para evaluar todavía el desempeño de las predicciones.",
+    "evidence_id": "EV-0017",
+    "note": "Resumen consumido de FASE 4C sin recalcular."
+  },
+  "recommendations": [
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0001",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "related_finding": null,
+      "related_prediction": "PRED-000001",
+      "evidence": {
+        "entity": {
+          "kind": "GLOBAL",
+          "id": null,
+          "label": "negocio completo"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0018"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0002",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Revisar la calidad de los datos de origen para el negocio completo.",
+      "related_finding": null,
+      "related_prediction": "PRED-000001",
+      "evidence": {
+        "entity": {
+          "kind": "GLOBAL",
+          "id": null,
+          "label": "negocio completo"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0019"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0003",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Reunir más historial para el producto P-3 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "related_finding": null,
+      "related_prediction": "PRED-000004",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-3",
+          "label": "P-3"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0020"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0004",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Revisar la calidad de los datos de origen para el producto P-3.",
+      "related_finding": null,
+      "related_prediction": "PRED-000004",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-3",
+          "label": "P-3"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0021"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0005",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Reunir más historial para el producto P-2 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "related_finding": null,
+      "related_prediction": "PRED-000005",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-2",
+          "label": "P-2"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0022"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0006",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Revisar la calidad de los datos de origen para el producto P-2.",
+      "related_finding": null,
+      "related_prediction": "PRED-000005",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-2",
+          "label": "P-2"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0023"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0007",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Reunir más historial para el producto P-4 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "related_finding": null,
+      "related_prediction": "PRED-000006",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-4",
+          "label": "P-4"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0024"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0008",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Revisar la calidad de los datos de origen para el producto P-4.",
+      "related_finding": null,
+      "related_prediction": "PRED-000006",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-4",
+          "label": "P-4"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0025"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0009",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Reunir más historial para el producto P-0 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "related_finding": null,
+      "related_prediction": "PRED-000007",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-0",
+          "label": "P-0"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0026"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0010",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Revisar la calidad de los datos de origen para el producto P-0.",
+      "related_finding": null,
+      "related_prediction": "PRED-000007",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-0",
+          "label": "P-0"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0027"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0011",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Reunir más historial para el producto P-1 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "related_finding": null,
+      "related_prediction": "PRED-000008",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-1",
+          "label": "P-1"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0028"
+    },
+    {
+      "kind": "RECOMMENDATION",
+      "recommendation_id": "REC-0012",
+      "source": "FASE_4B",
+      "priority": "MONITOR",
+      "text": "Revisar la calidad de los datos de origen para el producto P-1.",
+      "related_finding": null,
+      "related_prediction": "PRED-000008",
+      "evidence": {
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-1",
+          "label": "P-1"
+        },
+        "attention_score": 0
+      },
+      "trace": {
+        "rule": "consolidación 4B (FASE 5A recommendations.py)"
+      },
+      "evidence_id": "EV-0029"
+    }
+  ],
+  "limitations": [
+    {
+      "kind": "LIMITATION",
+      "limitation_id": "LIM-0001",
+      "limitation_type": "INSUFFICIENT_PREDICTION_DATA",
+      "text": "8 predicciones quedaron en INSUFFICIENT_DATA: no existe historial suficiente para estimarlas.",
+      "source": "FASE_4B:data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+      "evidence_id": "EV-0030",
+      "trace": {
+        "rule": "consolidación automática (FASE 5A limitations.py)"
+      }
+    },
+    {
+      "kind": "LIMITATION",
+      "limitation_id": "LIM-0002",
+      "limitation_type": "NO_VALIDATION_YET",
+      "text": "No existen suficientes resultados reales posteriores para evaluar todavía el desempeño de las predicciones. No se afirma que sean correctas ni incorrectas.",
+      "source": "FASE_4C:data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+      "evidence_id": "EV-0031",
+      "trace": {
+        "rule": "consolidación automática (FASE 5A limitations.py)"
+      }
+    },
+    {
+      "kind": "LIMITATION",
+      "limitation_id": "LIM-0003",
+      "limitation_type": "NO_STOCKOUT",
+      "text": "El dataset no contiene información de inventario confiable: el riesgo de agotamiento (stockout) no puede estimarse (NOT_AVAILABLE).",
+      "source": "FASE_4A:data/predictions/demo-retail/online_retail_II_full_predictions.json",
+      "evidence_id": "EV-0032",
+      "trace": {
+        "rule": "consolidación automática (FASE 5A limitations.py)"
+      }
+    }
+  ],
+  "executive_questions": [
+    "¿Qué está pasando en el negocio según la evidencia disponible?",
+    "¿Cuál es el problema más importante detectado?",
+    "¿Dónde existe mayor riesgo?",
+    "¿Qué productos presentan comportamiento inusual?",
+    "¿Qué clientes requieren atención?",
+    "¿Qué tendencias se observan en el historial?",
+    "¿Qué tendencias se proyectan?",
+    "¿Qué predicciones tienen mayor incertidumbre?",
+    "¿Qué recomendaciones deberían revisarse primero?",
+    "¿Qué información falta para decidir mejor?"
+  ],
+  "attention_summary": {
+    "attention_level": "LOW",
+    "signals": {
+      "urgent_findings": 0,
+      "important_findings": 0,
+      "review_findings": 0,
+      "high_severity_risks": 0,
+      "medium_severity_risks": 0,
+      "high_decline_risk_predictions": 0,
+      "data_quality_score": 100.0
+    },
+    "rule_triggered": "ningún umbral superior alcanzado",
+    "rules": "CRITICAL: urgent>=20 o high_risks>=5; HIGH: urgent>=5 o important>=100 o high_decline>=2; MEDIUM: important>=10 o review>=50 o medium_risks>=3; LOW: en otro caso."
+  },
+  "context_confidence": {
+    "context_confidence_score": 40.0,
+    "components": {
+      "data_quality_score": {
+        "value": 100.0,
+        "weight": 0.4
+      },
+      "evidence_coverage": {
+        "value": 0.0,
+        "weight": 0.25
+      },
+      "prediction_quality": {
+        "value": 0.0,
+        "weight": 0.2
+      },
+      "validation_available": {
+        "value": 0.0,
+        "weight": 0.15
+      }
+    },
+    "formula": "0.40*data_quality_score + 0.25*evidence_coverage + 0.20*prediction_quality + 0.15*validation_available",
+    "interpretation": "El contexto empresarial disponible tiene una completitud/confianza de 40.0/100. Un valor bajo indica que faltan datos importantes (calidad, evidencia, predicciones de calidad o validación real)."
+  },
+  "evidence_index": [
+    {
+      "evidence_id": "EV-0001",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "gross_revenue",
+      "value": 5709.0,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+        "filters": "Revenue no nulo; transaction_status según bloque",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+      }
+    },
+    {
+      "evidence_id": "EV-0002",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "net_revenue",
+      "value": 5709.0,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+        "filters": "Revenue no nulo; transaction_status según bloque",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+      }
+    },
+    {
+      "evidence_id": "EV-0003",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "cancelled_revenue",
+      "value": 0.0,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+        "filters": "Revenue no nulo; transaction_status según bloque",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+      }
+    },
+    {
+      "evidence_id": "EV-0004",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "total_rows",
+      "value": 60,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+        "filters": "ninguno (todas las filas)",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": ""
+      }
+    },
+    {
+      "evidence_id": "EV-0005",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "unique_transactions",
+      "value": 60,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+        "filters": "ninguno (todas las filas)",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": ""
+      }
+    },
+    {
+      "evidence_id": "EV-0006",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "completed_rows",
+      "value": 60,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+        "filters": "ninguno (todas las filas)",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": ""
+      }
+    },
+    {
+      "evidence_id": "EV-0007",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "cancelled_rows",
+      "value": 0,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+        "filters": "ninguno (todas las filas)",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": ""
+      }
+    },
+    {
+      "evidence_id": "EV-0008",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "total_customers",
+      "value": 8,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+        "filters": "transaction_status='completed'; Customer no nulo",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+      }
+    },
+    {
+      "evidence_id": "EV-0009",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "active_customers",
+      "value": 6,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+        "filters": "transaction_status='completed'; Customer no nulo",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+      }
+    },
+    {
+      "evidence_id": "EV-0010",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "total_products",
+      "value": 5,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "por Product: units=ΣQuantity|completed, transactions=COUNT|completed, revenue=ΣRevenue|completed, avg_price=MEAN(UnitPrice), frequency=transactions/días_activos*30; clases por deciles de revenue (p90=1217.4, p60=1177.8)",
+        "filters": "transaction_status='completed'; Quantity/Revenue nulos se ignoran",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": "5 productos con transacciones completadas; 5 productos distintos en total. Top 50 incluidos en el perfil; la tabla completa puede regenerarse del Parquet."
+      }
+    },
+    {
+      "evidence_id": "EV-0011",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "total_countries",
+      "value": 0,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "COUNT DISTINCT de Customer / Product / Country",
+        "filters": "valores no nulos",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": "Los nulos no se cuentan como entidad."
+      }
+    },
+    {
+      "evidence_id": "EV-0012",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "units_sold_net",
+      "value": 297.0,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+        "filters": "Revenue no nulo; transaction_status según bloque",
+        "rows_considered": 60,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+      }
+    },
+    {
+      "evidence_id": "EV-0013",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "data_quality_score",
+      "value": 100.0,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "Data Quality Score 0-100 (FASE 1B)"
+      }
+    },
+    {
+      "evidence_id": "EV-0014",
+      "source_module": "FASE_1B_1C",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": null,
+      "field": "cancellations_count",
+      "value": 0,
+      "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+      "trace": {
+        "formula": "count=filas cancelled; pct=count/total; units=ΣQuantity|signed; value=Σ|Revenue|; tops por Σ|Revenue|",
+        "filters": "transaction_status='cancelled'",
+        "rows_considered": 0,
+        "period": "2024-01-15 → 2024-12-15",
+        "notes": "Descriptivo únicamente. No se afirma fraude ni anomalía: la detección de anomalías es una fase posterior."
+      }
+    },
+    {
+      "evidence_id": "EV-0015",
+      "source_module": "FASE_1B",
+      "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "source_record": "temporal_metrics.monthly",
+      "field": "revenue_trend_3m_vs_prev_3m",
+      "value": {
+        "last_3m_revenue": 1402.0,
+        "prev_3m_revenue": 1309.0,
+        "pct_change": 7.1
+      },
+      "period": "2024-07 → 2024-12",
+      "trace": {
+        "formula": "Σ revenue últimos 3 meses vs Σ revenue 3 anteriores; |pct|≤5 → STABLE"
+      }
+    },
+    {
+      "evidence_id": "EV-0016",
+      "source_module": "FASE_4B",
+      "source_file": "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+      "source_record": null,
+      "field": "summary",
+      "value": {
+        "total_predictions": 8,
+        "high_quality": 0,
+        "moderate_quality": 0,
+        "low_quality": 0,
+        "insufficient": 8,
+        "high_uncertainty": 0,
+        "medium_uncertainty": 0,
+        "low_uncertainty": 0,
+        "urgent": 0,
+        "important": 0,
+        "review": 0,
+        "monitor": 8,
+        "high_decline_risk": 0,
+        "medium_decline_risk": 0,
+        "low_decline_risk": 0,
+        "average_confidence": 0.0,
+        "average_attention_score": 0.0,
+        "predictions_with_high_uncertainty": [],
+        "predictions_requiring_review": []
+      },
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0017",
+      "source_module": "FASE_4C",
+      "source_file": "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+      "source_record": null,
+      "field": "summary",
+      "value": {
+        "total_predictions": 8,
+        "validated": 0,
+        "pending": 0,
+        "not_available": 8,
+        "invalid": 0,
+        "accuracy_rate": "INSUFFICIENT_DATA",
+        "interval_hit_rate": "INSUFFICIENT_DATA",
+        "mean_absolute_error": "INSUFFICIENT_DATA",
+        "median_absolute_error": "INSUFFICIENT_DATA",
+        "mean_percentage_error": "INSUFFICIENT_DATA",
+        "mean_signed_error": "INSUFFICIENT_DATA",
+        "overprediction_rate": "INSUFFICIENT_DATA",
+        "underprediction_rate": "INSUFFICIENT_DATA",
+        "model_performance_status": "INSUFFICIENT_DATA"
+      },
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0018",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000001",
+      "field": "recommendation",
+      "value": "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0019",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000001",
+      "field": "recommendation",
+      "value": "Revisar la calidad de los datos de origen para el negocio completo.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0020",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000004",
+      "field": "recommendation",
+      "value": "Reunir más historial para el producto P-3 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0021",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000004",
+      "field": "recommendation",
+      "value": "Revisar la calidad de los datos de origen para el producto P-3.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0022",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000005",
+      "field": "recommendation",
+      "value": "Reunir más historial para el producto P-2 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0023",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000005",
+      "field": "recommendation",
+      "value": "Revisar la calidad de los datos de origen para el producto P-2.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0024",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000006",
+      "field": "recommendation",
+      "value": "Reunir más historial para el producto P-4 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0025",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000006",
+      "field": "recommendation",
+      "value": "Revisar la calidad de los datos de origen para el producto P-4.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0026",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000007",
+      "field": "recommendation",
+      "value": "Reunir más historial para el producto P-0 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0027",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000007",
+      "field": "recommendation",
+      "value": "Revisar la calidad de los datos de origen para el producto P-0.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0028",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000008",
+      "field": "recommendation",
+      "value": "Reunir más historial para el producto P-1 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0029",
+      "source_module": "FASE_4B",
+      "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+      "source_record": "PRED-000008",
+      "field": "recommendation",
+      "value": "Revisar la calidad de los datos de origen para el producto P-1.",
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0030",
+      "source_module": "FASE_4B",
+      "source_file": "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+      "source_record": null,
+      "field": "insufficient",
+      "value": 8,
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0031",
+      "source_module": "FASE_4C",
+      "source_file": "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+      "source_record": null,
+      "field": "validated",
+      "value": 0,
+      "period": null,
+      "trace": null
+    },
+    {
+      "evidence_id": "EV-0032",
+      "source_module": "FASE_4A",
+      "source_file": "data/predictions/demo-retail/online_retail_II_full_predictions.json",
+      "source_record": null,
+      "field": "stockout_status",
+      "value": "NOT_AVAILABLE",
+      "period": null,
+      "trace": null
+    }
+  ],
+  "advisor_safe_data": {
+    "facts": [],
+    "findings": [],
+    "predictions": [
+      {
+        "insight_id": "INS-000001",
+        "prediction_id": "PRED-000001",
+        "prediction_type": "DEMAND_REVENUE",
+        "entity": {
+          "kind": "GLOBAL",
+          "id": null,
+          "label": "negocio completo"
+        },
+        "period": null,
+        "forecast_horizon": 3,
+        "prediction_status": "INSUFFICIENT_DATA",
+        "predicted_value": null,
+        "lower_bound": null,
+        "upper_bound": null,
+        "confidence_score": 0.0,
+        "trend": "INSUFFICIENT_DATA",
+        "decline_risk": "INSUFFICIENT_DATA",
+        "forecast_quality": "INSUFFICIENT",
+        "uncertainty_level": "UNKNOWN",
+        "attention_score": 0,
+        "attention_level": "MONITOR",
+        "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el negocio completo. historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar). no se generó ningún valor numérico por falta de evidencia.",
+        "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+        "recommendations": [
+          "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+          "Revisar la calidad de los datos de origen para el negocio completo."
+        ],
+        "limitations": [
+          "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+          "no se generó ningún valor numérico por falta de evidencia",
+          "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+        ]
+      },
+      {
+        "insight_id": "INS-000002",
+        "prediction_id": "PRED-000002",
+        "prediction_type": "DEMAND_QUANTITY",
+        "entity": {
+          "kind": "GLOBAL",
+          "id": null,
+          "label": "negocio completo"
+        },
+        "period": null,
+        "forecast_horizon": 3,
+        "prediction_status": "INSUFFICIENT_DATA",
+        "predicted_value": null,
+        "lower_bound": null,
+        "upper_bound": null,
+        "confidence_score": 0.0,
+        "trend": "INSUFFICIENT_DATA",
+        "decline_risk": "INSUFFICIENT_DATA",
+        "forecast_quality": "INSUFFICIENT",
+        "uncertainty_level": "UNKNOWN",
+        "attention_score": 0,
+        "attention_level": "MONITOR",
+        "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el negocio completo. historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar). no se generó ningún valor numérico por falta de evidencia.",
+        "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+        "recommendations": [
+          "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+          "Revisar la calidad de los datos de origen para el negocio completo."
+        ],
+        "limitations": [
+          "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+          "no se generó ningún valor numérico por falta de evidencia",
+          "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+        ]
+      },
+      {
+        "insight_id": "INS-000003",
+        "prediction_id": "PRED-000003",
+        "prediction_type": "DEMAND_REVENUE",
+        "entity": {
+          "kind": "GLOBAL",
+          "id": null,
+          "label": "negocio completo"
+        },
+        "period": null,
+        "forecast_horizon": 4,
+        "prediction_status": "INSUFFICIENT_DATA",
+        "predicted_value": null,
+        "lower_bound": null,
+        "upper_bound": null,
+        "confidence_score": 0.0,
+        "trend": "INSUFFICIENT_DATA",
+        "decline_risk": "INSUFFICIENT_DATA",
+        "forecast_quality": "INSUFFICIENT",
+        "uncertainty_level": "UNKNOWN",
+        "attention_score": 0,
+        "attention_level": "MONITOR",
+        "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el negocio completo. serie discontinua: solo 25% de los periodos tienen actividad (mínimo 50%). no se generó ningún valor numérico por falta de evidencia.",
+        "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+        "recommendations": [
+          "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+          "Revisar la calidad de los datos de origen para el negocio completo."
+        ],
+        "limitations": [
+          "serie discontinua: solo 25% de los periodos tienen actividad (mínimo 50%)",
+          "no se generó ningún valor numérico por falta de evidencia",
+          "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+        ]
+      },
+      {
+        "insight_id": "INS-000004",
+        "prediction_id": "PRED-000004",
+        "prediction_type": "DEMAND_REVENUE",
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-3",
+          "label": "P-3"
+        },
+        "period": null,
+        "forecast_horizon": 3,
+        "prediction_status": "INSUFFICIENT_DATA",
+        "predicted_value": null,
+        "lower_bound": null,
+        "upper_bound": null,
+        "confidence_score": 0.0,
+        "trend": "INSUFFICIENT_DATA",
+        "decline_risk": "INSUFFICIENT_DATA",
+        "forecast_quality": "INSUFFICIENT",
+        "uncertainty_level": "UNKNOWN",
+        "attention_score": 0,
+        "attention_level": "MONITOR",
+        "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el producto P-3. historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar). no se generó ningún valor numérico por falta de evidencia.",
+        "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+        "recommendations": [
+          "Reunir más historial para el producto P-3 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+          "Revisar la calidad de los datos de origen para el producto P-3."
+        ],
+        "limitations": [
+          "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+          "no se generó ningún valor numérico por falta de evidencia",
+          "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+        ]
+      },
+      {
+        "insight_id": "INS-000005",
+        "prediction_id": "PRED-000005",
+        "prediction_type": "DEMAND_REVENUE",
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-2",
+          "label": "P-2"
+        },
+        "period": null,
+        "forecast_horizon": 3,
+        "prediction_status": "INSUFFICIENT_DATA",
+        "predicted_value": null,
+        "lower_bound": null,
+        "upper_bound": null,
+        "confidence_score": 0.0,
+        "trend": "INSUFFICIENT_DATA",
+        "decline_risk": "INSUFFICIENT_DATA",
+        "forecast_quality": "INSUFFICIENT",
+        "uncertainty_level": "UNKNOWN",
+        "attention_score": 0,
+        "attention_level": "MONITOR",
+        "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el producto P-2. historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar). no se generó ningún valor numérico por falta de evidencia.",
+        "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+        "recommendations": [
+          "Reunir más historial para el producto P-2 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+          "Revisar la calidad de los datos de origen para el producto P-2."
+        ],
+        "limitations": [
+          "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+          "no se generó ningún valor numérico por falta de evidencia",
+          "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+        ]
+      },
+      {
+        "insight_id": "INS-000006",
+        "prediction_id": "PRED-000006",
+        "prediction_type": "DEMAND_REVENUE",
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-4",
+          "label": "P-4"
+        },
+        "period": null,
+        "forecast_horizon": 3,
+        "prediction_status": "INSUFFICIENT_DATA",
+        "predicted_value": null,
+        "lower_bound": null,
+        "upper_bound": null,
+        "confidence_score": 0.0,
+        "trend": "INSUFFICIENT_DATA",
+        "decline_risk": "INSUFFICIENT_DATA",
+        "forecast_quality": "INSUFFICIENT",
+        "uncertainty_level": "UNKNOWN",
+        "attention_score": 0,
+        "attention_level": "MONITOR",
+        "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el producto P-4. historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar). no se generó ningún valor numérico por falta de evidencia.",
+        "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+        "recommendations": [
+          "Reunir más historial para el producto P-4 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+          "Revisar la calidad de los datos de origen para el producto P-4."
+        ],
+        "limitations": [
+          "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+          "no se generó ningún valor numérico por falta de evidencia",
+          "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+        ]
+      },
+      {
+        "insight_id": "INS-000007",
+        "prediction_id": "PRED-000007",
+        "prediction_type": "DEMAND_REVENUE",
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-0",
+          "label": "P-0"
+        },
+        "period": null,
+        "forecast_horizon": 3,
+        "prediction_status": "INSUFFICIENT_DATA",
+        "predicted_value": null,
+        "lower_bound": null,
+        "upper_bound": null,
+        "confidence_score": 0.0,
+        "trend": "INSUFFICIENT_DATA",
+        "decline_risk": "INSUFFICIENT_DATA",
+        "forecast_quality": "INSUFFICIENT",
+        "uncertainty_level": "UNKNOWN",
+        "attention_score": 0,
+        "attention_level": "MONITOR",
+        "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el producto P-0. historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar). no se generó ningún valor numérico por falta de evidencia.",
+        "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+        "recommendations": [
+          "Reunir más historial para el producto P-0 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+          "Revisar la calidad de los datos de origen para el producto P-0."
+        ],
+        "limitations": [
+          "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+          "no se generó ningún valor numérico por falta de evidencia",
+          "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+        ]
+      },
+      {
+        "insight_id": "INS-000008",
+        "prediction_id": "PRED-000008",
+        "prediction_type": "DEMAND_REVENUE",
+        "entity": {
+          "kind": "PRODUCT",
+          "id": "P-1",
+          "label": "P-1"
+        },
+        "period": null,
+        "forecast_horizon": 3,
+        "prediction_status": "INSUFFICIENT_DATA",
+        "predicted_value": null,
+        "lower_bound": null,
+        "upper_bound": null,
+        "confidence_score": 0.0,
+        "trend": "INSUFFICIENT_DATA",
+        "decline_risk": "INSUFFICIENT_DATA",
+        "forecast_quality": "INSUFFICIENT",
+        "uncertainty_level": "UNKNOWN",
+        "attention_score": 0,
+        "attention_level": "MONITOR",
+        "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el producto P-1. historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar). no se generó ningún valor numérico por falta de evidencia.",
+        "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+        "recommendations": [
+          "Reunir más historial para el producto P-1 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+          "Revisar la calidad de los datos de origen para el producto P-1."
+        ],
+        "limitations": [
+          "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+          "no se generó ningún valor numérico por falta de evidencia",
+          "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+        ]
+      }
+    ],
+    "risks": [],
+    "opportunities": [],
+    "trends": [
+      {
+        "kind": "OBSERVATION",
+        "trend_id": "TRD-OBS-0001",
+        "trend_type": "OBSERVED_TREND",
+        "direction": "UPWARD",
+        "period": "2024-07 → 2024-12",
+        "value": {
+          "last_3m_revenue": 1402.0,
+          "prev_3m_revenue": 1309.0,
+          "pct_change": 7.1
+        },
+        "confidence": null,
+        "source": "FASE_1B:data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "interpretation": "OBSERVADO: el comportamiento histórico muestra que los ingresos de los últimos 3 meses variaron 7.1% respecto a los 3 meses anteriores (dirección: UPWARD). Es una descripción del pasado, no una proyección.",
+        "evidence_id": "EV-0015",
+        "trace": {
+          "formula": "Σ revenue últimos 3 meses vs Σ revenue 3 anteriores",
+          "threshold": "|pct| <= 5 → STABLE"
+        }
+      }
+    ],
+    "recommendations": [
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0001",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "related_finding": null,
+        "related_prediction": "PRED-000001",
+        "evidence": {
+          "entity": {
+            "kind": "GLOBAL",
+            "id": null,
+            "label": "negocio completo"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0018"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0002",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Revisar la calidad de los datos de origen para el negocio completo.",
+        "related_finding": null,
+        "related_prediction": "PRED-000001",
+        "evidence": {
+          "entity": {
+            "kind": "GLOBAL",
+            "id": null,
+            "label": "negocio completo"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0019"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0003",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Reunir más historial para el producto P-3 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "related_finding": null,
+        "related_prediction": "PRED-000004",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-3",
+            "label": "P-3"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0020"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0004",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Revisar la calidad de los datos de origen para el producto P-3.",
+        "related_finding": null,
+        "related_prediction": "PRED-000004",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-3",
+            "label": "P-3"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0021"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0005",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Reunir más historial para el producto P-2 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "related_finding": null,
+        "related_prediction": "PRED-000005",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-2",
+            "label": "P-2"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0022"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0006",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Revisar la calidad de los datos de origen para el producto P-2.",
+        "related_finding": null,
+        "related_prediction": "PRED-000005",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-2",
+            "label": "P-2"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0023"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0007",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Reunir más historial para el producto P-4 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "related_finding": null,
+        "related_prediction": "PRED-000006",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-4",
+            "label": "P-4"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0024"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0008",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Revisar la calidad de los datos de origen para el producto P-4.",
+        "related_finding": null,
+        "related_prediction": "PRED-000006",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-4",
+            "label": "P-4"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0025"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0009",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Reunir más historial para el producto P-0 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "related_finding": null,
+        "related_prediction": "PRED-000007",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-0",
+            "label": "P-0"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0026"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0010",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Revisar la calidad de los datos de origen para el producto P-0.",
+        "related_finding": null,
+        "related_prediction": "PRED-000007",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-0",
+            "label": "P-0"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0027"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0011",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Reunir más historial para el producto P-1 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "related_finding": null,
+        "related_prediction": "PRED-000008",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-1",
+            "label": "P-1"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0028"
+      },
+      {
+        "kind": "RECOMMENDATION",
+        "recommendation_id": "REC-0012",
+        "source": "FASE_4B",
+        "priority": "MONITOR",
+        "text": "Revisar la calidad de los datos de origen para el producto P-1.",
+        "related_finding": null,
+        "related_prediction": "PRED-000008",
+        "evidence": {
+          "entity": {
+            "kind": "PRODUCT",
+            "id": "P-1",
+            "label": "P-1"
+          },
+          "attention_score": 0
+        },
+        "trace": {
+          "rule": "consolidación 4B (FASE 5A recommendations.py)"
+        },
+        "evidence_id": "EV-0029"
+      }
+    ],
+    "limitations": [
+      {
+        "kind": "LIMITATION",
+        "limitation_id": "LIM-0001",
+        "limitation_type": "INSUFFICIENT_PREDICTION_DATA",
+        "text": "8 predicciones quedaron en INSUFFICIENT_DATA: no existe historial suficiente para estimarlas.",
+        "source": "FASE_4B:data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+        "evidence_id": "EV-0030",
+        "trace": {
+          "rule": "consolidación automática (FASE 5A limitations.py)"
+        }
+      },
+      {
+        "kind": "LIMITATION",
+        "limitation_id": "LIM-0002",
+        "limitation_type": "NO_VALIDATION_YET",
+        "text": "No existen suficientes resultados reales posteriores para evaluar todavía el desempeño de las predicciones. No se afirma que sean correctas ni incorrectas.",
+        "source": "FASE_4C:data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+        "evidence_id": "EV-0031",
+        "trace": {
+          "rule": "consolidación automática (FASE 5A limitations.py)"
+        }
+      },
+      {
+        "kind": "LIMITATION",
+        "limitation_id": "LIM-0003",
+        "limitation_type": "NO_STOCKOUT",
+        "text": "El dataset no contiene información de inventario confiable: el riesgo de agotamiento (stockout) no puede estimarse (NOT_AVAILABLE).",
+        "source": "FASE_4A:data/predictions/demo-retail/online_retail_II_full_predictions.json",
+        "evidence_id": "EV-0032",
+        "trace": {
+          "rule": "consolidación automática (FASE 5A limitations.py)"
+        }
+      }
+    ],
+    "evidence": [
+      {
+        "evidence_id": "EV-0001",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "gross_revenue",
+        "value": 5709.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+          "filters": "Revenue no nulo; transaction_status según bloque",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+        }
+      },
+      {
+        "evidence_id": "EV-0002",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "net_revenue",
+        "value": 5709.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+          "filters": "Revenue no nulo; transaction_status según bloque",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+        }
+      },
+      {
+        "evidence_id": "EV-0003",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "cancelled_revenue",
+        "value": 0.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+          "filters": "Revenue no nulo; transaction_status según bloque",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+        }
+      },
+      {
+        "evidence_id": "EV-0004",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "total_rows",
+        "value": 60,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+          "filters": "ninguno (todas las filas)",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": ""
+        }
+      },
+      {
+        "evidence_id": "EV-0005",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "unique_transactions",
+        "value": 60,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+          "filters": "ninguno (todas las filas)",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": ""
+        }
+      },
+      {
+        "evidence_id": "EV-0006",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "completed_rows",
+        "value": 60,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+          "filters": "ninguno (todas las filas)",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": ""
+        }
+      },
+      {
+        "evidence_id": "EV-0007",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "cancelled_rows",
+        "value": 0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+          "filters": "ninguno (todas las filas)",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": ""
+        }
+      },
+      {
+        "evidence_id": "EV-0008",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "total_customers",
+        "value": 8,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+          "filters": "transaction_status='completed'; Customer no nulo",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+        }
+      },
+      {
+        "evidence_id": "EV-0009",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "active_customers",
+        "value": 6,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+          "filters": "transaction_status='completed'; Customer no nulo",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+        }
+      },
+      {
+        "evidence_id": "EV-0010",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "total_products",
+        "value": 5,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "por Product: units=ΣQuantity|completed, transactions=COUNT|completed, revenue=ΣRevenue|completed, avg_price=MEAN(UnitPrice), frequency=transactions/días_activos*30; clases por deciles de revenue (p90=1217.4, p60=1177.8)",
+          "filters": "transaction_status='completed'; Quantity/Revenue nulos se ignoran",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "5 productos con transacciones completadas; 5 productos distintos en total. Top 50 incluidos en el perfil; la tabla completa puede regenerarse del Parquet."
+        }
+      },
+      {
+        "evidence_id": "EV-0011",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "total_countries",
+        "value": 0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "COUNT DISTINCT de Customer / Product / Country",
+          "filters": "valores no nulos",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "Los nulos no se cuentan como entidad."
+        }
+      },
+      {
+        "evidence_id": "EV-0012",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "units_sold_net",
+        "value": 297.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+          "filters": "Revenue no nulo; transaction_status según bloque",
+          "rows_considered": 60,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+        }
+      },
+      {
+        "evidence_id": "EV-0013",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "data_quality_score",
+        "value": 100.0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "Data Quality Score 0-100 (FASE 1B)"
+        }
+      },
+      {
+        "evidence_id": "EV-0014",
+        "source_module": "FASE_1B_1C",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": null,
+        "field": "cancellations_count",
+        "value": 0,
+        "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+        "trace": {
+          "formula": "count=filas cancelled; pct=count/total; units=ΣQuantity|signed; value=Σ|Revenue|; tops por Σ|Revenue|",
+          "filters": "transaction_status='cancelled'",
+          "rows_considered": 0,
+          "period": "2024-01-15 → 2024-12-15",
+          "notes": "Descriptivo únicamente. No se afirma fraude ni anomalía: la detección de anomalías es una fase posterior."
+        }
+      },
+      {
+        "evidence_id": "EV-0015",
+        "source_module": "FASE_1B",
+        "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+        "source_record": "temporal_metrics.monthly",
+        "field": "revenue_trend_3m_vs_prev_3m",
+        "value": {
+          "last_3m_revenue": 1402.0,
+          "prev_3m_revenue": 1309.0,
+          "pct_change": 7.1
+        },
+        "period": "2024-07 → 2024-12",
+        "trace": {
+          "formula": "Σ revenue últimos 3 meses vs Σ revenue 3 anteriores; |pct|≤5 → STABLE"
+        }
+      },
+      {
+        "evidence_id": "EV-0016",
+        "source_module": "FASE_4B",
+        "source_file": "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+        "source_record": null,
+        "field": "summary",
+        "value": {
+          "total_predictions": 8,
+          "high_quality": 0,
+          "moderate_quality": 0,
+          "low_quality": 0,
+          "insufficient": 8,
+          "high_uncertainty": 0,
+          "medium_uncertainty": 0,
+          "low_uncertainty": 0,
+          "urgent": 0,
+          "important": 0,
+          "review": 0,
+          "monitor": 8,
+          "high_decline_risk": 0,
+          "medium_decline_risk": 0,
+          "low_decline_risk": 0,
+          "average_confidence": 0.0,
+          "average_attention_score": 0.0,
+          "predictions_with_high_uncertainty": [],
+          "predictions_requiring_review": []
+        },
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0017",
+        "source_module": "FASE_4C",
+        "source_file": "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+        "source_record": null,
+        "field": "summary",
+        "value": {
+          "total_predictions": 8,
+          "validated": 0,
+          "pending": 0,
+          "not_available": 8,
+          "invalid": 0,
+          "accuracy_rate": "INSUFFICIENT_DATA",
+          "interval_hit_rate": "INSUFFICIENT_DATA",
+          "mean_absolute_error": "INSUFFICIENT_DATA",
+          "median_absolute_error": "INSUFFICIENT_DATA",
+          "mean_percentage_error": "INSUFFICIENT_DATA",
+          "mean_signed_error": "INSUFFICIENT_DATA",
+          "overprediction_rate": "INSUFFICIENT_DATA",
+          "underprediction_rate": "INSUFFICIENT_DATA",
+          "model_performance_status": "INSUFFICIENT_DATA"
+        },
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0018",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000001",
+        "field": "recommendation",
+        "value": "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0019",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000001",
+        "field": "recommendation",
+        "value": "Revisar la calidad de los datos de origen para el negocio completo.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0020",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000004",
+        "field": "recommendation",
+        "value": "Reunir más historial para el producto P-3 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0021",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000004",
+        "field": "recommendation",
+        "value": "Revisar la calidad de los datos de origen para el producto P-3.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0022",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000005",
+        "field": "recommendation",
+        "value": "Reunir más historial para el producto P-2 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0023",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000005",
+        "field": "recommendation",
+        "value": "Revisar la calidad de los datos de origen para el producto P-2.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0024",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000006",
+        "field": "recommendation",
+        "value": "Reunir más historial para el producto P-4 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0025",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000006",
+        "field": "recommendation",
+        "value": "Revisar la calidad de los datos de origen para el producto P-4.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0026",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000007",
+        "field": "recommendation",
+        "value": "Reunir más historial para el producto P-0 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0027",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000007",
+        "field": "recommendation",
+        "value": "Revisar la calidad de los datos de origen para el producto P-0.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0028",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000008",
+        "field": "recommendation",
+        "value": "Reunir más historial para el producto P-1 antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0029",
+        "source_module": "FASE_4B",
+        "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+        "source_record": "PRED-000008",
+        "field": "recommendation",
+        "value": "Revisar la calidad de los datos de origen para el producto P-1.",
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0030",
+        "source_module": "FASE_4B",
+        "source_file": "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+        "source_record": null,
+        "field": "insufficient",
+        "value": 8,
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0031",
+        "source_module": "FASE_4C",
+        "source_file": "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+        "source_record": null,
+        "field": "validated",
+        "value": 0,
+        "period": null,
+        "trace": null
+      },
+      {
+        "evidence_id": "EV-0032",
+        "source_module": "FASE_4A",
+        "source_file": "data/predictions/demo-retail/online_retail_II_full_predictions.json",
+        "source_record": null,
+        "field": "stockout_status",
+        "value": "NOT_AVAILABLE",
+        "period": null,
+        "trace": null
+      }
+    ]
+  },
+  "trace": {
+    "engine": "zayvero-business-context-5A",
+    "method": "deterministic consolidation of real outputs (1B/1C, 2B, 2C, 4A, 4B, 4C); no LLM, no recalculation",
+    "sources": [
+      "data/profiles/demo-retail/online_retail_II_full_profile.json",
+      "data/findings/demo-retail/online_retail_II_full_findings.json",
+      "data/context/demo-retail/online_retail_II_full_context.json",
+      "data/predictions/demo-retail/online_retail_II_full_predictions.json",
+      "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+      "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json"
+    ],
+    "n_evidence": 32
+  }
+}

@@ -1,0 +1,237 @@
+{
+  "file_name": "online_retail_II.xlsx",
+  "company_id": "demo-retail",
+  "processed_at_utc": "2026-10-08T00:07:44.692957+00:00",
+  "n_original_rows": 1067371,
+  "n_processed_rows": 1067371,
+  "rows_dropped": 0,
+  "ingestion_summary": {
+    "sheets_processed": [
+      "Year 2009-2010",
+      "Year 2010-2011"
+    ],
+    "per_sheet": [
+      {
+        "sheet": "Year 2009-2010",
+        "n_original_rows": 525461,
+        "n_processed_rows": 525461,
+        "rows_dropped": 0,
+        "duplicate_rows": 6865
+      },
+      {
+        "sheet": "Year 2010-2011",
+        "n_original_rows": 541910,
+        "n_processed_rows": 541910,
+        "rows_dropped": 0,
+        "duplicate_rows": 5268
+      }
+    ]
+  },
+  "column_resolution": null,
+  "quality_report": null,
+  "transformations": [
+    "[Year 2009-2010] map:Invoice->Transaction",
+    "[Year 2009-2010] map:StockCode->Product",
+    "[Year 2009-2010] map:CustomerID->Customer",
+    "[Year 2009-2010] map:InvoiceDate->Date",
+    "[Year 2009-2010] map:Quantity->Quantity",
+    "[Year 2009-2010] map:UnitPrice->UnitPrice",
+    "[Year 2009-2010] map:Country->Country",
+    "[Year 2009-2010] keep:orig_Description",
+    "[Year 2009-2010] coerce:Date a datetime (no parseables -> NaT: 0)",
+    "[Year 2009-2010] coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "[Year 2009-2010] coerce:Transaction,Product,Customer,Country a string",
+    "[Year 2009-2010] calc:Revenue=Quantity*UnitPrice (525461 filas con Revenue válido)",
+    "[Year 2009-2010] status:transaction_status con reglas {'invoice_prefix': 'C'} -> {'completed': 515255, 'cancelled': 10206}",
+    "[Year 2009-2010] trace:source_sheet='Year 2009-2010', source_file='online_retail_II.xlsx' asignados a 525461 filas",
+    "[Year 2009-2010] multiempresa:company_id='demo-retail' asignado a todas las filas",
+    "[Year 2010-2011] map:Invoice->Transaction",
+    "[Year 2010-2011] map:StockCode->Product",
+    "[Year 2010-2011] map:CustomerID->Customer",
+    "[Year 2010-2011] map:InvoiceDate->Date",
+    "[Year 2010-2011] map:Quantity->Quantity",
+    "[Year 2010-2011] map:UnitPrice->UnitPrice",
+    "[Year 2010-2011] map:Country->Country",
+    "[Year 2010-2011] keep:orig_Description",
+    "[Year 2010-2011] coerce:Date a datetime (no parseables -> NaT: 0)",
+    "[Year 2010-2011] coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "[Year 2010-2011] coerce:Transaction,Product,Customer,Country a string",
+    "[Year 2010-2011] calc:Revenue=Quantity*UnitPrice (541910 filas con Revenue válido)",
+    "[Year 2010-2011] status:transaction_status con reglas {'invoice_prefix': 'C'} -> {'completed': 532622, 'cancelled': 9288}",
+    "[Year 2010-2011] trace:source_sheet='Year 2010-2011', source_file='online_retail_II.xlsx' asignados a 541910 filas",
+    "[Year 2010-2011] multiempresa:company_id='demo-retail' asignado a todas las filas"
+  ],
+  "errors": [],
+  "warnings": [],
+  "output_path": "/home/hatch/workspace/zayvero-business/data/processed/demo-retail/online_retail_II_full.parquet",
+  "sheets": [
+    {
+      "sheet": "Year 2009-2010",
+      "n_original_rows": 525461,
+      "n_processed_rows": 525461,
+      "rows_dropped": 0,
+      "columns": [
+        "Invoice",
+        "StockCode",
+        "Description",
+        "Quantity",
+        "InvoiceDate",
+        "Price",
+        "Customer ID",
+        "Country"
+      ],
+      "duplicate_rows": 6865,
+      "quality": {
+        "n_rows": 525461,
+        "n_cols": 8,
+        "columns": [
+          "Invoice",
+          "StockCode",
+          "Description",
+          "Quantity",
+          "InvoiceDate",
+          "UnitPrice",
+          "CustomerID",
+          "Country"
+        ],
+        "dtypes": {
+          "Invoice": "object",
+          "StockCode": "object",
+          "Description": "object",
+          "Quantity": "int64",
+          "InvoiceDate": "datetime64[us]",
+          "UnitPrice": "float64",
+          "CustomerID": "float64",
+          "Country": "str"
+        },
+        "null_counts": {
+          "Invoice": 0,
+          "StockCode": 0,
+          "Description": 2928,
+          "Quantity": 0,
+          "InvoiceDate": 0,
+          "UnitPrice": 0,
+          "CustomerID": 107927,
+          "Country": 0
+        },
+        "null_pct": {
+          "Invoice": 0.0,
+          "StockCode": 0.0,
+          "Description": 0.56,
+          "Quantity": 0.0,
+          "InvoiceDate": 0.0,
+          "UnitPrice": 0.0,
+          "CustomerID": 20.54,
+          "Country": 0.0
+        },
+        "duplicate_rows": 6865,
+        "invalid_dates": {
+          "InvoiceDate": 0
+        },
+        "invalid_quantities": 0,
+        "invalid_prices": 0,
+        "negative_quantities": 12326,
+        "zero_or_negative_prices": 3690,
+        "notes": []
+      },
+      "column_resolution": {
+        "renamed": {
+          "Invoice": "Invoice",
+          "StockCode": "StockCode",
+          "Description": "Description",
+          "Quantity": "Quantity",
+          "InvoiceDate": "InvoiceDate",
+          "Price": "UnitPrice",
+          "Customer ID": "CustomerID",
+          "Country": "Country"
+        },
+        "unmapped": [],
+        "missing_canonical": []
+      }
+    },
+    {
+      "sheet": "Year 2010-2011",
+      "n_original_rows": 541910,
+      "n_processed_rows": 541910,
+      "rows_dropped": 0,
+      "columns": [
+        "Invoice",
+        "StockCode",
+        "Description",
+        "Quantity",
+        "InvoiceDate",
+        "Price",
+        "Customer ID",
+        "Country"
+      ],
+      "duplicate_rows": 5268,
+      "quality": {
+        "n_rows": 541910,
+        "n_cols": 8,
+        "columns": [
+          "Invoice",
+          "StockCode",
+          "Description",
+          "Quantity",
+          "InvoiceDate",
+          "UnitPrice",
+          "CustomerID",
+          "Country"
+        ],
+        "dtypes": {
+          "Invoice": "object",
+          "StockCode": "object",
+          "Description": "object",
+          "Quantity": "int64",
+          "InvoiceDate": "datetime64[us]",
+          "UnitPrice": "float64",
+          "CustomerID": "float64",
+          "Country": "str"
+        },
+        "null_counts": {
+          "Invoice": 0,
+          "StockCode": 0,
+          "Description": 1454,
+          "Quantity": 0,
+          "InvoiceDate": 0,
+          "UnitPrice": 0,
+          "CustomerID": 135080,
+          "Country": 0
+        },
+        "null_pct": {
+          "Invoice": 0.0,
+          "StockCode": 0.0,
+          "Description": 0.27,
+          "Quantity": 0.0,
+          "InvoiceDate": 0.0,
+          "UnitPrice": 0.0,
+          "CustomerID": 24.93,
+          "Country": 0.0
+        },
+        "duplicate_rows": 5268,
+        "invalid_dates": {
+          "InvoiceDate": 0
+        },
+        "invalid_quantities": 0,
+        "invalid_prices": 0,
+        "negative_quantities": 10624,
+        "zero_or_negative_prices": 2517,
+        "notes": []
+      },
+      "column_resolution": {
+        "renamed": {
+          "Invoice": "Invoice",
+          "StockCode": "StockCode",
+          "Description": "Description",
+          "Quantity": "Quantity",
+          "InvoiceDate": "InvoiceDate",
+          "Price": "UnitPrice",
+          "Customer ID": "CustomerID",
+          "Country": "Country"
+        },
+        "unmapped": [],
+        "missing_canonical": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,1290 @@
+[
+  {
+    "file_name": "online_retail_II.xlsx",
+    "company_id": "demo-retail",
+    "processed_at_utc": "2026-10-07T23:49:45.500595+00:00",
+    "n_original_rows": 525461,
+    "n_processed_rows": 525461,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261007T234945Z_demo-retail_online_retail_II.xlsx.json"
+  },
+  {
+    "file_name": "test_edge_cases.csv",
+    "company_id": "test-empresa-1",
+    "processed_at_utc": "2026-10-07T23:50:10.375285+00:00",
+    "n_original_rows": 12240,
+    "n_processed_rows": 12240,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261007T235010Z_test-empresa-1_test_edge_cases.csv.json"
+  },
+  {
+    "file_name": "online_retail_II.xlsx",
+    "company_id": "demo-retail",
+    "processed_at_utc": "2026-10-07T23:51:07.783532+00:00",
+    "n_original_rows": 525461,
+    "n_processed_rows": 525461,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261007T235107Z_demo-retail_online_retail_II.xlsx.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-07T23:59:11.082755+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261007T235911Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-07T23:59:13.060015+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261007T235913Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-07T23:59:15.077342+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261007T235915Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-07T23:59:16.869709+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261007T235916Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-07T23:59:18.622465+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261007T235918Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "test_multi.xlsx",
+    "company_id": "test-1c",
+    "processed_at_utc": "2026-10-08T00:05:45.470166+00:00",
+    "n_original_rows": 3,
+    "n_processed_rows": 3,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000545Z_test-1c_test_multi.xlsx.json"
+  },
+  {
+    "file_name": "online_retail_II.xlsx",
+    "company_id": "demo-retail",
+    "processed_at_utc": "2026-10-08T00:07:44.692957+00:00",
+    "n_original_rows": 1067371,
+    "n_processed_rows": 1067371,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000744Z_demo-retail_online_retail_II.xlsx.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:01.890665+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000801Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:03.910334+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000803Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:05.854484+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000805Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:07.634327+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000807Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:10.128020+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000810Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:36.385310+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000836Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:38.352995+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000838Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:40.396748+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000840Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:42.214479+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000842Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:08:44.094628+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T000844Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:20:50.288279+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002050Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:20:52.315563+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002052Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:20:54.239118+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002054Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:20:56.048415+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002056Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:20:57.972590+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002057Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:28:18.057484+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002818Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:28:20.019388+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002820Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:28:22.041791+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002822Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:28:23.793117+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002823Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:28:25.719578+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T002825Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:46:33.834690+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T004633Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:46:35.870606+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T004635Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:46:37.711178+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T004637Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:46:39.932428+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T004639Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T00:46:41.818319+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T004641Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:00:06.779554+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T010006Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:00:08.814424+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T010008Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:00:10.867877+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T010010Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:00:12.708481+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T010012Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:00:14.463304+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T010014Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:30:21.965309+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013021Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:30:23.939219+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013023Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:30:25.605124+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013025Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:30:27.205295+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013027Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:30:28.757109+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013028Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:34:04.373097+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013404Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:34:06.014214+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013406Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:34:07.555257+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013407Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:34:09.068528+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013409Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:34:10.586805+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T013410Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:47:19.480190+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T014719Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:47:21.443389+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T014721Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:47:23.083262+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T014723Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:47:24.750857+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T014724Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:47:27.230023+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T014727Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:57:11.670881+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T015711Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:57:13.457045+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T015713Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:57:15.093705+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T015715Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:57:16.921341+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T015716Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T01:57:18.534150+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T015718Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "t2_small.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T02:07:03.861459+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T020703Z_test-profiling_t2_small.csv.json"
+  },
+  {
+    "file_name": "t3_missing.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T02:07:05.696679+00:00",
+    "n_original_rows": 100,
+    "n_processed_rows": 100,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T020705Z_test-profiling_t3_missing.csv.json"
+  },
+  {
+    "file_name": "t4_cancel.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T02:07:07.391204+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T020707Z_test-profiling_t4_cancel.csv.json"
+  },
+  {
+    "file_name": "t5_badprices.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T02:07:08.992665+00:00",
+    "n_original_rows": 80,
+    "n_processed_rows": 80,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T020708Z_test-profiling_t5_badprices.csv.json"
+  },
+  {
+    "file_name": "t6_empty.csv",
+    "company_id": "test-profiling",
+    "processed_at_utc": "2026-10-08T02:07:10.592457+00:00",
+    "n_original_rows": 0,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T020710Z_test-profiling_t6_empty.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-d87b5ad1c300",
+    "processed_at_utc": "2026-10-08T03:03:02.429730+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030302Z_CMP-d87b5ad1c300_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-2c3d9eb1a796",
+    "processed_at_utc": "2026-10-08T03:03:11.942917+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030311Z_CMP-2c3d9eb1a796_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-5c58a8944482",
+    "processed_at_utc": "2026-10-08T03:03:12.597873+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030312Z_CMP-5c58a8944482_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-9ac17efc8ebb",
+    "processed_at_utc": "2026-10-08T03:08:56.499394+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030856Z_CMP-9ac17efc8ebb_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-2662716cd5e6",
+    "processed_at_utc": "2026-10-08T03:09:01.276978+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030901Z_CMP-2662716cd5e6_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-849b242f7022",
+    "processed_at_utc": "2026-10-08T03:09:01.762815+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030901Z_CMP-849b242f7022_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-7a314d73518d",
+    "processed_at_utc": "2026-10-08T03:09:02.215748+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030902Z_CMP-7a314d73518d_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-f7790098d8f1",
+    "processed_at_utc": "2026-10-08T03:09:10.431093+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030910Z_CMP-f7790098d8f1_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-7ec5cd4e7524",
+    "processed_at_utc": "2026-10-08T03:09:15.070392+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030915Z_CMP-7ec5cd4e7524_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-7336fd6bf1c3",
+    "processed_at_utc": "2026-10-08T03:09:15.694276+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030915Z_CMP-7336fd6bf1c3_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-d2b8f655db43",
+    "processed_at_utc": "2026-10-08T03:09:16.341826+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030916Z_CMP-d2b8f655db43_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-60c4c2d48501",
+    "processed_at_utc": "2026-10-08T03:09:29.453193+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030929Z_CMP-60c4c2d48501_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-b7690a326986",
+    "processed_at_utc": "2026-10-08T03:09:46.299832+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030946Z_CMP-b7690a326986_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-a0a2de9fef23",
+    "processed_at_utc": "2026-10-08T03:09:50.935054+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030950Z_CMP-a0a2de9fef23_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-0eefc60eb633",
+    "processed_at_utc": "2026-10-08T03:09:51.446761+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030951Z_CMP-0eefc60eb633_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-8c71a5a88e0e",
+    "processed_at_utc": "2026-10-08T03:09:51.873892+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T030951Z_CMP-8c71a5a88e0e_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-942890929f99",
+    "processed_at_utc": "2026-10-08T03:10:00.400291+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031000Z_CMP-942890929f99_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-1729bea2d371",
+    "processed_at_utc": "2026-10-08T03:10:05.113759+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031005Z_CMP-1729bea2d371_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-c430de576537",
+    "processed_at_utc": "2026-10-08T03:10:05.599195+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031005Z_CMP-c430de576537_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-ed04579a445e",
+    "processed_at_utc": "2026-10-08T03:10:06.373378+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031006Z_CMP-ed04579a445e_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-9f70e1da7ded",
+    "processed_at_utc": "2026-10-08T03:10:51.009257+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031051Z_CMP-9f70e1da7ded_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-4cef7dc791a8",
+    "processed_at_utc": "2026-10-08T03:10:55.606804+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031055Z_CMP-4cef7dc791a8_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-a0bfab8e3ecd",
+    "processed_at_utc": "2026-10-08T03:10:56.154043+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031056Z_CMP-a0bfab8e3ecd_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-94afbce06717",
+    "processed_at_utc": "2026-10-08T03:10:56.723353+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031056Z_CMP-94afbce06717_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-2beb4bdc8e67",
+    "processed_at_utc": "2026-10-08T03:11:12.845371+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031112Z_CMP-2beb4bdc8e67_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-99015040d1bb",
+    "processed_at_utc": "2026-10-08T03:11:17.704959+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031117Z_CMP-99015040d1bb_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-0a034b660343",
+    "processed_at_utc": "2026-10-08T03:11:18.179005+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031118Z_CMP-0a034b660343_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-f12d8b524c7f",
+    "processed_at_utc": "2026-10-08T03:11:18.639533+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031118Z_CMP-f12d8b524c7f_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-355c6dd134e4",
+    "processed_at_utc": "2026-10-08T03:12:12.872900+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031212Z_CMP-355c6dd134e4_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-336e15996bd0",
+    "processed_at_utc": "2026-10-08T03:12:17.749343+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031217Z_CMP-336e15996bd0_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-ff893bffeb0d",
+    "processed_at_utc": "2026-10-08T03:12:18.245345+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031218Z_CMP-ff893bffeb0d_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-6952f9d2179b",
+    "processed_at_utc": "2026-10-08T03:12:18.779531+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031218Z_CMP-6952f9d2179b_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-966a4d28742c",
+    "processed_at_utc": "2026-10-08T03:13:17.157649+00:00",
+    "n_original_rows": 120,
+    "n_processed_rows": 120,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031317Z_CMP-966a4d28742c_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-7c6f8a47e963",
+    "processed_at_utc": "2026-10-08T03:14:29.692689+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031429Z_CMP-7c6f8a47e963_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-4d304627faaf",
+    "processed_at_utc": "2026-10-08T03:14:34.268561+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031434Z_CMP-4d304627faaf_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-36d37b635010",
+    "processed_at_utc": "2026-10-08T03:14:34.835669+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031434Z_CMP-36d37b635010_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-6ba975f84455",
+    "processed_at_utc": "2026-10-08T03:14:35.309017+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T031435Z_CMP-6ba975f84455_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-5340d4389c17",
+    "processed_at_utc": "2026-10-08T03:32:42.642358+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T033242Z_CMP-5340d4389c17_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-16a415cd1234",
+    "processed_at_utc": "2026-10-08T03:32:47.172111+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T033247Z_CMP-16a415cd1234_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-89d2a0ee7ecd",
+    "processed_at_utc": "2026-10-08T03:32:47.740892+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T033247Z_CMP-89d2a0ee7ecd_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-497b739962f3",
+    "processed_at_utc": "2026-10-08T03:32:48.264994+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T033248Z_CMP-497b739962f3_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-866718274b36",
+    "processed_at_utc": "2026-10-08T03:33:44.715325+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T033344Z_CMP-866718274b36_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-de346e043bb8",
+    "processed_at_utc": "2026-10-08T03:33:49.381575+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T033349Z_CMP-de346e043bb8_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-0e7875358fc9",
+    "processed_at_utc": "2026-10-08T03:33:49.876803+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T033349Z_CMP-0e7875358fc9_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-27c7acf6efcd",
+    "processed_at_utc": "2026-10-08T03:33:50.373157+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T033350Z_CMP-27c7acf6efcd_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-b24855379450",
+    "processed_at_utc": "2026-10-08T04:07:56.873355+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T040756Z_CMP-b24855379450_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-833cdc159711",
+    "processed_at_utc": "2026-10-08T04:08:01.408196+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T040801Z_CMP-833cdc159711_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-bcdb1ad2a4c3",
+    "processed_at_utc": "2026-10-08T04:08:01.788690+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T040801Z_CMP-bcdb1ad2a4c3_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-f43f2569ce68",
+    "processed_at_utc": "2026-10-08T04:08:02.152453+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T040802Z_CMP-f43f2569ce68_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-6d29b3eef6b6",
+    "processed_at_utc": "2026-10-08T04:08:46.091993+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T040846Z_CMP-6d29b3eef6b6_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-0491f67c9282",
+    "processed_at_utc": "2026-10-08T04:08:50.423310+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T040850Z_CMP-0491f67c9282_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-06e0625bdded",
+    "processed_at_utc": "2026-10-08T04:08:50.809160+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T040850Z_CMP-06e0625bdded_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-ca9cd712e44d",
+    "processed_at_utc": "2026-10-08T04:08:51.163108+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T040851Z_CMP-ca9cd712e44d_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-a54f3fc6bb66",
+    "processed_at_utc": "2026-10-08T04:21:08.325179+00:00",
+    "n_original_rows": 1320,
+    "n_processed_rows": 1320,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T042108Z_CMP-a54f3fc6bb66_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-0a6670c3b5d2",
+    "processed_at_utc": "2026-10-08T04:22:10.497755+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T042210Z_CMP-0a6670c3b5d2_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-e586fbbfcbf5",
+    "processed_at_utc": "2026-10-08T04:22:14.741165+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T042214Z_CMP-e586fbbfcbf5_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-868afb6b7ee4",
+    "processed_at_utc": "2026-10-08T04:22:15.166021+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T042215Z_CMP-868afb6b7ee4_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-1550721b3448",
+    "processed_at_utc": "2026-10-08T04:22:15.603228+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T042215Z_CMP-1550721b3448_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-6980d3ebd9c3",
+    "processed_at_utc": "2026-10-08T12:02:44.269020+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T120244Z_CMP-6980d3ebd9c3_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-539c22896244",
+    "processed_at_utc": "2026-10-08T12:02:53.597719+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T120253Z_CMP-539c22896244_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-cdc2fa26b832",
+    "processed_at_utc": "2026-10-08T12:02:56.023454+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T120256Z_CMP-cdc2fa26b832_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-6e345d8cdf61",
+    "processed_at_utc": "2026-10-08T12:02:57.422098+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T120257Z_CMP-6e345d8cdf61_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-68895e38fb2a",
+    "processed_at_utc": "2026-10-08T12:06:59.077552+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T120659Z_CMP-68895e38fb2a_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-275345f59a86",
+    "processed_at_utc": "2026-10-08T12:07:07.190132+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T120707Z_CMP-275345f59a86_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-6e801c74be6e",
+    "processed_at_utc": "2026-10-08T12:07:08.695749+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T120708Z_CMP-6e801c74be6e_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-a05e5a83a0b4",
+    "processed_at_utc": "2026-10-08T12:07:09.811328+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T120709Z_CMP-a05e5a83a0b4_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-602a0f7122eb",
+    "processed_at_utc": "2026-10-08T12:10:17.801756+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T121017Z_CMP-602a0f7122eb_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-2e34eeb8e2bb",
+    "processed_at_utc": "2026-10-08T12:10:29.840348+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T121029Z_CMP-2e34eeb8e2bb_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-865d15f417c1",
+    "processed_at_utc": "2026-10-08T12:10:31.993086+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T121031Z_CMP-865d15f417c1_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-a04b619a2584",
+    "processed_at_utc": "2026-10-08T12:10:34.434250+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T121034Z_CMP-a04b619a2584_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-e2d065ea5e6d",
+    "processed_at_utc": "2026-10-08T12:12:43.049382+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T121243Z_CMP-e2d065ea5e6d_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-9059213dcd03",
+    "processed_at_utc": "2026-10-08T12:12:51.061043+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T121251Z_CMP-9059213dcd03_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-0acec07911e8",
+    "processed_at_utc": "2026-10-08T12:12:52.125815+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T121252Z_CMP-0acec07911e8_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-58ca231edafe",
+    "processed_at_utc": "2026-10-08T12:12:53.645779+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T121253Z_CMP-58ca231edafe_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-fe57ea763711",
+    "processed_at_utc": "2026-10-08T21:04:30.318179+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T210430Z_CMP-fe57ea763711_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-3d22b4b49f00",
+    "processed_at_utc": "2026-10-08T21:04:42.710266+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T210442Z_CMP-3d22b4b49f00_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-ec8ebd7e69d8",
+    "processed_at_utc": "2026-10-08T21:04:44.987718+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T210444Z_CMP-ec8ebd7e69d8_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-e86ca889e2dc",
+    "processed_at_utc": "2026-10-08T21:04:47.196811+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T210447Z_CMP-e86ca889e2dc_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-85fd773fa9f6",
+    "processed_at_utc": "2026-10-08T21:08:03.129935+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T210803Z_CMP-85fd773fa9f6_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-1315cb9a1e47",
+    "processed_at_utc": "2026-10-08T21:08:15.835573+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T210815Z_CMP-1315cb9a1e47_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-699b6fbdd37e",
+    "processed_at_utc": "2026-10-08T21:08:16.321347+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T210816Z_CMP-699b6fbdd37e_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-e6307ee1a92c",
+    "processed_at_utc": "2026-10-08T21:08:16.775607+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T210816Z_CMP-e6307ee1a92c_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-966a4d28742c",
+    "processed_at_utc": "2026-10-08T21:11:59.297798+00:00",
+    "n_original_rows": 200,
+    "n_processed_rows": 200,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T211159Z_CMP-966a4d28742c_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-488621c9df86",
+    "processed_at_utc": "2026-10-08T21:27:47.319030+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T212747Z_CMP-488621c9df86_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-4010a5bcbb56",
+    "processed_at_utc": "2026-10-08T21:27:52.368046+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T212752Z_CMP-4010a5bcbb56_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-4c6fd156aa9f",
+    "processed_at_utc": "2026-10-08T21:27:53.238537+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T212753Z_CMP-4c6fd156aa9f_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-4c852f05435c",
+    "processed_at_utc": "2026-10-08T21:27:53.838571+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T212753Z_CMP-4c852f05435c_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-808b4cf578a3",
+    "processed_at_utc": "2026-10-08T21:28:55.275446+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T212855Z_CMP-808b4cf578a3_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-149ad52f9caf",
+    "processed_at_utc": "2026-10-08T21:29:15.651737+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T212915Z_CMP-149ad52f9caf_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-9b91861747b2",
+    "processed_at_utc": "2026-10-08T21:29:20.235166+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T212920Z_CMP-9b91861747b2_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-2efc6dfb965b",
+    "processed_at_utc": "2026-10-08T21:29:20.764838+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T212920Z_CMP-2efc6dfb965b_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-8a38532e1e26",
+    "processed_at_utc": "2026-10-08T21:29:21.349078+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T212921Z_CMP-8a38532e1e26_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-60faa329fa78",
+    "processed_at_utc": "2026-10-08T21:32:07.202649+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T213207Z_CMP-60faa329fa78_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-c4bff17eb6ab",
+    "processed_at_utc": "2026-10-08T21:32:11.706617+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T213211Z_CMP-c4bff17eb6ab_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-69aff1c8a289",
+    "processed_at_utc": "2026-10-08T21:32:12.204811+00:00",
+    "n_original_rows": 60,
+    "n_processed_rows": 60,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T213212Z_CMP-69aff1c8a289_work.csv.json"
+  },
+  {
+    "file_name": "work.csv",
+    "company_id": "CMP-3d362faf390c",
+    "processed_at_utc": "2026-10-08T21:32:12.674344+00:00",
+    "n_original_rows": 1,
+    "n_processed_rows": 0,
+    "log_path": "/home/hatch/workspace/zayvero-business/audit/log/20261008T213212Z_CMP-3d362faf390c_work.csv.json"
+  }
+]

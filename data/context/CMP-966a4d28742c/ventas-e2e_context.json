@@ -1,0 +1,840 @@
+{
+ "report_metadata": {
+  "engine": "zayvero-business-context-2C",
+  "company_id": "CMP-966a4d28742c",
+  "dataset": "Ventas E2E F8",
+  "generated_at": "2026-10-08T21:11:59.844396+00:00",
+  "n_findings_in": 4,
+  "n_contextualized": 4
+ },
+ "summary": {
+  "total": 4,
+  "by_context_status": {
+   "insufficient_context": 4
+  },
+  "by_recurrence": {
+   "rarely_recurrent": 3,
+   "isolated": 1
+  },
+  "note": "Cada hallazgo contextualizado distingue FACT / OBSERVATION / POSSIBLE_EXPLANATION / RECOMMENDATION. Ninguna hipótesis se presenta como hecho y no se afirma causalidad."
+ },
+ "context_findings": [
+  {
+   "finding_id": "FND-000001",
+   "context_status": "insufficient_context",
+   "facts": [
+    {
+     "kind": "FACT",
+     "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-17 (observado £332.91 vs. esperado £144.44).",
+     "source": "Business Finding FASE 2B"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período 2024-06-15, el revenue asociado fue £332.91 en 1 transacción(es).",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período previo comparable, el revenue fue £127.96.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período posterior disponible, el revenue fue £759.70.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    }
+   ],
+   "observations": [
+    {
+     "kind": "OBSERVATION",
+     "text": "El 100% del total del evento se concentra en 1 transacción(es): comportamiento concentrado.",
+     "basis": "distribución por transacción"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "1 compra(s) adicional(es) de magnitud similar.",
+     "basis": "análisis de recurrencia"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Tras el evento, el nivel se mantuvo elevado respecto al comportamiento previo: posible cambio sostenido que conviene monitorear.",
+     "basis": "comparación antes/después"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "basis": "profundidad de historial"
+    }
+   ],
+   "possible_explanations": [
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El comportamiento podría estar relacionado con un pedido extraordinario o una compra concentrada en pocas transacciones.",
+     "basis": "patrón observado: el 100% del total se concentra en 1 transacción(es)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento es poco frecuente pero no único; podría responder a circunstancias operativas específicas que conviene identificar.",
+     "basis": "patrón observado: 1 período(s) adicional(es) similares"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El nivel elevado sostenido podría reflejar un cambio en la demanda, en las condiciones comerciales o en la operación; conviene monitorear su evolución.",
+     "basis": "patrón observado: nivel posterior elevado vs. previo"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento se concentra en un único cliente; podría tratarse de un pedido especial o de una condición particular de ese cliente.",
+     "basis": "patrón observado: 1 cliente concentra el evento (CLI-17)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "No existe evidencia suficiente para determinar la causa del comportamiento observado.",
+     "basis": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza."
+    }
+   ],
+   "recommendations": [
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Revisar el historial completo del cliente CLI-17 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+     "basis": "evidencia: compra muy superior a su historial"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+     "basis": "evidencia: desviación vs. comportamiento histórico del cliente"
+    }
+   ],
+   "related_entities": {
+    "top_customers": [
+     {
+      "id": "CLI-17",
+      "revenue": 332.91
+     }
+    ],
+    "top_products": [],
+    "top_countries": []
+   },
+   "historical_context": {
+    "before": {
+     "revenue": 127.96,
+     "n_trx": 1.0
+    },
+    "during": {
+     "revenue": 332.91,
+     "n_trx": 1.0
+    },
+    "after": {
+     "revenue": 759.7,
+     "n_trx": 6.0
+    }
+   },
+   "trend_context": {
+    "trend": "sustained_high",
+    "after_vs_before_ratio": 5.937,
+    "note": "Tras el evento, el nivel se mantuvo elevado respecto al comportamiento previo: posible cambio sostenido que conviene monitorear."
+   },
+   "recurrence": "rarely_recurrent",
+   "recurrence_detail": {
+    "recurrence": "rarely_recurrent",
+    "n_similar": 1,
+    "note": "1 compra(s) adicional(es) de magnitud similar."
+   },
+   "concentration": {
+    "top3_share": 1.0,
+    "top3_n": 1,
+    "total": 332.91,
+    "n_trx": 1,
+    "concentrated": true
+   },
+   "evidence_quality": "LOW",
+   "evidence_quality_note": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+   "confidence_score": 59,
+   "business_priority": "REVIEW",
+   "impact_score": 68.3,
+   "severity": "MEDIUM",
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-17",
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "period": {
+     "start": "None",
+     "end": "None",
+     "granularity": "transaction"
+    },
+    "filters": "entity_kind=customer; entity_id=CLI-17",
+    "records": 1,
+    "entity": {
+     "kind": "customer",
+     "id": "CLI-17",
+     "label": "cliente CLI-17"
+    },
+    "baseline": 144.44,
+    "observed_value": 332.91,
+    "comparison_value": {
+     "before": {
+      "revenue": 127.96,
+      "n_trx": 1
+     },
+     "during": {
+      "revenue": 332.91,
+      "n_trx": 1
+     },
+     "after": {
+      "revenue": 759.7,
+      "n_trx": 6
+     },
+     "concentration": {
+      "top3_share": 1.0,
+      "top3_n": 1,
+      "n_trx": 1
+     },
+     "recurrence": "rarely_recurrent"
+    },
+    "method": "FASE 2C context engine: ventanas antes/durante/después, recurrencia por umbral, concentración top-3, tendencia post-evento; todo vectorizado sobre el Parquet normalizado",
+    "evidence_used": {
+     "n_history_points": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "sources": [
+      "parquet normalizado FASE 1C",
+      "Business Finding FASE 2B"
+     ]
+    },
+    "fase_2b_trace": {
+     "dataset": "Ventas E2E F8",
+     "company_id": "CMP-966a4d28742c",
+     "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+     "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+     "rows_considered": 200,
+     "baseline": "mediana de compras del cliente",
+     "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+     "period_analyzed": "2024-01-15 → 2024-12-15",
+     "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+     "fase_2b": {
+      "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+      "p95_reference": 222.91,
+      "evidence_quality": "LOW",
+      "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+      "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+      "dedup": "1 anomalía(s) 2A agrupadas",
+      "monetary_label": "desviación respecto al comportamiento esperado"
+     }
+    }
+   }
+  },
+  {
+   "finding_id": "FND-000002",
+   "context_status": "insufficient_context",
+   "facts": [
+    {
+     "kind": "FACT",
+     "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-23 (observado £341.91 vs. esperado £124.95).",
+     "source": "Business Finding FASE 2B"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período 2024-03-15, el revenue asociado fue £341.91 en 1 transacción(es).",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período previo comparable, el revenue fue £177.94.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período posterior disponible, el revenue fue £575.78.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    }
+   ],
+   "observations": [
+    {
+     "kind": "OBSERVATION",
+     "text": "El 100% del total del evento se concentra en 1 transacción(es): comportamiento concentrado.",
+     "basis": "distribución por transacción"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "0 compra(s) adicional(es) de magnitud similar.",
+     "basis": "análisis de recurrencia"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Tras el evento, el nivel se mantuvo elevado respecto al comportamiento previo: posible cambio sostenido que conviene monitorear.",
+     "basis": "comparación antes/después"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "basis": "profundidad de historial"
+    }
+   ],
+   "possible_explanations": [
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El comportamiento podría estar relacionado con un pedido extraordinario o una compra concentrada en pocas transacciones.",
+     "basis": "patrón observado: el 100% del total se concentra en 1 transacción(es)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "Se trata de un evento aislado en el historial disponible; podría corresponder a una operación puntual.",
+     "basis": "patrón observado: ningún otro período con magnitud similar en el historial"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El nivel elevado sostenido podría reflejar un cambio en la demanda, en las condiciones comerciales o en la operación; conviene monitorear su evolución.",
+     "basis": "patrón observado: nivel posterior elevado vs. previo"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento se concentra en un único cliente; podría tratarse de un pedido especial o de una condición particular de ese cliente.",
+     "basis": "patrón observado: 1 cliente concentra el evento (CLI-23)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "No existe evidencia suficiente para determinar la causa del comportamiento observado.",
+     "basis": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza."
+    }
+   ],
+   "recommendations": [
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Revisar el historial completo del cliente CLI-23 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+     "basis": "evidencia: compra muy superior a su historial"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+     "basis": "evidencia: desviación vs. comportamiento histórico del cliente"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Al tratarse de un evento aislado, priorizar la verificación del documento fuente antes de considerarlo un nuevo patrón.",
+     "basis": "evidencia: evento sin precedentes similares"
+    }
+   ],
+   "related_entities": {
+    "top_customers": [
+     {
+      "id": "CLI-23",
+      "revenue": 341.91
+     }
+    ],
+    "top_products": [],
+    "top_countries": []
+   },
+   "historical_context": {
+    "before": {
+     "revenue": 177.94,
+     "n_trx": 2.0
+    },
+    "during": {
+     "revenue": 341.91,
+     "n_trx": 1.0
+    },
+    "after": {
+     "revenue": 575.78,
+     "n_trx": 5.0
+    }
+   },
+   "trend_context": {
+    "trend": "sustained_high",
+    "after_vs_before_ratio": 3.236,
+    "note": "Tras el evento, el nivel se mantuvo elevado respecto al comportamiento previo: posible cambio sostenido que conviene monitorear."
+   },
+   "recurrence": "isolated",
+   "recurrence_detail": {
+    "recurrence": "isolated",
+    "n_similar": 0,
+    "note": "0 compra(s) adicional(es) de magnitud similar."
+   },
+   "concentration": {
+    "top3_share": 1.0,
+    "top3_n": 1,
+    "total": 341.91,
+    "n_trx": 1,
+    "concentrated": true
+   },
+   "evidence_quality": "LOW",
+   "evidence_quality_note": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+   "confidence_score": 57,
+   "business_priority": "REVIEW",
+   "impact_score": 67.8,
+   "severity": "MEDIUM",
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-23",
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "period": {
+     "start": "None",
+     "end": "None",
+     "granularity": "transaction"
+    },
+    "filters": "entity_kind=customer; entity_id=CLI-23",
+    "records": 1,
+    "entity": {
+     "kind": "customer",
+     "id": "CLI-23",
+     "label": "cliente CLI-23"
+    },
+    "baseline": 124.95,
+    "observed_value": 341.91,
+    "comparison_value": {
+     "before": {
+      "revenue": 177.94,
+      "n_trx": 2
+     },
+     "during": {
+      "revenue": 341.91,
+      "n_trx": 1
+     },
+     "after": {
+      "revenue": 575.78,
+      "n_trx": 5
+     },
+     "concentration": {
+      "top3_share": 1.0,
+      "top3_n": 1,
+      "n_trx": 1
+     },
+     "recurrence": "isolated"
+    },
+    "method": "FASE 2C context engine: ventanas antes/durante/después, recurrencia por umbral, concentración top-3, tendencia post-evento; todo vectorizado sobre el Parquet normalizado",
+    "evidence_used": {
+     "n_history_points": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "sources": [
+      "parquet normalizado FASE 1C",
+      "Business Finding FASE 2B"
+     ]
+    },
+    "fase_2b_trace": {
+     "dataset": "Ventas E2E F8",
+     "company_id": "CMP-966a4d28742c",
+     "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+     "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+     "rows_considered": 200,
+     "baseline": "mediana de compras del cliente",
+     "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+     "period_analyzed": "2024-01-15 → 2024-12-15",
+     "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+     "fase_2b": {
+      "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+      "p95_reference": 222.91,
+      "evidence_quality": "LOW",
+      "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+      "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+      "dedup": "1 anomalía(s) 2A agrupadas",
+      "monetary_label": "desviación respecto al comportamiento esperado"
+     }
+    }
+   }
+  },
+  {
+   "finding_id": "FND-000003",
+   "context_status": "insufficient_context",
+   "facts": [
+    {
+     "kind": "FACT",
+     "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-16 (observado £323.91 vs. esperado £127.94).",
+     "source": "Business Finding FASE 2B"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período 2024-09-15, el revenue asociado fue £323.91 en 1 transacción(es).",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período previo comparable, el revenue fue £579.80.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período posterior disponible, el revenue fue £369.85.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    }
+   ],
+   "observations": [
+    {
+     "kind": "OBSERVATION",
+     "text": "El 100% del total del evento se concentra en 1 transacción(es): comportamiento concentrado.",
+     "basis": "distribución por transacción"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "1 compra(s) adicional(es) de magnitud similar.",
+     "basis": "análisis de recurrencia"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Tras el evento, el nivel cayó por debajo del comportamiento previo.",
+     "basis": "comparación antes/después"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "basis": "profundidad de historial"
+    }
+   ],
+   "possible_explanations": [
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El comportamiento podría estar relacionado con un pedido extraordinario o una compra concentrada en pocas transacciones.",
+     "basis": "patrón observado: el 100% del total se concentra en 1 transacción(es)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento es poco frecuente pero no único; podría responder a circunstancias operativas específicas que conviene identificar.",
+     "basis": "patrón observado: 1 período(s) adicional(es) similares"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento se concentra en un único cliente; podría tratarse de un pedido especial o de una condición particular de ese cliente.",
+     "basis": "patrón observado: 1 cliente concentra el evento (CLI-16)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "No existe evidencia suficiente para determinar la causa del comportamiento observado.",
+     "basis": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza."
+    }
+   ],
+   "recommendations": [
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Revisar el historial completo del cliente CLI-16 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+     "basis": "evidencia: compra muy superior a su historial"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+     "basis": "evidencia: desviación vs. comportamiento histórico del cliente"
+    }
+   ],
+   "related_entities": {
+    "top_customers": [
+     {
+      "id": "CLI-16",
+      "revenue": 323.91
+     }
+    ],
+    "top_products": [],
+    "top_countries": []
+   },
+   "historical_context": {
+    "before": {
+     "revenue": 579.8,
+     "n_trx": 4.0
+    },
+    "during": {
+     "revenue": 323.91,
+     "n_trx": 1.0
+    },
+    "after": {
+     "revenue": 369.85,
+     "n_trx": 3.0
+    }
+   },
+   "trend_context": {
+    "trend": "dropped",
+    "after_vs_before_ratio": 0.638,
+    "note": "Tras el evento, el nivel cayó por debajo del comportamiento previo."
+   },
+   "recurrence": "rarely_recurrent",
+   "recurrence_detail": {
+    "recurrence": "rarely_recurrent",
+    "n_similar": 1,
+    "note": "1 compra(s) adicional(es) de magnitud similar."
+   },
+   "concentration": {
+    "top3_share": 1.0,
+    "top3_n": 1,
+    "total": 323.90999999999997,
+    "n_trx": 1,
+    "concentrated": true
+   },
+   "evidence_quality": "LOW",
+   "evidence_quality_note": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+   "confidence_score": 55,
+   "business_priority": "REVIEW",
+   "impact_score": 66.3,
+   "severity": "MEDIUM",
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-16",
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "period": {
+     "start": "None",
+     "end": "None",
+     "granularity": "transaction"
+    },
+    "filters": "entity_kind=customer; entity_id=CLI-16",
+    "records": 1,
+    "entity": {
+     "kind": "customer",
+     "id": "CLI-16",
+     "label": "cliente CLI-16"
+    },
+    "baseline": 127.94,
+    "observed_value": 323.91,
+    "comparison_value": {
+     "before": {
+      "revenue": 579.8,
+      "n_trx": 4
+     },
+     "during": {
+      "revenue": 323.90999999999997,
+      "n_trx": 1
+     },
+     "after": {
+      "revenue": 369.85,
+      "n_trx": 3
+     },
+     "concentration": {
+      "top3_share": 1.0,
+      "top3_n": 1,
+      "n_trx": 1
+     },
+     "recurrence": "rarely_recurrent"
+    },
+    "method": "FASE 2C context engine: ventanas antes/durante/después, recurrencia por umbral, concentración top-3, tendencia post-evento; todo vectorizado sobre el Parquet normalizado",
+    "evidence_used": {
+     "n_history_points": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "sources": [
+      "parquet normalizado FASE 1C",
+      "Business Finding FASE 2B"
+     ]
+    },
+    "fase_2b_trace": {
+     "dataset": "Ventas E2E F8",
+     "company_id": "CMP-966a4d28742c",
+     "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+     "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+     "rows_considered": 200,
+     "baseline": "mediana de compras del cliente",
+     "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+     "period_analyzed": "2024-01-15 → 2024-12-15",
+     "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+     "fase_2b": {
+      "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+      "p95_reference": 222.91,
+      "evidence_quality": "LOW",
+      "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+      "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+      "dedup": "1 anomalía(s) 2A agrupadas",
+      "monetary_label": "desviación respecto al comportamiento esperado"
+     }
+    }
+   }
+  },
+  {
+   "finding_id": "FND-000004",
+   "context_status": "insufficient_context",
+   "facts": [
+    {
+     "kind": "FACT",
+     "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-22 (observado £332.91 vs. esperado £108.95).",
+     "source": "Business Finding FASE 2B"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período 2024-06-15, el revenue asociado fue £332.91 en 1 transacción(es).",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período previo comparable, el revenue fue £631.79.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período posterior disponible, el revenue fue £190.92.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    }
+   ],
+   "observations": [
+    {
+     "kind": "OBSERVATION",
+     "text": "El 100% del total del evento se concentra en 1 transacción(es): comportamiento concentrado.",
+     "basis": "distribución por transacción"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "1 compra(s) adicional(es) de magnitud similar.",
+     "basis": "análisis de recurrencia"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Tras el evento, el nivel cayó por debajo del comportamiento previo.",
+     "basis": "comparación antes/después"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "basis": "profundidad de historial"
+    }
+   ],
+   "possible_explanations": [
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El comportamiento podría estar relacionado con un pedido extraordinario o una compra concentrada en pocas transacciones.",
+     "basis": "patrón observado: el 100% del total se concentra en 1 transacción(es)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento es poco frecuente pero no único; podría responder a circunstancias operativas específicas que conviene identificar.",
+     "basis": "patrón observado: 1 período(s) adicional(es) similares"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento se concentra en un único cliente; podría tratarse de un pedido especial o de una condición particular de ese cliente.",
+     "basis": "patrón observado: 1 cliente concentra el evento (CLI-22)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "No existe evidencia suficiente para determinar la causa del comportamiento observado.",
+     "basis": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza."
+    }
+   ],
+   "recommendations": [
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Revisar el historial completo del cliente CLI-22 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+     "basis": "evidencia: compra muy superior a su historial"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+     "basis": "evidencia: desviación vs. comportamiento histórico del cliente"
+    }
+   ],
+   "related_entities": {
+    "top_customers": [
+     {
+      "id": "CLI-22",
+      "revenue": 332.91
+     }
+    ],
+    "top_products": [],
+    "top_countries": []
+   },
+   "historical_context": {
+    "before": {
+     "revenue": 631.79,
+     "n_trx": 5.0
+    },
+    "during": {
+     "revenue": 332.91,
+     "n_trx": 1.0
+    },
+    "after": {
+     "revenue": 190.92,
+     "n_trx": 2.0
+    }
+   },
+   "trend_context": {
+    "trend": "dropped",
+    "after_vs_before_ratio": 0.302,
+    "note": "Tras el evento, el nivel cayó por debajo del comportamiento previo."
+   },
+   "recurrence": "rarely_recurrent",
+   "recurrence_detail": {
+    "recurrence": "rarely_recurrent",
+    "n_similar": 1,
+    "note": "1 compra(s) adicional(es) de magnitud similar."
+   },
+   "concentration": {
+    "top3_share": 1.0,
+    "top3_n": 1,
+    "total": 332.91,
+    "n_trx": 1,
+    "concentrated": true
+   },
+   "evidence_quality": "LOW",
+   "evidence_quality_note": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+   "confidence_score": 53,
+   "business_priority": "REVIEW",
+   "impact_score": 66.0,
+   "severity": "MEDIUM",
+   "type": "CUSTOMER_ANOMALY",
+   "title": "Comportamiento de compra inusual: cliente CLI-22",
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "period": {
+     "start": "None",
+     "end": "None",
+     "granularity": "transaction"
+    },
+    "filters": "entity_kind=customer; entity_id=CLI-22",
+    "records": 1,
+    "entity": {
+     "kind": "customer",
+     "id": "CLI-22",
+     "label": "cliente CLI-22"
+    },
+    "baseline": 108.95,
+    "observed_value": 332.91,
+    "comparison_value": {
+     "before": {
+      "revenue": 631.7900000000001,
+      "n_trx": 5
+     },
+     "during": {
+      "revenue": 332.91,
+      "n_trx": 1
+     },
+     "after": {
+      "revenue": 190.92,
+      "n_trx": 2
+     },
+     "concentration": {
+      "top3_share": 1.0,
+      "top3_n": 1,
+      "n_trx": 1
+     },
+     "recurrence": "rarely_recurrent"
+    },
+    "method": "FASE 2C context engine: ventanas antes/durante/después, recurrencia por umbral, concentración top-3, tendencia post-evento; todo vectorizado sobre el Parquet normalizado",
+    "evidence_used": {
+     "n_history_points": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "sources": [
+      "parquet normalizado FASE 1C",
+      "Business Finding FASE 2B"
+     ]
+    },
+    "fase_2b_trace": {
+     "dataset": "Ventas E2E F8",
+     "company_id": "CMP-966a4d28742c",
+     "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+     "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+     "rows_considered": 200,
+     "baseline": "mediana de compras del cliente",
+     "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+     "period_analyzed": "2024-01-15 → 2024-12-15",
+     "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+     "fase_2b": {
+      "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+      "p95_reference": 222.91,
+      "evidence_quality": "LOW",
+      "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+      "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+      "dedup": "1 anomalía(s) 2A agrupadas",
+      "monetary_label": "desviación respecto al comportamiento esperado"
+     }
+    }
+   }
+  }
+ ],
+ "methods": {
+  "context_engine": "Ventanas antes/durante/después (90d), recurrencia por umbral ≥50% del evento, concentración top-3 transacciones, tendencia post-evento.",
+  "explanations": "Hipótesis basadas en patrones observables; cada una documenta su basis y se etiqueta POSSIBLE_EXPLANATION.",
+  "recommendations": "Solo recomendaciones de REVISIÓN; nunca acciones."
+ },
+ "trace": {
+  "parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-966a4d28742c/ventas-e2e.parquet",
+  "findings_source": "findings_report_2B",
+  "rows_in_dataset": 200
+ }
+}

@@ -1,0 +1,145 @@
+[
+  {
+    "dataset_id": "DS-5b9584f60e0c",
+    "company_id": "CMP-966a4d28742c",
+    "nombre": "Ventas E2E F8",
+    "source": "csv",
+    "created_at": "2026-10-08T21:11:59Z",
+    "updated_at": "2026-10-08T21:11:59Z",
+    "status": "READY",
+    "is_active": true,
+    "is_demo": false,
+    "base_name": "ventas-e2e",
+    "upload": {
+      "filename": "ventas-e2e.csv",
+      "size_bytes": 8915,
+      "format": "csv",
+      "uploaded_at": "2026-10-08T21:11:59Z",
+      "uploaded_by": "USR-6cad1fa2f6a2",
+      "path": "/home/hatch/workspace/zayvero-business/data/uploads/CMP-966a4d28742c/DS-5b9584f60e0c/original.csv"
+    },
+    "review": {
+      "ok": true,
+      "checks": [
+        {
+          "key": "file",
+          "label": "Archivo recibido",
+          "ok": true
+        },
+        {
+          "key": "format",
+          "label": "Formato reconocido",
+          "ok": true
+        },
+        {
+          "key": "columns",
+          "label": "Columnas detectadas",
+          "ok": true,
+          "detail": "6 columnas"
+        },
+        {
+          "key": "dates",
+          "label": "Fechas detectadas",
+          "ok": true,
+          "detail": "2024-01-15 → 2024-12-15"
+        },
+        {
+          "key": "rows",
+          "label": "Registros detectados",
+          "ok": true,
+          "detail": "200 registros"
+        }
+      ],
+      "warnings": [
+        {
+          "type": "missing_columns",
+          "label": "Columnas faltantes",
+          "detail": "No encontramos estas columnas esperadas: StockCode, Description, Country. El análisis puede quedar limitado."
+        },
+        {
+          "type": "unmapped_columns",
+          "label": "Columnas no reconocidas",
+          "detail": "Estas columnas no se reconocieron y no se usarán: producto"
+        }
+      ],
+      "total_rows": 200,
+      "columns": [
+        "factura",
+        "producto",
+        "cantidad",
+        "fecha_venta",
+        "precio",
+        "cliente"
+      ],
+      "sheets": [
+        {
+          "sheet": "única",
+          "rows": 200,
+          "columns": [
+            "factura",
+            "producto",
+            "cantidad",
+            "fecha_venta",
+            "precio",
+            "cliente"
+          ],
+          "columns_detected": 6
+        }
+      ],
+      "date_min": "2024-01-15T00:00:00",
+      "date_max": "2024-12-15T00:00:00",
+      "missing_canonical": [
+        "StockCode",
+        "Description",
+        "Country"
+      ],
+      "unmapped": [
+        "producto"
+      ]
+    },
+    "mapping": {
+      "confirmed": true,
+      "mapping": {
+        "Invoice": "factura",
+        "Quantity": "cantidad",
+        "InvoiceDate": "fecha_venta",
+        "UnitPrice": "precio",
+        "CustomerID": "cliente"
+      },
+      "confirmed_at": "2026-10-08T21:11:59Z",
+      "auto": false
+    },
+    "row_count": 200,
+    "period_start": "2024-01-15",
+    "period_end": "2024-12-15",
+    "processing": {
+      "started_at": "2026-10-08T21:11:59Z",
+      "finished_at": "2026-10-08T21:11:59Z",
+      "error": null,
+      "steps": [
+        "Datos preparados",
+        "Datos organizados",
+        "Perfil empresarial",
+        "Detección de comportamientos inusuales",
+        "Análisis de impacto",
+        "Contexto empresarial",
+        "Predicciones",
+        "Inteligencia de predicción",
+        "Validación de predicciones",
+        "Contexto unificado"
+      ]
+    },
+    "outputs": {
+      "parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-966a4d28742c/ventas-e2e.parquet",
+      "profile": "/home/hatch/workspace/zayvero-business/data/profiles/CMP-966a4d28742c/ventas-e2e_profile.json",
+      "anomalies": "/home/hatch/workspace/zayvero-business/data/anomalies/CMP-966a4d28742c/ventas-e2e_anomalies.json",
+      "findings": "/home/hatch/workspace/zayvero-business/data/findings/CMP-966a4d28742c/ventas-e2e_findings.json",
+      "context_findings": "data/context/CMP-966a4d28742c/ventas-e2e_context.json",
+      "predictions": "/home/hatch/workspace/zayvero-business/data/predictions/CMP-966a4d28742c/ventas-e2e_predictions.json",
+      "prediction_intelligence": "/home/hatch/workspace/zayvero-business/data/prediction_intelligence/CMP-966a4d28742c/ventas-e2e_prediction_intelligence.json",
+      "prediction_validation": "/home/hatch/workspace/zayvero-business/data/prediction_validation/CMP-966a4d28742c/ventas-e2e_prediction_validation.json",
+      "business_context": "/home/hatch/workspace/zayvero-business/data/business_context/CMP-966a4d28742c/ventas-e2e_business_context.json"
+    },
+    "warnings": []
+  }
+]

@@ -1,0 +1,2865 @@
+{
+ "identity": {
+  "context_id": "CTX-931ab40605d8fc22",
+  "company_id": "CMP-966a4d28742c",
+  "dataset_id": "online_retail_II",
+  "dataset_label": "Ventas E2E F8",
+  "generated_at": "2026-10-08T21:11:59.938507+00:00"
+ },
+ "business_snapshot": {
+  "business_period": {
+   "start": "2024-01-15T00:00:00",
+   "end": "2024-12-15T00:00:00",
+   "days_with_activity": 12
+  },
+  "dataset_label": "Ventas E2E F8",
+  "metrics": [
+   {
+    "metric_name": "gross_revenue",
+    "value": 29381.05,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.sales",
+    "trace": {
+     "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+     "filters": "Revenue no nulo; transaction_status según bloque",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    },
+    "evidence_id": "EV-0001"
+   },
+   {
+    "metric_name": "net_revenue",
+    "value": 29381.05,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.sales",
+    "trace": {
+     "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+     "filters": "Revenue no nulo; transaction_status según bloque",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    },
+    "evidence_id": "EV-0002"
+   },
+   {
+    "metric_name": "cancelled_revenue",
+    "value": 0.0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.sales",
+    "trace": {
+     "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+     "filters": "Revenue no nulo; transaction_status según bloque",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    },
+    "evidence_id": "EV-0003"
+   },
+   {
+    "metric_name": "total_rows",
+    "value": 200,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.transactions",
+    "trace": {
+     "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+     "filters": "ninguno (todas las filas)",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": ""
+    },
+    "evidence_id": "EV-0004"
+   },
+   {
+    "metric_name": "unique_transactions",
+    "value": 200,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.transactions",
+    "trace": {
+     "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+     "filters": "ninguno (todas las filas)",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": ""
+    },
+    "evidence_id": "EV-0005"
+   },
+   {
+    "metric_name": "completed_rows",
+    "value": 200,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.transactions",
+    "trace": {
+     "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+     "filters": "ninguno (todas las filas)",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": ""
+    },
+    "evidence_id": "EV-0006"
+   },
+   {
+    "metric_name": "cancelled_rows",
+    "value": 0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.transactions",
+    "trace": {
+     "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+     "filters": "ninguno (todas las filas)",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": ""
+    },
+    "evidence_id": "EV-0007"
+   },
+   {
+    "metric_name": "total_customers",
+    "value": 25,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.customers",
+    "trace": {
+     "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+     "filters": "transaction_status='completed'; Customer no nulo",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+    },
+    "evidence_id": "EV-0008"
+   },
+   {
+    "metric_name": "active_customers",
+    "value": 20,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.customers",
+    "trace": {
+     "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+     "filters": "transaction_status='completed'; Customer no nulo",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+    },
+    "evidence_id": "EV-0009"
+   },
+   {
+    "metric_name": "total_products",
+    "value": 0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.products",
+    "trace": {
+     "formula": "por Product: units=ΣQuantity|completed, transactions=COUNT|completed, revenue=ΣRevenue|completed, avg_price=MEAN(UnitPrice), frequency=transactions/días_activos*30; clases por deciles de revenue (p90=0.0, p60=0.0)",
+     "filters": "transaction_status='completed'; Quantity/Revenue nulos se ignoran",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "0 productos con transacciones completadas; 0 productos distintos en total. Top 50 incluidos en el perfil; la tabla completa puede regenerarse del Parquet."
+    },
+    "evidence_id": "EV-0010"
+   },
+   {
+    "metric_name": "total_countries",
+    "value": 0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.entities",
+    "trace": {
+     "formula": "COUNT DISTINCT de Customer / Product / Country",
+     "filters": "valores no nulos",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "Los nulos no se cuentan como entidad."
+    },
+    "evidence_id": "EV-0011"
+   },
+   {
+    "metric_name": "units_sold_net",
+    "value": 995.0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.sales",
+    "trace": {
+     "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+     "filters": "Revenue no nulo; transaction_status según bloque",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    },
+    "evidence_id": "EV-0012"
+   },
+   {
+    "metric_name": "data_quality_score",
+    "value": 98.0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.data_quality",
+    "trace": {
+     "formula": "Data Quality Score 0-100 (FASE 1B)"
+    },
+    "evidence_id": "EV-0013"
+   },
+   {
+    "metric_name": "cancellations_count",
+    "value": 0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "source": "FASE_1B_1C.cancellations",
+    "trace": {
+     "formula": "count=filas cancelled; pct=count/total; units=ΣQuantity|signed; value=Σ|Revenue|; tops por Σ|Revenue|",
+     "filters": "transaction_status='cancelled'",
+     "rows_considered": 0,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "Descriptivo únicamente. No se afirma fraude ni anomalía: la detección de anomalías es una fase posterior."
+    },
+    "evidence_id": "EV-0014"
+   }
+  ]
+ },
+ "critical_findings": [
+  {
+   "kind": "BUSINESS_FINDING",
+   "finding_id": "FND-000001",
+   "finding_type": "CUSTOMER_ANOMALY",
+   "business_priority": "REVIEW",
+   "impact_score": 68.3,
+   "confidence_score": 59,
+   "evidence_quality": "LOW",
+   "severity": "MEDIUM",
+   "title": "Comportamiento de compra inusual: cliente CLI-17",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-17",
+    "label": "cliente CLI-17"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 332.91,
+   "expected_value": 144.44,
+   "difference": 188.47,
+   "percentage_difference": 130.48,
+   "statistical_explanation": "El cliente CLI-17 realizó una compra de £332.91, 2.3 veces superior a su compra habitual (£144.44). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "facts": [
+    {
+     "kind": "FACT",
+     "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-17 (observado £332.91 vs. esperado £144.44).",
+     "source": "Business Finding FASE 2B"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período 2024-06-15, el revenue asociado fue £332.91 en 1 transacción(es).",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período previo comparable, el revenue fue £127.96.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período posterior disponible, el revenue fue £759.70.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    }
+   ],
+   "observations": [
+    {
+     "kind": "OBSERVATION",
+     "text": "El 100% del total del evento se concentra en 1 transacción(es): comportamiento concentrado.",
+     "basis": "distribución por transacción"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "1 compra(s) adicional(es) de magnitud similar.",
+     "basis": "análisis de recurrencia"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Tras el evento, el nivel se mantuvo elevado respecto al comportamiento previo: posible cambio sostenido que conviene monitorear.",
+     "basis": "comparación antes/después"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "basis": "profundidad de historial"
+    }
+   ],
+   "possible_explanations": [
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El comportamiento podría estar relacionado con un pedido extraordinario o una compra concentrada en pocas transacciones.",
+     "basis": "patrón observado: el 100% del total se concentra en 1 transacción(es)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento es poco frecuente pero no único; podría responder a circunstancias operativas específicas que conviene identificar.",
+     "basis": "patrón observado: 1 período(s) adicional(es) similares"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El nivel elevado sostenido podría reflejar un cambio en la demanda, en las condiciones comerciales o en la operación; conviene monitorear su evolución.",
+     "basis": "patrón observado: nivel posterior elevado vs. previo"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento se concentra en un único cliente; podría tratarse de un pedido especial o de una condición particular de ese cliente.",
+     "basis": "patrón observado: 1 cliente concentra el evento (CLI-17)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "No existe evidencia suficiente para determinar la causa del comportamiento observado.",
+     "basis": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza."
+    }
+   ],
+   "recommendations": [
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Revisar el historial completo del cliente CLI-17 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+     "basis": "evidencia: compra muy superior a su historial"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+     "basis": "evidencia: desviación vs. comportamiento histórico del cliente"
+    }
+   ],
+   "recurrence": "rarely_recurrent",
+   "concentration": {
+    "top3_share": 1.0,
+    "top3_n": 1,
+    "total": 332.91,
+    "n_trx": 1,
+    "concentrated": true
+   },
+   "requires_review": false,
+   "data_quality_warning": null,
+   "evidence_id": "EV-0015",
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   }
+  },
+  {
+   "kind": "BUSINESS_FINDING",
+   "finding_id": "FND-000002",
+   "finding_type": "CUSTOMER_ANOMALY",
+   "business_priority": "REVIEW",
+   "impact_score": 67.8,
+   "confidence_score": 57,
+   "evidence_quality": "LOW",
+   "severity": "MEDIUM",
+   "title": "Comportamiento de compra inusual: cliente CLI-23",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-23",
+    "label": "cliente CLI-23"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 341.91,
+   "expected_value": 124.95,
+   "difference": 216.96,
+   "percentage_difference": 173.64,
+   "statistical_explanation": "El cliente CLI-23 realizó una compra de £341.91, 2.7 veces superior a su compra habitual (£124.95). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "facts": [
+    {
+     "kind": "FACT",
+     "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-23 (observado £341.91 vs. esperado £124.95).",
+     "source": "Business Finding FASE 2B"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período 2024-03-15, el revenue asociado fue £341.91 en 1 transacción(es).",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período previo comparable, el revenue fue £177.94.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período posterior disponible, el revenue fue £575.78.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    }
+   ],
+   "observations": [
+    {
+     "kind": "OBSERVATION",
+     "text": "El 100% del total del evento se concentra en 1 transacción(es): comportamiento concentrado.",
+     "basis": "distribución por transacción"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "0 compra(s) adicional(es) de magnitud similar.",
+     "basis": "análisis de recurrencia"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Tras el evento, el nivel se mantuvo elevado respecto al comportamiento previo: posible cambio sostenido que conviene monitorear.",
+     "basis": "comparación antes/después"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "basis": "profundidad de historial"
+    }
+   ],
+   "possible_explanations": [
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El comportamiento podría estar relacionado con un pedido extraordinario o una compra concentrada en pocas transacciones.",
+     "basis": "patrón observado: el 100% del total se concentra en 1 transacción(es)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "Se trata de un evento aislado en el historial disponible; podría corresponder a una operación puntual.",
+     "basis": "patrón observado: ningún otro período con magnitud similar en el historial"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El nivel elevado sostenido podría reflejar un cambio en la demanda, en las condiciones comerciales o en la operación; conviene monitorear su evolución.",
+     "basis": "patrón observado: nivel posterior elevado vs. previo"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento se concentra en un único cliente; podría tratarse de un pedido especial o de una condición particular de ese cliente.",
+     "basis": "patrón observado: 1 cliente concentra el evento (CLI-23)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "No existe evidencia suficiente para determinar la causa del comportamiento observado.",
+     "basis": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza."
+    }
+   ],
+   "recommendations": [
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Revisar el historial completo del cliente CLI-23 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+     "basis": "evidencia: compra muy superior a su historial"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+     "basis": "evidencia: desviación vs. comportamiento histórico del cliente"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Al tratarse de un evento aislado, priorizar la verificación del documento fuente antes de considerarlo un nuevo patrón.",
+     "basis": "evidencia: evento sin precedentes similares"
+    }
+   ],
+   "recurrence": "isolated",
+   "concentration": {
+    "top3_share": 1.0,
+    "top3_n": 1,
+    "total": 341.91,
+    "n_trx": 1,
+    "concentrated": true
+   },
+   "requires_review": false,
+   "data_quality_warning": null,
+   "evidence_id": "EV-0016",
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   }
+  },
+  {
+   "kind": "BUSINESS_FINDING",
+   "finding_id": "FND-000003",
+   "finding_type": "CUSTOMER_ANOMALY",
+   "business_priority": "REVIEW",
+   "impact_score": 66.3,
+   "confidence_score": 55,
+   "evidence_quality": "LOW",
+   "severity": "MEDIUM",
+   "title": "Comportamiento de compra inusual: cliente CLI-16",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-16",
+    "label": "cliente CLI-16"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 323.91,
+   "expected_value": 127.94,
+   "difference": 195.96,
+   "percentage_difference": 153.17,
+   "statistical_explanation": "El cliente CLI-16 realizó una compra de £323.91, 2.5 veces superior a su compra habitual (£127.94). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "facts": [
+    {
+     "kind": "FACT",
+     "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-16 (observado £323.91 vs. esperado £127.94).",
+     "source": "Business Finding FASE 2B"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período 2024-09-15, el revenue asociado fue £323.91 en 1 transacción(es).",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período previo comparable, el revenue fue £579.80.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período posterior disponible, el revenue fue £369.85.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    }
+   ],
+   "observations": [
+    {
+     "kind": "OBSERVATION",
+     "text": "El 100% del total del evento se concentra en 1 transacción(es): comportamiento concentrado.",
+     "basis": "distribución por transacción"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "1 compra(s) adicional(es) de magnitud similar.",
+     "basis": "análisis de recurrencia"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Tras el evento, el nivel cayó por debajo del comportamiento previo.",
+     "basis": "comparación antes/después"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "basis": "profundidad de historial"
+    }
+   ],
+   "possible_explanations": [
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El comportamiento podría estar relacionado con un pedido extraordinario o una compra concentrada en pocas transacciones.",
+     "basis": "patrón observado: el 100% del total se concentra en 1 transacción(es)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento es poco frecuente pero no único; podría responder a circunstancias operativas específicas que conviene identificar.",
+     "basis": "patrón observado: 1 período(s) adicional(es) similares"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento se concentra en un único cliente; podría tratarse de un pedido especial o de una condición particular de ese cliente.",
+     "basis": "patrón observado: 1 cliente concentra el evento (CLI-16)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "No existe evidencia suficiente para determinar la causa del comportamiento observado.",
+     "basis": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza."
+    }
+   ],
+   "recommendations": [
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Revisar el historial completo del cliente CLI-16 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+     "basis": "evidencia: compra muy superior a su historial"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+     "basis": "evidencia: desviación vs. comportamiento histórico del cliente"
+    }
+   ],
+   "recurrence": "rarely_recurrent",
+   "concentration": {
+    "top3_share": 1.0,
+    "top3_n": 1,
+    "total": 323.90999999999997,
+    "n_trx": 1,
+    "concentrated": true
+   },
+   "requires_review": false,
+   "data_quality_warning": null,
+   "evidence_id": "EV-0017",
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   }
+  },
+  {
+   "kind": "BUSINESS_FINDING",
+   "finding_id": "FND-000004",
+   "finding_type": "CUSTOMER_ANOMALY",
+   "business_priority": "REVIEW",
+   "impact_score": 66.0,
+   "confidence_score": 53,
+   "evidence_quality": "LOW",
+   "severity": "MEDIUM",
+   "title": "Comportamiento de compra inusual: cliente CLI-22",
+   "entity": {
+    "kind": "customer",
+    "id": "CLI-22",
+    "label": "cliente CLI-22"
+   },
+   "period": {
+    "start": null,
+    "end": null,
+    "granularity": "transaction"
+   },
+   "observed_value": 332.91,
+   "expected_value": 108.95,
+   "difference": 223.96,
+   "percentage_difference": 205.56,
+   "statistical_explanation": "El cliente CLI-22 realizó una compra de £332.91, 3.1 veces superior a su compra habitual (£108.95). Requiere revisión.",
+   "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+   "facts": [
+    {
+     "kind": "FACT",
+     "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-22 (observado £332.91 vs. esperado £108.95).",
+     "source": "Business Finding FASE 2B"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período 2024-06-15, el revenue asociado fue £332.91 en 1 transacción(es).",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período previo comparable, el revenue fue £631.79.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    },
+    {
+     "kind": "FACT",
+     "text": "En el período posterior disponible, el revenue fue £190.92.",
+     "source": "dataset normalizado (FASE 1A/1C)"
+    }
+   ],
+   "observations": [
+    {
+     "kind": "OBSERVATION",
+     "text": "El 100% del total del evento se concentra en 1 transacción(es): comportamiento concentrado.",
+     "basis": "distribución por transacción"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "1 compra(s) adicional(es) de magnitud similar.",
+     "basis": "análisis de recurrencia"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Tras el evento, el nivel cayó por debajo del comportamiento previo.",
+     "basis": "comparación antes/después"
+    },
+    {
+     "kind": "OBSERVATION",
+     "text": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza.",
+     "basis": "profundidad de historial"
+    }
+   ],
+   "possible_explanations": [
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El comportamiento podría estar relacionado con un pedido extraordinario o una compra concentrada en pocas transacciones.",
+     "basis": "patrón observado: el 100% del total se concentra en 1 transacción(es)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento es poco frecuente pero no único; podría responder a circunstancias operativas específicas que conviene identificar.",
+     "basis": "patrón observado: 1 período(s) adicional(es) similares"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "El evento se concentra en un único cliente; podría tratarse de un pedido especial o de una condición particular de ese cliente.",
+     "basis": "patrón observado: 1 cliente concentra el evento (CLI-22)"
+    },
+    {
+     "kind": "POSSIBLE_EXPLANATION",
+     "text": "No existe evidencia suficiente para determinar la causa del comportamiento observado.",
+     "basis": "Historial insuficiente: solo 8 puntos de datos. No existe evidencia suficiente para contextualizar el evento con confianza."
+    }
+   ],
+   "recommendations": [
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Revisar el historial completo del cliente CLI-22 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+     "basis": "evidencia: compra muy superior a su historial"
+    },
+    {
+     "kind": "RECOMMENDATION",
+     "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+     "basis": "evidencia: desviación vs. comportamiento histórico del cliente"
+    }
+   ],
+   "recurrence": "rarely_recurrent",
+   "concentration": {
+    "top3_share": 1.0,
+    "top3_n": 1,
+    "total": 332.91,
+    "n_trx": 1,
+    "concentrated": true
+   },
+   "requires_review": false,
+   "data_quality_warning": null,
+   "evidence_id": "EV-0018",
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   }
+  }
+ ],
+ "key_risks": [
+  {
+   "kind": "RISK",
+   "risk_id": "RISK-0001",
+   "risk_type": "DATA_QUALITY_RISK",
+   "severity": "LOW",
+   "explanation": "El Data Quality Score (FASE 1B) dedujo 2 puntos por unmapped_columns: 1 columnas sin mapear a canónicos. Los hallazgos que dependan de estos registros deben interpretarse con cautela.",
+   "evidence": {
+    "component": "unmapped_columns",
+    "points": 2,
+    "detail": "1 columnas sin mapear a canónicos."
+   },
+   "source": "FASE_1B:data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "recommendation": "Revisar los registros afectados antes de basar decisiones en ellos.",
+   "evidence_id": "EV-0019",
+   "trace": {
+    "rule": "deterministic risk extraction (FASE 5A risks.py)",
+    "source_record": "unmapped_columns"
+   }
+  }
+ ],
+ "key_opportunities": [],
+ "key_trends": [
+  {
+   "kind": "OBSERVATION",
+   "trend_id": "TRD-OBS-0001",
+   "trend_type": "OBSERVED_TREND",
+   "direction": "DOWNWARD",
+   "period": "2024-07 → 2024-12",
+   "value": {
+    "last_3m_revenue": 6959.6900000000005,
+    "prev_3m_revenue": 7468.45,
+    "pct_change": -6.81
+   },
+   "confidence": null,
+   "source": "FASE_1B:data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "interpretation": "OBSERVADO: el comportamiento histórico muestra que los ingresos de los últimos 3 meses variaron -6.81% respecto a los 3 meses anteriores (dirección: DOWNWARD). Es una descripción del pasado, no una proyección.",
+   "evidence_id": "EV-0020",
+   "trace": {
+    "formula": "Σ revenue últimos 3 meses vs Σ revenue 3 anteriores",
+    "threshold": "|pct| <= 5 → STABLE"
+   }
+  }
+ ],
+ "prediction_intelligence": {
+  "kind": "PREDICTION",
+  "source": "FASE_4B",
+  "summary": {
+   "total_predictions": 3,
+   "high_quality": 0,
+   "moderate_quality": 0,
+   "low_quality": 0,
+   "insufficient": 3,
+   "high_uncertainty": 0,
+   "medium_uncertainty": 0,
+   "low_uncertainty": 0,
+   "urgent": 0,
+   "important": 0,
+   "review": 0,
+   "monitor": 3,
+   "high_decline_risk": 0,
+   "medium_decline_risk": 0,
+   "low_decline_risk": 0,
+   "average_confidence": 0.0,
+   "average_attention_score": 0.0,
+   "predictions_with_high_uncertainty": [],
+   "predictions_requiring_review": []
+  },
+  "evidence_id": "EV-0021",
+  "note": "Resumen consumido de FASE 4B sin recalcular."
+ },
+ "prediction_validation": {
+  "kind": "OBSERVATION",
+  "source": "FASE_4C",
+  "summary": {
+   "total_predictions": 3,
+   "validated": 0,
+   "pending": 0,
+   "not_available": 3,
+   "invalid": 0,
+   "accuracy_rate": "INSUFFICIENT_DATA",
+   "interval_hit_rate": "INSUFFICIENT_DATA",
+   "mean_absolute_error": "INSUFFICIENT_DATA",
+   "median_absolute_error": "INSUFFICIENT_DATA",
+   "mean_percentage_error": "INSUFFICIENT_DATA",
+   "mean_signed_error": "INSUFFICIENT_DATA",
+   "overprediction_rate": "INSUFFICIENT_DATA",
+   "underprediction_rate": "INSUFFICIENT_DATA",
+   "model_performance_status": "INSUFFICIENT_DATA"
+  },
+  "model_performance_status": "INSUFFICIENT_DATA",
+  "validation_note": "No existen suficientes resultados reales posteriores para evaluar todavía el desempeño de las predicciones.",
+  "evidence_id": "EV-0022",
+  "note": "Resumen consumido de FASE 4C sin recalcular."
+ },
+ "recommendations": [
+  {
+   "kind": "RECOMMENDATION",
+   "recommendation_id": "REC-0001",
+   "source": "FASE_2C",
+   "priority": "REVIEW",
+   "text": "Revisar el historial completo del cliente CLI-17 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+   "related_finding": "FND-000001",
+   "related_prediction": null,
+   "evidence": {
+    "finding_title": "Comportamiento de compra inusual: cliente CLI-17",
+    "impact_score": 68.3
+   },
+   "trace": {
+    "rule": "consolidación 2C (FASE 5A recommendations.py)"
+   },
+   "evidence_id": "EV-0023"
+  },
+  {
+   "kind": "RECOMMENDATION",
+   "recommendation_id": "REC-0002",
+   "source": "FASE_2C",
+   "priority": "REVIEW",
+   "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+   "related_finding": "FND-000001",
+   "related_prediction": null,
+   "evidence": {
+    "finding_title": "Comportamiento de compra inusual: cliente CLI-17",
+    "impact_score": 68.3
+   },
+   "trace": {
+    "rule": "consolidación 2C (FASE 5A recommendations.py)"
+   },
+   "evidence_id": "EV-0024"
+  },
+  {
+   "kind": "RECOMMENDATION",
+   "recommendation_id": "REC-0003",
+   "source": "FASE_2C",
+   "priority": "REVIEW",
+   "text": "Revisar el historial completo del cliente CLI-23 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+   "related_finding": "FND-000002",
+   "related_prediction": null,
+   "evidence": {
+    "finding_title": "Comportamiento de compra inusual: cliente CLI-23",
+    "impact_score": 67.8
+   },
+   "trace": {
+    "rule": "consolidación 2C (FASE 5A recommendations.py)"
+   },
+   "evidence_id": "EV-0025"
+  },
+  {
+   "kind": "RECOMMENDATION",
+   "recommendation_id": "REC-0004",
+   "source": "FASE_2C",
+   "priority": "REVIEW",
+   "text": "Al tratarse de un evento aislado, priorizar la verificación del documento fuente antes de considerarlo un nuevo patrón.",
+   "related_finding": "FND-000002",
+   "related_prediction": null,
+   "evidence": {
+    "finding_title": "Comportamiento de compra inusual: cliente CLI-23",
+    "impact_score": 67.8
+   },
+   "trace": {
+    "rule": "consolidación 2C (FASE 5A recommendations.py)"
+   },
+   "evidence_id": "EV-0026"
+  },
+  {
+   "kind": "RECOMMENDATION",
+   "recommendation_id": "REC-0005",
+   "source": "FASE_2C",
+   "priority": "REVIEW",
+   "text": "Revisar el historial completo del cliente CLI-16 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+   "related_finding": "FND-000003",
+   "related_prediction": null,
+   "evidence": {
+    "finding_title": "Comportamiento de compra inusual: cliente CLI-16",
+    "impact_score": 66.3
+   },
+   "trace": {
+    "rule": "consolidación 2C (FASE 5A recommendations.py)"
+   },
+   "evidence_id": "EV-0027"
+  },
+  {
+   "kind": "RECOMMENDATION",
+   "recommendation_id": "REC-0006",
+   "source": "FASE_2C",
+   "priority": "REVIEW",
+   "text": "Revisar el historial completo del cliente CLI-22 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+   "related_finding": "FND-000004",
+   "related_prediction": null,
+   "evidence": {
+    "finding_title": "Comportamiento de compra inusual: cliente CLI-22",
+    "impact_score": 66.0
+   },
+   "trace": {
+    "rule": "consolidación 2C (FASE 5A recommendations.py)"
+   },
+   "evidence_id": "EV-0028"
+  },
+  {
+   "kind": "RECOMMENDATION",
+   "recommendation_id": "REC-0007",
+   "source": "FASE_4B",
+   "priority": "MONITOR",
+   "text": "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+   "related_finding": null,
+   "related_prediction": "PRED-000001",
+   "evidence": {
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "attention_score": 0
+   },
+   "trace": {
+    "rule": "consolidación 4B (FASE 5A recommendations.py)"
+   },
+   "evidence_id": "EV-0029"
+  },
+  {
+   "kind": "RECOMMENDATION",
+   "recommendation_id": "REC-0008",
+   "source": "FASE_4B",
+   "priority": "MONITOR",
+   "text": "Revisar la calidad de los datos de origen para el negocio completo.",
+   "related_finding": null,
+   "related_prediction": "PRED-000001",
+   "evidence": {
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "attention_score": 0
+   },
+   "trace": {
+    "rule": "consolidación 4B (FASE 5A recommendations.py)"
+   },
+   "evidence_id": "EV-0030"
+  }
+ ],
+ "limitations": [
+  {
+   "kind": "LIMITATION",
+   "limitation_id": "LIM-0001",
+   "limitation_type": "DATA_QUALITY",
+   "text": "El Data Quality Score es 98.0/100: se dedujeron 2 puntos por unmapped_columns (1 columnas sin mapear a canónicos.). Los hallazgos que dependan de estos registros tienen evidencia limitada.",
+   "source": "FASE_1B:data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "evidence_id": "EV-0031",
+   "trace": {
+    "rule": "consolidación automática (FASE 5A limitations.py)"
+   }
+  },
+  {
+   "kind": "LIMITATION",
+   "limitation_id": "LIM-0002",
+   "limitation_type": "INSUFFICIENT_CONTEXT",
+   "text": "4 hallazgos no pudieron contextualizarse por falta de historial suficiente. ZAYVERO no dispone de suficiente información para esos casos.",
+   "source": "FASE_2C:data/context/demo-retail/online_retail_II_full_context.json",
+   "evidence_id": "EV-0032",
+   "trace": {
+    "rule": "consolidación automática (FASE 5A limitations.py)"
+   }
+  },
+  {
+   "kind": "LIMITATION",
+   "limitation_id": "LIM-0003",
+   "limitation_type": "LOW_EVIDENCE",
+   "text": "4 hallazgos tienen evidence_quality LOW: sus conclusiones deben interpretarse con cautela y su prioridad está acotada.",
+   "source": "FASE_2C:data/context/demo-retail/online_retail_II_full_context.json",
+   "evidence_id": "EV-0033",
+   "trace": {
+    "rule": "consolidación automática (FASE 5A limitations.py)"
+   }
+  },
+  {
+   "kind": "LIMITATION",
+   "limitation_id": "LIM-0004",
+   "limitation_type": "INSUFFICIENT_PREDICTION_DATA",
+   "text": "3 predicciones quedaron en INSUFFICIENT_DATA: no existe historial suficiente para estimarlas.",
+   "source": "FASE_4B:data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+   "evidence_id": "EV-0034",
+   "trace": {
+    "rule": "consolidación automática (FASE 5A limitations.py)"
+   }
+  },
+  {
+   "kind": "LIMITATION",
+   "limitation_id": "LIM-0005",
+   "limitation_type": "NO_VALIDATION_YET",
+   "text": "No existen suficientes resultados reales posteriores para evaluar todavía el desempeño de las predicciones. No se afirma que sean correctas ni incorrectas.",
+   "source": "FASE_4C:data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+   "evidence_id": "EV-0035",
+   "trace": {
+    "rule": "consolidación automática (FASE 5A limitations.py)"
+   }
+  },
+  {
+   "kind": "LIMITATION",
+   "limitation_id": "LIM-0006",
+   "limitation_type": "NO_STOCKOUT",
+   "text": "El dataset no contiene información de inventario confiable: el riesgo de agotamiento (stockout) no puede estimarse (NOT_AVAILABLE).",
+   "source": "FASE_4A:data/predictions/demo-retail/online_retail_II_full_predictions.json",
+   "evidence_id": "EV-0036",
+   "trace": {
+    "rule": "consolidación automática (FASE 5A limitations.py)"
+   }
+  }
+ ],
+ "executive_questions": [
+  "¿Qué está pasando en el negocio según la evidencia disponible?",
+  "¿Cuál es el problema más importante detectado?",
+  "¿Dónde existe mayor riesgo?",
+  "¿Qué productos presentan comportamiento inusual?",
+  "¿Qué clientes requieren atención?",
+  "¿Qué tendencias se observan en el historial?",
+  "¿Qué tendencias se proyectan?",
+  "¿Qué predicciones tienen mayor incertidumbre?",
+  "¿Qué recomendaciones deberían revisarse primero?",
+  "¿Qué información falta para decidir mejor?"
+ ],
+ "attention_summary": {
+  "attention_level": "LOW",
+  "signals": {
+   "urgent_findings": 0,
+   "important_findings": 0,
+   "review_findings": 4,
+   "high_severity_risks": 0,
+   "medium_severity_risks": 0,
+   "high_decline_risk_predictions": 0,
+   "data_quality_score": 98.0
+  },
+  "rule_triggered": "ningún umbral superior alcanzado",
+  "rules": "CRITICAL: urgent>=20 o high_risks>=5; HIGH: urgent>=5 o important>=100 o high_decline>=2; MEDIUM: important>=10 o review>=50 o medium_risks>=3; LOW: en otro caso."
+ },
+ "context_confidence": {
+  "context_confidence_score": 39.2,
+  "components": {
+   "data_quality_score": {
+    "value": 98.0,
+    "weight": 0.4
+   },
+   "evidence_coverage": {
+    "value": 0.0,
+    "weight": 0.25
+   },
+   "prediction_quality": {
+    "value": 0.0,
+    "weight": 0.2
+   },
+   "validation_available": {
+    "value": 0.0,
+    "weight": 0.15
+   }
+  },
+  "formula": "0.40*data_quality_score + 0.25*evidence_coverage + 0.20*prediction_quality + 0.15*validation_available",
+  "interpretation": "El contexto empresarial disponible tiene una completitud/confianza de 39.2/100. Un valor bajo indica que faltan datos importantes (calidad, evidencia, predicciones de calidad o validación real)."
+ },
+ "evidence_index": [
+  {
+   "evidence_id": "EV-0001",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "gross_revenue",
+   "value": 29381.05,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+    "filters": "Revenue no nulo; transaction_status según bloque",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+   }
+  },
+  {
+   "evidence_id": "EV-0002",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "net_revenue",
+   "value": 29381.05,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+    "filters": "Revenue no nulo; transaction_status según bloque",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+   }
+  },
+  {
+   "evidence_id": "EV-0003",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "cancelled_revenue",
+   "value": 0.0,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+    "filters": "Revenue no nulo; transaction_status según bloque",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+   }
+  },
+  {
+   "evidence_id": "EV-0004",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "total_rows",
+   "value": 200,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+    "filters": "ninguno (todas las filas)",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": ""
+   }
+  },
+  {
+   "evidence_id": "EV-0005",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "unique_transactions",
+   "value": 200,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+    "filters": "ninguno (todas las filas)",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": ""
+   }
+  },
+  {
+   "evidence_id": "EV-0006",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "completed_rows",
+   "value": 200,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+    "filters": "ninguno (todas las filas)",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": ""
+   }
+  },
+  {
+   "evidence_id": "EV-0007",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "cancelled_rows",
+   "value": 0,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+    "filters": "ninguno (todas las filas)",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": ""
+   }
+  },
+  {
+   "evidence_id": "EV-0008",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "total_customers",
+   "value": 25,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+    "filters": "transaction_status='completed'; Customer no nulo",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+   }
+  },
+  {
+   "evidence_id": "EV-0009",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "active_customers",
+   "value": 20,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+    "filters": "transaction_status='completed'; Customer no nulo",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+   }
+  },
+  {
+   "evidence_id": "EV-0010",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "total_products",
+   "value": 0,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "por Product: units=ΣQuantity|completed, transactions=COUNT|completed, revenue=ΣRevenue|completed, avg_price=MEAN(UnitPrice), frequency=transactions/días_activos*30; clases por deciles de revenue (p90=0.0, p60=0.0)",
+    "filters": "transaction_status='completed'; Quantity/Revenue nulos se ignoran",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": "0 productos con transacciones completadas; 0 productos distintos en total. Top 50 incluidos en el perfil; la tabla completa puede regenerarse del Parquet."
+   }
+  },
+  {
+   "evidence_id": "EV-0011",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "total_countries",
+   "value": 0,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "COUNT DISTINCT de Customer / Product / Country",
+    "filters": "valores no nulos",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": "Los nulos no se cuentan como entidad."
+   }
+  },
+  {
+   "evidence_id": "EV-0012",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "units_sold_net",
+   "value": 995.0,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+    "filters": "Revenue no nulo; transaction_status según bloque",
+    "rows_considered": 200,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+   }
+  },
+  {
+   "evidence_id": "EV-0013",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "data_quality_score",
+   "value": 98.0,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "Data Quality Score 0-100 (FASE 1B)"
+   }
+  },
+  {
+   "evidence_id": "EV-0014",
+   "source_module": "FASE_1B_1C",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": null,
+   "field": "cancellations_count",
+   "value": 0,
+   "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+   "trace": {
+    "formula": "count=filas cancelled; pct=count/total; units=ΣQuantity|signed; value=Σ|Revenue|; tops por Σ|Revenue|",
+    "filters": "transaction_status='cancelled'",
+    "rows_considered": 0,
+    "period": "2024-01-15 → 2024-12-15",
+    "notes": "Descriptivo únicamente. No se afirma fraude ni anomalía: la detección de anomalías es una fase posterior."
+   }
+  },
+  {
+   "evidence_id": "EV-0015",
+   "source_module": "FASE_2B",
+   "source_file": "data/findings/demo-retail/online_retail_II_full_findings.json",
+   "source_record": "FND-000001",
+   "field": "business_finding",
+   "value": {
+    "title": "Comportamiento de compra inusual: cliente CLI-17",
+    "business_priority": "REVIEW",
+    "impact_score": 68.3
+   },
+   "period": null,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   }
+  },
+  {
+   "evidence_id": "EV-0016",
+   "source_module": "FASE_2B",
+   "source_file": "data/findings/demo-retail/online_retail_II_full_findings.json",
+   "source_record": "FND-000002",
+   "field": "business_finding",
+   "value": {
+    "title": "Comportamiento de compra inusual: cliente CLI-23",
+    "business_priority": "REVIEW",
+    "impact_score": 67.8
+   },
+   "period": null,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   }
+  },
+  {
+   "evidence_id": "EV-0017",
+   "source_module": "FASE_2B",
+   "source_file": "data/findings/demo-retail/online_retail_II_full_findings.json",
+   "source_record": "FND-000003",
+   "field": "business_finding",
+   "value": {
+    "title": "Comportamiento de compra inusual: cliente CLI-16",
+    "business_priority": "REVIEW",
+    "impact_score": 66.3
+   },
+   "period": null,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   }
+  },
+  {
+   "evidence_id": "EV-0018",
+   "source_module": "FASE_2B",
+   "source_file": "data/findings/demo-retail/online_retail_II_full_findings.json",
+   "source_record": "FND-000004",
+   "field": "business_finding",
+   "value": {
+    "title": "Comportamiento de compra inusual: cliente CLI-22",
+    "business_priority": "REVIEW",
+    "impact_score": 66.0
+   },
+   "period": null,
+   "trace": {
+    "dataset": "Ventas E2E F8",
+    "company_id": "CMP-966a4d28742c",
+    "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+    "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+    "rows_considered": 200,
+    "baseline": "mediana de compras del cliente",
+    "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+    "period_analyzed": "2024-01-15 → 2024-12-15",
+    "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+    "fase_2b": {
+     "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+     "p95_reference": 222.91,
+     "evidence_quality": "LOW",
+     "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+     "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+     "dedup": "1 anomalía(s) 2A agrupadas",
+     "monetary_label": "desviación respecto al comportamiento esperado"
+    }
+   }
+  },
+  {
+   "evidence_id": "EV-0019",
+   "source_module": "FASE_1B",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": "unmapped_columns",
+   "field": "data_quality_deduction",
+   "value": {
+    "component": "unmapped_columns",
+    "points": 2,
+    "detail": "1 columnas sin mapear a canónicos."
+   },
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0020",
+   "source_module": "FASE_1B",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": "temporal_metrics.monthly",
+   "field": "revenue_trend_3m_vs_prev_3m",
+   "value": {
+    "last_3m_revenue": 6959.6900000000005,
+    "prev_3m_revenue": 7468.45,
+    "pct_change": -6.81
+   },
+   "period": "2024-07 → 2024-12",
+   "trace": {
+    "formula": "Σ revenue últimos 3 meses vs Σ revenue 3 anteriores; |pct|≤5 → STABLE"
+   }
+  },
+  {
+   "evidence_id": "EV-0021",
+   "source_module": "FASE_4B",
+   "source_file": "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+   "source_record": null,
+   "field": "summary",
+   "value": {
+    "total_predictions": 3,
+    "high_quality": 0,
+    "moderate_quality": 0,
+    "low_quality": 0,
+    "insufficient": 3,
+    "high_uncertainty": 0,
+    "medium_uncertainty": 0,
+    "low_uncertainty": 0,
+    "urgent": 0,
+    "important": 0,
+    "review": 0,
+    "monitor": 3,
+    "high_decline_risk": 0,
+    "medium_decline_risk": 0,
+    "low_decline_risk": 0,
+    "average_confidence": 0.0,
+    "average_attention_score": 0.0,
+    "predictions_with_high_uncertainty": [],
+    "predictions_requiring_review": []
+   },
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0022",
+   "source_module": "FASE_4C",
+   "source_file": "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+   "source_record": null,
+   "field": "summary",
+   "value": {
+    "total_predictions": 3,
+    "validated": 0,
+    "pending": 0,
+    "not_available": 3,
+    "invalid": 0,
+    "accuracy_rate": "INSUFFICIENT_DATA",
+    "interval_hit_rate": "INSUFFICIENT_DATA",
+    "mean_absolute_error": "INSUFFICIENT_DATA",
+    "median_absolute_error": "INSUFFICIENT_DATA",
+    "mean_percentage_error": "INSUFFICIENT_DATA",
+    "mean_signed_error": "INSUFFICIENT_DATA",
+    "overprediction_rate": "INSUFFICIENT_DATA",
+    "underprediction_rate": "INSUFFICIENT_DATA",
+    "model_performance_status": "INSUFFICIENT_DATA"
+   },
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0023",
+   "source_module": "FASE_2C",
+   "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+   "source_record": "FND-000001",
+   "field": "recommendation",
+   "value": "Revisar el historial completo del cliente CLI-17 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0024",
+   "source_module": "FASE_2C",
+   "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+   "source_record": "FND-000001",
+   "field": "recommendation",
+   "value": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0025",
+   "source_module": "FASE_2C",
+   "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+   "source_record": "FND-000002",
+   "field": "recommendation",
+   "value": "Revisar el historial completo del cliente CLI-23 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0026",
+   "source_module": "FASE_2C",
+   "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+   "source_record": "FND-000002",
+   "field": "recommendation",
+   "value": "Al tratarse de un evento aislado, priorizar la verificación del documento fuente antes de considerarlo un nuevo patrón.",
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0027",
+   "source_module": "FASE_2C",
+   "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+   "source_record": "FND-000003",
+   "field": "recommendation",
+   "value": "Revisar el historial completo del cliente CLI-16 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0028",
+   "source_module": "FASE_2C",
+   "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+   "source_record": "FND-000004",
+   "field": "recommendation",
+   "value": "Revisar el historial completo del cliente CLI-22 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0029",
+   "source_module": "FASE_4B",
+   "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+   "source_record": "PRED-000001",
+   "field": "recommendation",
+   "value": "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0030",
+   "source_module": "FASE_4B",
+   "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+   "source_record": "PRED-000001",
+   "field": "recommendation",
+   "value": "Revisar la calidad de los datos de origen para el negocio completo.",
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0031",
+   "source_module": "FASE_1B",
+   "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "source_record": "unmapped_columns",
+   "field": "data_quality_deduction",
+   "value": {
+    "component": "unmapped_columns",
+    "points": 2,
+    "detail": "1 columnas sin mapear a canónicos."
+   },
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0032",
+   "source_module": "FASE_2C",
+   "source_file": "data/context/demo-retail/online_retail_II_full_context.json",
+   "source_record": null,
+   "field": "context_status_count",
+   "value": {
+    "insufficient_context": 4
+   },
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0033",
+   "source_module": "FASE_2C",
+   "source_file": "data/context/demo-retail/online_retail_II_full_context.json",
+   "source_record": null,
+   "field": "evidence_quality_count",
+   "value": {
+    "low": 4
+   },
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0034",
+   "source_module": "FASE_4B",
+   "source_file": "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+   "source_record": null,
+   "field": "insufficient",
+   "value": 3,
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0035",
+   "source_module": "FASE_4C",
+   "source_file": "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+   "source_record": null,
+   "field": "validated",
+   "value": 0,
+   "period": null,
+   "trace": null
+  },
+  {
+   "evidence_id": "EV-0036",
+   "source_module": "FASE_4A",
+   "source_file": "data/predictions/demo-retail/online_retail_II_full_predictions.json",
+   "source_record": null,
+   "field": "stockout_status",
+   "value": "NOT_AVAILABLE",
+   "period": null,
+   "trace": null
+  }
+ ],
+ "advisor_safe_data": {
+  "facts": [
+   {
+    "kind": "FACT",
+    "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-17 (observado £332.91 vs. esperado £144.44).",
+    "source": "Business Finding FASE 2B"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período 2024-06-15, el revenue asociado fue £332.91 en 1 transacción(es).",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período previo comparable, el revenue fue £127.96.",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período posterior disponible, el revenue fue £759.70.",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-23 (observado £341.91 vs. esperado £124.95).",
+    "source": "Business Finding FASE 2B"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período 2024-03-15, el revenue asociado fue £341.91 en 1 transacción(es).",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período previo comparable, el revenue fue £177.94.",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período posterior disponible, el revenue fue £575.78.",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-16 (observado £323.91 vs. esperado £127.94).",
+    "source": "Business Finding FASE 2B"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período 2024-09-15, el revenue asociado fue £323.91 en 1 transacción(es).",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período previo comparable, el revenue fue £579.80.",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período posterior disponible, el revenue fue £369.85.",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "FASE 2B detectó: Comportamiento de compra inusual: cliente CLI-22 (observado £332.91 vs. esperado £108.95).",
+    "source": "Business Finding FASE 2B"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período 2024-06-15, el revenue asociado fue £332.91 en 1 transacción(es).",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período previo comparable, el revenue fue £631.79.",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   },
+   {
+    "kind": "FACT",
+    "text": "En el período posterior disponible, el revenue fue £190.92.",
+    "source": "dataset normalizado (FASE 1A/1C)"
+   }
+  ],
+  "findings": [
+   {
+    "finding_id": "FND-000001",
+    "finding_type": "CUSTOMER_ANOMALY",
+    "business_priority": "REVIEW",
+    "impact_score": 68.3,
+    "confidence_score": 59,
+    "evidence_quality": "LOW",
+    "title": "Comportamiento de compra inusual: cliente CLI-17",
+    "entity": {
+     "kind": "customer",
+     "id": "CLI-17",
+     "label": "cliente CLI-17"
+    },
+    "period": {
+     "start": null,
+     "end": null,
+     "granularity": "transaction"
+    },
+    "observed_value": 332.91,
+    "expected_value": 144.44,
+    "difference": 188.47,
+    "percentage_difference": 130.48,
+    "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+    "recurrence": "rarely_recurrent"
+   },
+   {
+    "finding_id": "FND-000002",
+    "finding_type": "CUSTOMER_ANOMALY",
+    "business_priority": "REVIEW",
+    "impact_score": 67.8,
+    "confidence_score": 57,
+    "evidence_quality": "LOW",
+    "title": "Comportamiento de compra inusual: cliente CLI-23",
+    "entity": {
+     "kind": "customer",
+     "id": "CLI-23",
+     "label": "cliente CLI-23"
+    },
+    "period": {
+     "start": null,
+     "end": null,
+     "granularity": "transaction"
+    },
+    "observed_value": 341.91,
+    "expected_value": 124.95,
+    "difference": 216.96,
+    "percentage_difference": 173.64,
+    "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+    "recurrence": "isolated"
+   },
+   {
+    "finding_id": "FND-000003",
+    "finding_type": "CUSTOMER_ANOMALY",
+    "business_priority": "REVIEW",
+    "impact_score": 66.3,
+    "confidence_score": 55,
+    "evidence_quality": "LOW",
+    "title": "Comportamiento de compra inusual: cliente CLI-16",
+    "entity": {
+     "kind": "customer",
+     "id": "CLI-16",
+     "label": "cliente CLI-16"
+    },
+    "period": {
+     "start": null,
+     "end": null,
+     "granularity": "transaction"
+    },
+    "observed_value": 323.91,
+    "expected_value": 127.94,
+    "difference": 195.96,
+    "percentage_difference": 153.17,
+    "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+    "recurrence": "rarely_recurrent"
+   },
+   {
+    "finding_id": "FND-000004",
+    "finding_type": "CUSTOMER_ANOMALY",
+    "business_priority": "REVIEW",
+    "impact_score": 66.0,
+    "confidence_score": 53,
+    "evidence_quality": "LOW",
+    "title": "Comportamiento de compra inusual: cliente CLI-22",
+    "entity": {
+     "kind": "customer",
+     "id": "CLI-22",
+     "label": "cliente CLI-22"
+    },
+    "period": {
+     "start": null,
+     "end": null,
+     "granularity": "transaction"
+    },
+    "observed_value": 332.91,
+    "expected_value": 108.95,
+    "difference": 223.96,
+    "percentage_difference": 205.56,
+    "business_explanation": "Este cliente mostró un comportamiento de compra muy distante de su propio historial. Esto representa una desviación inusual que debería revisarse para determinar si refleja un pedido legítimo de gran volumen, un cambio en su patrón de compra u otro factor.",
+    "recurrence": "rarely_recurrent"
+   }
+  ],
+  "predictions": [
+   {
+    "insight_id": "INS-000001",
+    "prediction_id": "PRED-000001",
+    "prediction_type": "DEMAND_REVENUE",
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "period": null,
+    "forecast_horizon": 3,
+    "prediction_status": "INSUFFICIENT_DATA",
+    "predicted_value": null,
+    "lower_bound": null,
+    "upper_bound": null,
+    "confidence_score": 0.0,
+    "trend": "INSUFFICIENT_DATA",
+    "decline_risk": "INSUFFICIENT_DATA",
+    "forecast_quality": "INSUFFICIENT",
+    "uncertainty_level": "UNKNOWN",
+    "attention_score": 0,
+    "attention_level": "MONITOR",
+    "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el negocio completo. historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar). no se generó ningún valor numérico por falta de evidencia.",
+    "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+    "recommendations": [
+     "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+     "Revisar la calidad de los datos de origen para el negocio completo."
+    ],
+    "limitations": [
+     "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+     "no se generó ningún valor numérico por falta de evidencia",
+     "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+    ]
+   },
+   {
+    "insight_id": "INS-000002",
+    "prediction_id": "PRED-000002",
+    "prediction_type": "DEMAND_QUANTITY",
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "period": null,
+    "forecast_horizon": 3,
+    "prediction_status": "INSUFFICIENT_DATA",
+    "predicted_value": null,
+    "lower_bound": null,
+    "upper_bound": null,
+    "confidence_score": 0.0,
+    "trend": "INSUFFICIENT_DATA",
+    "decline_risk": "INSUFFICIENT_DATA",
+    "forecast_quality": "INSUFFICIENT",
+    "uncertainty_level": "UNKNOWN",
+    "attention_score": 0,
+    "attention_level": "MONITOR",
+    "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el negocio completo. historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar). no se generó ningún valor numérico por falta de evidencia.",
+    "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+    "recommendations": [
+     "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+     "Revisar la calidad de los datos de origen para el negocio completo."
+    ],
+    "limitations": [
+     "historial de 12 meses; se requieren al menos 15 (12 para entrenar + 3 para validar)",
+     "no se generó ningún valor numérico por falta de evidencia",
+     "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+    ]
+   },
+   {
+    "insight_id": "INS-000003",
+    "prediction_id": "PRED-000003",
+    "prediction_type": "DEMAND_REVENUE",
+    "entity": {
+     "kind": "GLOBAL",
+     "id": null,
+     "label": "negocio completo"
+    },
+    "period": null,
+    "forecast_horizon": 4,
+    "prediction_status": "INSUFFICIENT_DATA",
+    "predicted_value": null,
+    "lower_bound": null,
+    "upper_bound": null,
+    "confidence_score": 0.0,
+    "trend": "INSUFFICIENT_DATA",
+    "decline_risk": "INSUFFICIENT_DATA",
+    "forecast_quality": "INSUFFICIENT",
+    "uncertainty_level": "UNKNOWN",
+    "attention_score": 0,
+    "attention_level": "MONITOR",
+    "business_interpretation": "No existe suficiente evidencia para generar una estimación numérica confiable para el negocio completo. serie discontinua: solo 25% de los periodos tienen actividad (mínimo 50%). no se generó ningún valor numérico por falta de evidencia.",
+    "uncertainty_explanation": "Sin una estimación numérica no es posible evaluar la incertidumbre del intervalo.",
+    "recommendations": [
+     "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+     "Revisar la calidad de los datos de origen para el negocio completo."
+    ],
+    "limitations": [
+     "serie discontinua: solo 25% de los periodos tienen actividad (mínimo 50%)",
+     "no se generó ningún valor numérico por falta de evidencia",
+     "Prediction Intelligence es un sistema de apoyo a decisiones. Las predicciones no son garantías de resultados futuros."
+    ]
+   }
+  ],
+  "risks": [
+   {
+    "kind": "RISK",
+    "risk_id": "RISK-0001",
+    "risk_type": "DATA_QUALITY_RISK",
+    "severity": "LOW",
+    "explanation": "El Data Quality Score (FASE 1B) dedujo 2 puntos por unmapped_columns: 1 columnas sin mapear a canónicos. Los hallazgos que dependan de estos registros deben interpretarse con cautela.",
+    "evidence": {
+     "component": "unmapped_columns",
+     "points": 2,
+     "detail": "1 columnas sin mapear a canónicos."
+    },
+    "source": "FASE_1B:data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "recommendation": "Revisar los registros afectados antes de basar decisiones en ellos.",
+    "evidence_id": "EV-0019",
+    "trace": {
+     "rule": "deterministic risk extraction (FASE 5A risks.py)",
+     "source_record": "unmapped_columns"
+    }
+   }
+  ],
+  "opportunities": [],
+  "trends": [
+   {
+    "kind": "OBSERVATION",
+    "trend_id": "TRD-OBS-0001",
+    "trend_type": "OBSERVED_TREND",
+    "direction": "DOWNWARD",
+    "period": "2024-07 → 2024-12",
+    "value": {
+     "last_3m_revenue": 6959.6900000000005,
+     "prev_3m_revenue": 7468.45,
+     "pct_change": -6.81
+    },
+    "confidence": null,
+    "source": "FASE_1B:data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "interpretation": "OBSERVADO: el comportamiento histórico muestra que los ingresos de los últimos 3 meses variaron -6.81% respecto a los 3 meses anteriores (dirección: DOWNWARD). Es una descripción del pasado, no una proyección.",
+    "evidence_id": "EV-0020",
+    "trace": {
+     "formula": "Σ revenue últimos 3 meses vs Σ revenue 3 anteriores",
+     "threshold": "|pct| <= 5 → STABLE"
+    }
+   }
+  ],
+  "recommendations": [
+   {
+    "kind": "RECOMMENDATION",
+    "recommendation_id": "REC-0001",
+    "source": "FASE_2C",
+    "priority": "REVIEW",
+    "text": "Revisar el historial completo del cliente CLI-17 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+    "related_finding": "FND-000001",
+    "related_prediction": null,
+    "evidence": {
+     "finding_title": "Comportamiento de compra inusual: cliente CLI-17",
+     "impact_score": 68.3
+    },
+    "trace": {
+     "rule": "consolidación 2C (FASE 5A recommendations.py)"
+    },
+    "evidence_id": "EV-0023"
+   },
+   {
+    "kind": "RECOMMENDATION",
+    "recommendation_id": "REC-0002",
+    "source": "FASE_2C",
+    "priority": "REVIEW",
+    "text": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+    "related_finding": "FND-000001",
+    "related_prediction": null,
+    "evidence": {
+     "finding_title": "Comportamiento de compra inusual: cliente CLI-17",
+     "impact_score": 68.3
+    },
+    "trace": {
+     "rule": "consolidación 2C (FASE 5A recommendations.py)"
+    },
+    "evidence_id": "EV-0024"
+   },
+   {
+    "kind": "RECOMMENDATION",
+    "recommendation_id": "REC-0003",
+    "source": "FASE_2C",
+    "priority": "REVIEW",
+    "text": "Revisar el historial completo del cliente CLI-23 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+    "related_finding": "FND-000002",
+    "related_prediction": null,
+    "evidence": {
+     "finding_title": "Comportamiento de compra inusual: cliente CLI-23",
+     "impact_score": 67.8
+    },
+    "trace": {
+     "rule": "consolidación 2C (FASE 5A recommendations.py)"
+    },
+    "evidence_id": "EV-0025"
+   },
+   {
+    "kind": "RECOMMENDATION",
+    "recommendation_id": "REC-0004",
+    "source": "FASE_2C",
+    "priority": "REVIEW",
+    "text": "Al tratarse de un evento aislado, priorizar la verificación del documento fuente antes de considerarlo un nuevo patrón.",
+    "related_finding": "FND-000002",
+    "related_prediction": null,
+    "evidence": {
+     "finding_title": "Comportamiento de compra inusual: cliente CLI-23",
+     "impact_score": 67.8
+    },
+    "trace": {
+     "rule": "consolidación 2C (FASE 5A recommendations.py)"
+    },
+    "evidence_id": "EV-0026"
+   },
+   {
+    "kind": "RECOMMENDATION",
+    "recommendation_id": "REC-0005",
+    "source": "FASE_2C",
+    "priority": "REVIEW",
+    "text": "Revisar el historial completo del cliente CLI-16 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+    "related_finding": "FND-000003",
+    "related_prediction": null,
+    "evidence": {
+     "finding_title": "Comportamiento de compra inusual: cliente CLI-16",
+     "impact_score": 66.3
+    },
+    "trace": {
+     "rule": "consolidación 2C (FASE 5A recommendations.py)"
+    },
+    "evidence_id": "EV-0027"
+   },
+   {
+    "kind": "RECOMMENDATION",
+    "recommendation_id": "REC-0006",
+    "source": "FASE_2C",
+    "priority": "REVIEW",
+    "text": "Revisar el historial completo del cliente CLI-22 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+    "related_finding": "FND-000004",
+    "related_prediction": null,
+    "evidence": {
+     "finding_title": "Comportamiento de compra inusual: cliente CLI-22",
+     "impact_score": 66.0
+    },
+    "trace": {
+     "rule": "consolidación 2C (FASE 5A recommendations.py)"
+    },
+    "evidence_id": "EV-0028"
+   },
+   {
+    "kind": "RECOMMENDATION",
+    "recommendation_id": "REC-0007",
+    "source": "FASE_4B",
+    "priority": "MONITOR",
+    "text": "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+    "related_finding": null,
+    "related_prediction": "PRED-000001",
+    "evidence": {
+     "entity": {
+      "kind": "GLOBAL",
+      "id": null,
+      "label": "negocio completo"
+     },
+     "attention_score": 0
+    },
+    "trace": {
+     "rule": "consolidación 4B (FASE 5A recommendations.py)"
+    },
+    "evidence_id": "EV-0029"
+   },
+   {
+    "kind": "RECOMMENDATION",
+    "recommendation_id": "REC-0008",
+    "source": "FASE_4B",
+    "priority": "MONITOR",
+    "text": "Revisar la calidad de los datos de origen para el negocio completo.",
+    "related_finding": null,
+    "related_prediction": "PRED-000001",
+    "evidence": {
+     "entity": {
+      "kind": "GLOBAL",
+      "id": null,
+      "label": "negocio completo"
+     },
+     "attention_score": 0
+    },
+    "trace": {
+     "rule": "consolidación 4B (FASE 5A recommendations.py)"
+    },
+    "evidence_id": "EV-0030"
+   }
+  ],
+  "limitations": [
+   {
+    "kind": "LIMITATION",
+    "limitation_id": "LIM-0001",
+    "limitation_type": "DATA_QUALITY",
+    "text": "El Data Quality Score es 98.0/100: se dedujeron 2 puntos por unmapped_columns (1 columnas sin mapear a canónicos.). Los hallazgos que dependan de estos registros tienen evidencia limitada.",
+    "source": "FASE_1B:data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "evidence_id": "EV-0031",
+    "trace": {
+     "rule": "consolidación automática (FASE 5A limitations.py)"
+    }
+   },
+   {
+    "kind": "LIMITATION",
+    "limitation_id": "LIM-0002",
+    "limitation_type": "INSUFFICIENT_CONTEXT",
+    "text": "4 hallazgos no pudieron contextualizarse por falta de historial suficiente. ZAYVERO no dispone de suficiente información para esos casos.",
+    "source": "FASE_2C:data/context/demo-retail/online_retail_II_full_context.json",
+    "evidence_id": "EV-0032",
+    "trace": {
+     "rule": "consolidación automática (FASE 5A limitations.py)"
+    }
+   },
+   {
+    "kind": "LIMITATION",
+    "limitation_id": "LIM-0003",
+    "limitation_type": "LOW_EVIDENCE",
+    "text": "4 hallazgos tienen evidence_quality LOW: sus conclusiones deben interpretarse con cautela y su prioridad está acotada.",
+    "source": "FASE_2C:data/context/demo-retail/online_retail_II_full_context.json",
+    "evidence_id": "EV-0033",
+    "trace": {
+     "rule": "consolidación automática (FASE 5A limitations.py)"
+    }
+   },
+   {
+    "kind": "LIMITATION",
+    "limitation_id": "LIM-0004",
+    "limitation_type": "INSUFFICIENT_PREDICTION_DATA",
+    "text": "3 predicciones quedaron en INSUFFICIENT_DATA: no existe historial suficiente para estimarlas.",
+    "source": "FASE_4B:data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+    "evidence_id": "EV-0034",
+    "trace": {
+     "rule": "consolidación automática (FASE 5A limitations.py)"
+    }
+   },
+   {
+    "kind": "LIMITATION",
+    "limitation_id": "LIM-0005",
+    "limitation_type": "NO_VALIDATION_YET",
+    "text": "No existen suficientes resultados reales posteriores para evaluar todavía el desempeño de las predicciones. No se afirma que sean correctas ni incorrectas.",
+    "source": "FASE_4C:data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+    "evidence_id": "EV-0035",
+    "trace": {
+     "rule": "consolidación automática (FASE 5A limitations.py)"
+    }
+   },
+   {
+    "kind": "LIMITATION",
+    "limitation_id": "LIM-0006",
+    "limitation_type": "NO_STOCKOUT",
+    "text": "El dataset no contiene información de inventario confiable: el riesgo de agotamiento (stockout) no puede estimarse (NOT_AVAILABLE).",
+    "source": "FASE_4A:data/predictions/demo-retail/online_retail_II_full_predictions.json",
+    "evidence_id": "EV-0036",
+    "trace": {
+     "rule": "consolidación automática (FASE 5A limitations.py)"
+    }
+   }
+  ],
+  "evidence": [
+   {
+    "evidence_id": "EV-0001",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "gross_revenue",
+    "value": 29381.05,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+     "filters": "Revenue no nulo; transaction_status según bloque",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    }
+   },
+   {
+    "evidence_id": "EV-0002",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "net_revenue",
+    "value": 29381.05,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+     "filters": "Revenue no nulo; transaction_status según bloque",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    }
+   },
+   {
+    "evidence_id": "EV-0003",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "cancelled_revenue",
+    "value": 0.0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+     "filters": "Revenue no nulo; transaction_status según bloque",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    }
+   },
+   {
+    "evidence_id": "EV-0004",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "total_rows",
+    "value": 200,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+     "filters": "ninguno (todas las filas)",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": ""
+    }
+   },
+   {
+    "evidence_id": "EV-0005",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "unique_transactions",
+    "value": 200,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+     "filters": "ninguno (todas las filas)",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": ""
+    }
+   },
+   {
+    "evidence_id": "EV-0006",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "completed_rows",
+    "value": 200,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+     "filters": "ninguno (todas las filas)",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": ""
+    }
+   },
+   {
+    "evidence_id": "EV-0007",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "cancelled_rows",
+    "value": 0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "conteo de filas por transaction_status; transacciones únicas = COUNT DISTINCT Transaction",
+     "filters": "ninguno (todas las filas)",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": ""
+    }
+   },
+   {
+    "evidence_id": "EV-0008",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "total_customers",
+    "value": 25,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+     "filters": "transaction_status='completed'; Customer no nulo",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+    }
+   },
+   {
+    "evidence_id": "EV-0009",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "active_customers",
+    "value": 20,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "por Customer: purchases=COUNT|completed, units=ΣQuantity, revenue=ΣRevenue, frequency=purchases/días*30; active=last_purchase ≥ max_date−90d; single=purchases==1; recurrent=purchases≥2",
+     "filters": "transaction_status='completed'; Customer no nulo",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "0 filas completadas sin Customer ID excluidas de perfiles individuales (contadas aparte). 'active' es un corte descriptivo por recencia, NO un modelo de churn."
+    }
+   },
+   {
+    "evidence_id": "EV-0010",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "total_products",
+    "value": 0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "por Product: units=ΣQuantity|completed, transactions=COUNT|completed, revenue=ΣRevenue|completed, avg_price=MEAN(UnitPrice), frequency=transactions/días_activos*30; clases por deciles de revenue (p90=0.0, p60=0.0)",
+     "filters": "transaction_status='completed'; Quantity/Revenue nulos se ignoran",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "0 productos con transacciones completadas; 0 productos distintos en total. Top 50 incluidos en el perfil; la tabla completa puede regenerarse del Parquet."
+    }
+   },
+   {
+    "evidence_id": "EV-0011",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "total_countries",
+    "value": 0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "COUNT DISTINCT de Customer / Product / Country",
+     "filters": "valores no nulos",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "Los nulos no se cuentan como entidad."
+    }
+   },
+   {
+    "evidence_id": "EV-0012",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "units_sold_net",
+    "value": 995.0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "BRUTO=Σ Revenue|completed; CANCELADO=Σ|Revenue||cancelled; NETO=Σ Revenue|completed+cancelled (con signo)",
+     "filters": "Revenue no nulo; transaction_status según bloque",
+     "rows_considered": 200,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "CANCELADO se reporta en valor absoluto (dinero dejado de percibir). NETO usa los signos originales: si las cancelaciones vienen en negativo se netean solas; si vinieran en positivo, usar BRUTO − CANCELADO."
+    }
+   },
+   {
+    "evidence_id": "EV-0013",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "data_quality_score",
+    "value": 98.0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "Data Quality Score 0-100 (FASE 1B)"
+    }
+   },
+   {
+    "evidence_id": "EV-0014",
+    "source_module": "FASE_1B_1C",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": null,
+    "field": "cancellations_count",
+    "value": 0,
+    "period": "2024-01-15T00:00:00 → 2024-12-15T00:00:00",
+    "trace": {
+     "formula": "count=filas cancelled; pct=count/total; units=ΣQuantity|signed; value=Σ|Revenue|; tops por Σ|Revenue|",
+     "filters": "transaction_status='cancelled'",
+     "rows_considered": 0,
+     "period": "2024-01-15 → 2024-12-15",
+     "notes": "Descriptivo únicamente. No se afirma fraude ni anomalía: la detección de anomalías es una fase posterior."
+    }
+   },
+   {
+    "evidence_id": "EV-0015",
+    "source_module": "FASE_2B",
+    "source_file": "data/findings/demo-retail/online_retail_II_full_findings.json",
+    "source_record": "FND-000001",
+    "field": "business_finding",
+    "value": {
+     "title": "Comportamiento de compra inusual: cliente CLI-17",
+     "business_priority": "REVIEW",
+     "impact_score": 68.3
+    },
+    "period": null,
+    "trace": {
+     "dataset": "Ventas E2E F8",
+     "company_id": "CMP-966a4d28742c",
+     "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+     "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+     "rows_considered": 200,
+     "baseline": "mediana de compras del cliente",
+     "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+     "period_analyzed": "2024-01-15 → 2024-12-15",
+     "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+     "fase_2b": {
+      "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+      "p95_reference": 222.91,
+      "evidence_quality": "LOW",
+      "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+      "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+      "dedup": "1 anomalía(s) 2A agrupadas",
+      "monetary_label": "desviación respecto al comportamiento esperado"
+     }
+    }
+   },
+   {
+    "evidence_id": "EV-0016",
+    "source_module": "FASE_2B",
+    "source_file": "data/findings/demo-retail/online_retail_II_full_findings.json",
+    "source_record": "FND-000002",
+    "field": "business_finding",
+    "value": {
+     "title": "Comportamiento de compra inusual: cliente CLI-23",
+     "business_priority": "REVIEW",
+     "impact_score": 67.8
+    },
+    "period": null,
+    "trace": {
+     "dataset": "Ventas E2E F8",
+     "company_id": "CMP-966a4d28742c",
+     "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+     "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+     "rows_considered": 200,
+     "baseline": "mediana de compras del cliente",
+     "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+     "period_analyzed": "2024-01-15 → 2024-12-15",
+     "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+     "fase_2b": {
+      "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+      "p95_reference": 222.91,
+      "evidence_quality": "LOW",
+      "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+      "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+      "dedup": "1 anomalía(s) 2A agrupadas",
+      "monetary_label": "desviación respecto al comportamiento esperado"
+     }
+    }
+   },
+   {
+    "evidence_id": "EV-0017",
+    "source_module": "FASE_2B",
+    "source_file": "data/findings/demo-retail/online_retail_II_full_findings.json",
+    "source_record": "FND-000003",
+    "field": "business_finding",
+    "value": {
+     "title": "Comportamiento de compra inusual: cliente CLI-16",
+     "business_priority": "REVIEW",
+     "impact_score": 66.3
+    },
+    "period": null,
+    "trace": {
+     "dataset": "Ventas E2E F8",
+     "company_id": "CMP-966a4d28742c",
+     "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+     "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+     "rows_considered": 200,
+     "baseline": "mediana de compras del cliente",
+     "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+     "period_analyzed": "2024-01-15 → 2024-12-15",
+     "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+     "fase_2b": {
+      "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+      "p95_reference": 222.91,
+      "evidence_quality": "LOW",
+      "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+      "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+      "dedup": "1 anomalía(s) 2A agrupadas",
+      "monetary_label": "desviación respecto al comportamiento esperado"
+     }
+    }
+   },
+   {
+    "evidence_id": "EV-0018",
+    "source_module": "FASE_2B",
+    "source_file": "data/findings/demo-retail/online_retail_II_full_findings.json",
+    "source_record": "FND-000004",
+    "field": "business_finding",
+    "value": {
+     "title": "Comportamiento de compra inusual: cliente CLI-22",
+     "business_priority": "REVIEW",
+     "impact_score": 66.0
+    },
+    "period": null,
+    "trace": {
+     "dataset": "Ventas E2E F8",
+     "company_id": "CMP-966a4d28742c",
+     "method": "z robusto por transacción vs mediana/MAD del propio cliente",
+     "filters": "transaction_status == 'completed', clientes con >= 5 transacciones",
+     "rows_considered": 200,
+     "baseline": "mediana de compras del cliente",
+     "formula": "z = 0.6745*(revenue - mediana)/MAD; emisión si z >= 4.0",
+     "period_analyzed": "2024-01-15 → 2024-12-15",
+     "notes": "Umbral alto (z>=4): en wholesale una compra grande aislada puede ser normal. Top 100 por z.",
+     "fase_2b": {
+      "impact_formula": "35*M + 25*D + 20*C + 10*S + 10*Q (M=log-monetario vs P95, D=dev/12, C=conf/100, S=log-alcance, Q=1-null_fraction)",
+      "p95_reference": 222.91,
+      "evidence_quality": "LOW",
+      "evidence_quality_explanation": "Evidencia limitada: 8 puntos de historial (mínimo recomendado 30), fracción nula 0.00%. No se fabrica baseline: la prioridad queda acotada.",
+      "priority_rule": "URGENT: impact>=75 y conf>=70 (evidencia no LOW), con tope por ranking: máximo 25 URGENT (los más altos por impacto); el resto de candidatos pasa a IMPORTANT. Así URGENT es excepcional y accionable, igual que el CRITICAL de FASE 2A. IMPORTANT: impact>=50 y conf>=60. REVIEW: impact>=25 o requires_review, o evidencia LOW con desviación extrema. MONITOR: resto. Con evidencia LOW nunca URGENT/IMPORTANT.",
+      "dedup": "1 anomalía(s) 2A agrupadas",
+      "monetary_label": "desviación respecto al comportamiento esperado"
+     }
+    }
+   },
+   {
+    "evidence_id": "EV-0019",
+    "source_module": "FASE_1B",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": "unmapped_columns",
+    "field": "data_quality_deduction",
+    "value": {
+     "component": "unmapped_columns",
+     "points": 2,
+     "detail": "1 columnas sin mapear a canónicos."
+    },
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0020",
+    "source_module": "FASE_1B",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": "temporal_metrics.monthly",
+    "field": "revenue_trend_3m_vs_prev_3m",
+    "value": {
+     "last_3m_revenue": 6959.6900000000005,
+     "prev_3m_revenue": 7468.45,
+     "pct_change": -6.81
+    },
+    "period": "2024-07 → 2024-12",
+    "trace": {
+     "formula": "Σ revenue últimos 3 meses vs Σ revenue 3 anteriores; |pct|≤5 → STABLE"
+    }
+   },
+   {
+    "evidence_id": "EV-0021",
+    "source_module": "FASE_4B",
+    "source_file": "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+    "source_record": null,
+    "field": "summary",
+    "value": {
+     "total_predictions": 3,
+     "high_quality": 0,
+     "moderate_quality": 0,
+     "low_quality": 0,
+     "insufficient": 3,
+     "high_uncertainty": 0,
+     "medium_uncertainty": 0,
+     "low_uncertainty": 0,
+     "urgent": 0,
+     "important": 0,
+     "review": 0,
+     "monitor": 3,
+     "high_decline_risk": 0,
+     "medium_decline_risk": 0,
+     "low_decline_risk": 0,
+     "average_confidence": 0.0,
+     "average_attention_score": 0.0,
+     "predictions_with_high_uncertainty": [],
+     "predictions_requiring_review": []
+    },
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0022",
+    "source_module": "FASE_4C",
+    "source_file": "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+    "source_record": null,
+    "field": "summary",
+    "value": {
+     "total_predictions": 3,
+     "validated": 0,
+     "pending": 0,
+     "not_available": 3,
+     "invalid": 0,
+     "accuracy_rate": "INSUFFICIENT_DATA",
+     "interval_hit_rate": "INSUFFICIENT_DATA",
+     "mean_absolute_error": "INSUFFICIENT_DATA",
+     "median_absolute_error": "INSUFFICIENT_DATA",
+     "mean_percentage_error": "INSUFFICIENT_DATA",
+     "mean_signed_error": "INSUFFICIENT_DATA",
+     "overprediction_rate": "INSUFFICIENT_DATA",
+     "underprediction_rate": "INSUFFICIENT_DATA",
+     "model_performance_status": "INSUFFICIENT_DATA"
+    },
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0023",
+    "source_module": "FASE_2C",
+    "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+    "source_record": "FND-000001",
+    "field": "recommendation",
+    "value": "Revisar el historial completo del cliente CLI-17 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0024",
+    "source_module": "FASE_2C",
+    "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+    "source_record": "FND-000001",
+    "field": "recommendation",
+    "value": "Comparar este comportamiento con pedidos anteriores del cliente y verificar el documento de la operación.",
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0025",
+    "source_module": "FASE_2C",
+    "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+    "source_record": "FND-000002",
+    "field": "recommendation",
+    "value": "Revisar el historial completo del cliente CLI-23 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0026",
+    "source_module": "FASE_2C",
+    "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+    "source_record": "FND-000002",
+    "field": "recommendation",
+    "value": "Al tratarse de un evento aislado, priorizar la verificación del documento fuente antes de considerarlo un nuevo patrón.",
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0027",
+    "source_module": "FASE_2C",
+    "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+    "source_record": "FND-000003",
+    "field": "recommendation",
+    "value": "Revisar el historial completo del cliente CLI-16 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0028",
+    "source_module": "FASE_2C",
+    "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+    "source_record": "FND-000004",
+    "field": "recommendation",
+    "value": "Revisar el historial completo del cliente CLI-22 para confirmar si la compra corresponde a su patrón de mayorista o a una operación puntual.",
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0029",
+    "source_module": "FASE_4B",
+    "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+    "source_record": "PRED-000001",
+    "field": "recommendation",
+    "value": "Reunir más historial para el negocio completo antes de generar una proyección: se requiere continuidad temporal suficiente para estimar con confianza.",
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0030",
+    "source_module": "FASE_4B",
+    "source_file": "data/context + data/prediction_intelligence (demo-retail)",
+    "source_record": "PRED-000001",
+    "field": "recommendation",
+    "value": "Revisar la calidad de los datos de origen para el negocio completo.",
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0031",
+    "source_module": "FASE_1B",
+    "source_file": "data/profiles/demo-retail/online_retail_II_full_profile.json",
+    "source_record": "unmapped_columns",
+    "field": "data_quality_deduction",
+    "value": {
+     "component": "unmapped_columns",
+     "points": 2,
+     "detail": "1 columnas sin mapear a canónicos."
+    },
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0032",
+    "source_module": "FASE_2C",
+    "source_file": "data/context/demo-retail/online_retail_II_full_context.json",
+    "source_record": null,
+    "field": "context_status_count",
+    "value": {
+     "insufficient_context": 4
+    },
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0033",
+    "source_module": "FASE_2C",
+    "source_file": "data/context/demo-retail/online_retail_II_full_context.json",
+    "source_record": null,
+    "field": "evidence_quality_count",
+    "value": {
+     "low": 4
+    },
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0034",
+    "source_module": "FASE_4B",
+    "source_file": "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+    "source_record": null,
+    "field": "insufficient",
+    "value": 3,
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0035",
+    "source_module": "FASE_4C",
+    "source_file": "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json",
+    "source_record": null,
+    "field": "validated",
+    "value": 0,
+    "period": null,
+    "trace": null
+   },
+   {
+    "evidence_id": "EV-0036",
+    "source_module": "FASE_4A",
+    "source_file": "data/predictions/demo-retail/online_retail_II_full_predictions.json",
+    "source_record": null,
+    "field": "stockout_status",
+    "value": "NOT_AVAILABLE",
+    "period": null,
+    "trace": null
+   }
+  ]
+ },
+ "trace": {
+  "engine": "zayvero-business-context-5A",
+  "method": "deterministic consolidation of real outputs (1B/1C, 2B, 2C, 4A, 4B, 4C); no LLM, no recalculation",
+  "sources": [
+   "data/profiles/demo-retail/online_retail_II_full_profile.json",
+   "data/findings/demo-retail/online_retail_II_full_findings.json",
+   "data/context/demo-retail/online_retail_II_full_context.json",
+   "data/predictions/demo-retail/online_retail_II_full_predictions.json",
+   "data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
+   "data/prediction_validation/demo-retail/online_retail_II_prediction_validation.json"
+  ],
+  "n_evidence": 36
+ }
+}

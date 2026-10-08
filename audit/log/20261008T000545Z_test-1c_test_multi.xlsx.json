@@ -1,0 +1,237 @@
+{
+  "file_name": "test_multi.xlsx",
+  "company_id": "test-1c",
+  "processed_at_utc": "2026-10-08T00:05:45.470166+00:00",
+  "n_original_rows": 3,
+  "n_processed_rows": 3,
+  "rows_dropped": 0,
+  "ingestion_summary": {
+    "sheets_processed": [
+      "HojaA",
+      "HojaB"
+    ],
+    "per_sheet": [
+      {
+        "sheet": "HojaA",
+        "n_original_rows": 2,
+        "n_processed_rows": 2,
+        "rows_dropped": 0,
+        "duplicate_rows": 0
+      },
+      {
+        "sheet": "HojaB",
+        "n_original_rows": 1,
+        "n_processed_rows": 1,
+        "rows_dropped": 0,
+        "duplicate_rows": 0
+      }
+    ]
+  },
+  "column_resolution": null,
+  "quality_report": null,
+  "transformations": [
+    "[HojaA] map:Invoice->Transaction",
+    "[HojaA] map:StockCode->Product",
+    "[HojaA] map:CustomerID->Customer",
+    "[HojaA] map:InvoiceDate->Date",
+    "[HojaA] map:Quantity->Quantity",
+    "[HojaA] map:UnitPrice->UnitPrice",
+    "[HojaA] map:Country->Country",
+    "[HojaA] keep:orig_Description",
+    "[HojaA] coerce:Date a datetime (no parseables -> NaT: 0)",
+    "[HojaA] coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "[HojaA] coerce:Transaction,Product,Customer,Country a string",
+    "[HojaA] calc:Revenue=Quantity*UnitPrice (2 filas con Revenue válido)",
+    "[HojaA] status:transaction_status con reglas {'invoice_prefix': 'C'} -> {'completed': 1, 'cancelled': 1}",
+    "[HojaA] trace:source_sheet='HojaA', source_file='test_multi.xlsx' asignados a 2 filas",
+    "[HojaA] multiempresa:company_id='test-1c' asignado a todas las filas",
+    "[HojaB] map:Invoice->Transaction",
+    "[HojaB] map:StockCode->Product",
+    "[HojaB] map:CustomerID->Customer",
+    "[HojaB] map:InvoiceDate->Date",
+    "[HojaB] map:Quantity->Quantity",
+    "[HojaB] map:UnitPrice->UnitPrice",
+    "[HojaB] map:Country->Country",
+    "[HojaB] keep:orig_Description",
+    "[HojaB] coerce:Date a datetime (no parseables -> NaT: 0)",
+    "[HojaB] coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "[HojaB] coerce:Transaction,Product,Customer,Country a string",
+    "[HojaB] calc:Revenue=Quantity*UnitPrice (1 filas con Revenue válido)",
+    "[HojaB] status:transaction_status con reglas {'invoice_prefix': 'C'} -> {'completed': 1}",
+    "[HojaB] trace:source_sheet='HojaB', source_file='test_multi.xlsx' asignados a 1 filas",
+    "[HojaB] multiempresa:company_id='test-1c' asignado a todas las filas"
+  ],
+  "errors": [],
+  "warnings": [],
+  "output_path": "/home/hatch/workspace/zayvero-business/data/processed/test-1c/test_multi_full.parquet",
+  "sheets": [
+    {
+      "sheet": "HojaA",
+      "n_original_rows": 2,
+      "n_processed_rows": 2,
+      "rows_dropped": 0,
+      "columns": [
+        "Invoice",
+        "StockCode",
+        "Description",
+        "Quantity",
+        "InvoiceDate",
+        "Price",
+        "Customer ID",
+        "Country"
+      ],
+      "duplicate_rows": 0,
+      "quality": {
+        "n_rows": 2,
+        "n_cols": 8,
+        "columns": [
+          "Invoice",
+          "StockCode",
+          "Description",
+          "Quantity",
+          "InvoiceDate",
+          "UnitPrice",
+          "CustomerID",
+          "Country"
+        ],
+        "dtypes": {
+          "Invoice": "str",
+          "StockCode": "str",
+          "Description": "str",
+          "Quantity": "int64",
+          "InvoiceDate": "str",
+          "UnitPrice": "int64",
+          "CustomerID": "int64",
+          "Country": "str"
+        },
+        "null_counts": {
+          "Invoice": 0,
+          "StockCode": 0,
+          "Description": 0,
+          "Quantity": 0,
+          "InvoiceDate": 0,
+          "UnitPrice": 0,
+          "CustomerID": 0,
+          "Country": 0
+        },
+        "null_pct": {
+          "Invoice": 0.0,
+          "StockCode": 0.0,
+          "Description": 0.0,
+          "Quantity": 0.0,
+          "InvoiceDate": 0.0,
+          "UnitPrice": 0.0,
+          "CustomerID": 0.0,
+          "Country": 0.0
+        },
+        "duplicate_rows": 0,
+        "invalid_dates": {
+          "InvoiceDate": 0
+        },
+        "invalid_quantities": 0,
+        "invalid_prices": 0,
+        "negative_quantities": 0,
+        "zero_or_negative_prices": 0,
+        "notes": []
+      },
+      "column_resolution": {
+        "renamed": {
+          "Invoice": "Invoice",
+          "StockCode": "StockCode",
+          "Description": "Description",
+          "Quantity": "Quantity",
+          "InvoiceDate": "InvoiceDate",
+          "Price": "UnitPrice",
+          "Customer ID": "CustomerID",
+          "Country": "Country"
+        },
+        "unmapped": [],
+        "missing_canonical": []
+      }
+    },
+    {
+      "sheet": "HojaB",
+      "n_original_rows": 1,
+      "n_processed_rows": 1,
+      "rows_dropped": 0,
+      "columns": [
+        "Invoice",
+        "StockCode",
+        "Description",
+        "Quantity",
+        "InvoiceDate",
+        "Price",
+        "Customer ID",
+        "Country"
+      ],
+      "duplicate_rows": 0,
+      "quality": {
+        "n_rows": 1,
+        "n_cols": 8,
+        "columns": [
+          "Invoice",
+          "StockCode",
+          "Description",
+          "Quantity",
+          "InvoiceDate",
+          "UnitPrice",
+          "CustomerID",
+          "Country"
+        ],
+        "dtypes": {
+          "Invoice": "str",
+          "StockCode": "str",
+          "Description": "str",
+          "Quantity": "int64",
+          "InvoiceDate": "str",
+          "UnitPrice": "int64",
+          "CustomerID": "int64",
+          "Country": "str"
+        },
+        "null_counts": {
+          "Invoice": 0,
+          "StockCode": 0,
+          "Description": 0,
+          "Quantity": 0,
+          "InvoiceDate": 0,
+          "UnitPrice": 0,
+          "CustomerID": 0,
+          "Country": 0
+        },
+        "null_pct": {
+          "Invoice": 0.0,
+          "StockCode": 0.0,
+          "Description": 0.0,
+          "Quantity": 0.0,
+          "InvoiceDate": 0.0,
+          "UnitPrice": 0.0,
+          "CustomerID": 0.0,
+          "Country": 0.0
+        },
+        "duplicate_rows": 0,
+        "invalid_dates": {
+          "InvoiceDate": 0
+        },
+        "invalid_quantities": 0,
+        "invalid_prices": 0,
+        "negative_quantities": 0,
+        "zero_or_negative_prices": 0,
+        "notes": []
+      },
+      "column_resolution": {
+        "renamed": {
+          "Invoice": "Invoice",
+          "StockCode": "StockCode",
+          "Description": "Description",
+          "Quantity": "Quantity",
+          "InvoiceDate": "InvoiceDate",
+          "Price": "UnitPrice",
+          "Customer ID": "CustomerID",
+          "Country": "Country"
+        },
+        "unmapped": [],
+        "missing_canonical": []
+      }
+    }
+  ]
+}

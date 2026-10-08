@@ -1,0 +1,92 @@
+{
+ "report_metadata": {
+  "engine": "zayvero-business-anomaly-2A",
+  "dataset_label": "Ventas 7A",
+  "company_id": "CMP-808b4cf578a3",
+  "source_parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-808b4cf578a3/ventas.parquet",
+  "generated_at_utc": "2026-10-08T21:28:55.688986+00:00",
+  "n_rows_analyzed": 60,
+  "period_analyzed": "2024-01-15 → 2024-12-15",
+  "elapsed_seconds": 0.2
+ },
+ "summary": {
+  "total_anomalies": 0,
+  "anomalies_in_report": 0,
+  "by_severity": {
+   "INFO": 0,
+   "LOW": 0,
+   "MEDIUM": 0,
+   "HIGH": 0,
+   "CRITICAL": 0
+  },
+  "by_type": {},
+  "avg_confidence": 0.0,
+  "note": "Una anomalía es una desviación de un patrón esperado; NO implica fraude, robo, pérdida ni error humano."
+ },
+ "anomalies": [],
+ "statistics": {
+  "rows_analyzed": 60,
+  "detectors_run": 6,
+  "emission_threshold": "|z| >= 2.5 (o equivalente)",
+  "max_anomalies_cap": 1000,
+  "truncated": false,
+  "elapsed_seconds": 0.2
+ },
+ "methods": {
+  "temporal": {
+   "description": "Picos, caídas y cambios bruscos de ventas por día, semana ISO y mes.",
+   "method": "Serie de revenue (solo completed). Baseline: mediana móvil + MAD móvil (ventanas 30d/12sem/6m). z robusto = 0.6745*(x - mediana_móvil)/MAD_móvil. Emisión si |z| >= 2.5.",
+   "why_robust": "La mediana no se contamina con el propio evento; el MAD es insensible a valores extremos, a diferencia de la desviación estándar.",
+   "exclusions": "transaction_status != 'completed' excluidas (las cancelaciones son reversiones, no ventas). Huecos = 0."
+  },
+  "product_sales_change": {
+   "description": "Cambios bruscos de ventas de un producto vs su propio historial.",
+   "method": "Ventana reciente: últimos 30 días. Baseline: mediana del revenue diario histórico del producto (mín. 30 días activos y 10 transacciones). z robusto con MAD del historial. Emisión si |z| >= 2.5.",
+   "why_robust": "Comparación contra sí mismo: un producto que vende poco pero estable no genera anomalía."
+  },
+  "price_outlier": {
+   "description": "Precios extremadamente diferentes del histórico del producto.",
+   "method": "Por producto (completed, UnitPrice > 0, mín. 10 precios): límites Q1 - 3*IQR / Q3 + 3*IQR. Máx. 5 casos por producto.",
+   "distinction": "'Precio diferente' (aquí) vs 'precio inválido' (<=0 o no numérico: Data Quality Engine, excluido)."
+  },
+  "quantity_outlier": {
+   "description": "Cantidades extraordinarias por producto.",
+   "method": "Por producto (completed, Quantity > 0, mín. 10): límite Q3 + 3*IQR (solo cola superior).",
+   "distinction": "Quantity <= 0 excluida: pertenece a la lógica de cancelación/devolución, no es anomalía."
+  },
+  "customer_unusual_purchase": {
+   "description": "Compras excepcionalmente grandes vs el historial del propio cliente.",
+   "method": "Clientes con >= 5 transacciones. z robusto por transacción vs mediana/MAD del cliente. Emisión si z >= 4 (umbral alto: en wholesale una compra grande aislada puede ser normal). Top 100."
+  },
+  "customer_frequency_burst": {
+   "description": "Concentración inusual de compras en ventana corta.",
+   "method": "Clientes con >= 10 transacciones e intervalo mediano > 30 días. Ráfaga: >= 4 compras en 7 días (two-pointer).",
+   "note": "Descriptivo; no es modelo de churn."
+  },
+  "severity": {
+   "levels": [
+    "INFO",
+    "LOW",
+    "MEDIUM",
+    "HIGH",
+    "CRITICAL"
+   ],
+   "rule": "Umbrales absolutos: HIGH dev>=6, MEDIUM dev>=4, LOW dev>=2.5, INFO dev>=1.5 (dev = |z| robusto, IQRs más allá del cuartil, o equivalente). CRITICAL: solo por ranking — top 25 por prioridad entre dev>=12 y confidence>=75. Así CRITICAL es excepcional y accionable, nunca una categoría masiva."
+  },
+  "confidence": {
+   "rule": "0-100 ponderado: historial (30) + magnitud (35) + consistencia (20) + calidad de datos (15). Cada anomalía explica sus factores."
+  },
+  "ranking": {
+   "rule": "priority = peso_severidad * (0.5 + confidence/100) * (1 + log10(1 + |impacto|)). Orden descendente."
+  }
+ },
+ "trace": {
+  "dataset": "Ventas 7A",
+  "company_id": "CMP-808b4cf578a3",
+  "source_parquet": "/home/hatch/workspace/zayvero-business/data/processed/CMP-808b4cf578a3/ventas.parquet",
+  "filters_global": "detectores de ventas usan transaction_status == 'completed'; precios/cantidades usan valores > 0",
+  "rows_considered": 60,
+  "period_analyzed": "2024-01-15 → 2024-12-15",
+  "notes": "Toda anomalía individual incluye su propio bloque trace con baseline, fórmula y registros considerados."
+ }
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZAYVERO Business</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Saltar al contenido</a>
+
+<!-- ============ LOGIN ============ -->
+<div id="login-view" class="login-wrap hidden">
+  <div class="login-card" role="main" aria-label="Iniciar sesión">
+    <div class="brand">
+      <div class="brand-mark">Z</div>
+      <div>
+        <div class="brand-name">ZAYVERO</div>
+        <div class="brand-tag">IA · AUTOMATIZACIÓN · TECNOLOGÍA</div>
+      </div>
+    </div>
+    <h1>Iniciar sesión</h1>
+    <p class="muted">Accede a la inteligencia de tu empresa.</p>
+    <form id="login-form" autocomplete="on">
+      <label>Correo electrónico
+        <input type="email" id="login-email" name="email" required autocomplete="username" placeholder="tu@empresa.com">
+      </label>
+      <label>Contraseña
+        <input type="password" id="login-password" name="password" required autocomplete="current-password" placeholder="••••••••">
+      </label>
+      <div id="login-error" class="error hidden" role="alert" aria-live="assertive"></div>
+      <button type="submit" class="btn-primary" id="login-btn">Entrar</button>
+    </form>
+    <p class="demo-note">Cuenta demo: esta plataforma trabaja con datos de demostración (UCI Online Retail II).</p>
+  </div>
+</div>
+
+<!-- ============ APP ============ -->
+<div id="app-view" class="hidden">
+  <header class="topbar">
+    <button id="menu-toggle" class="menu-btn" aria-label="Menú">☰</button>
+    <div class="brand small">
+      <div class="brand-mark">Z</div>
+      <div class="brand-name">ZAYVERO</div>
+    </div>
+    <div class="company-chip">
+      <span class="company-label">Empresa actual:</span>
+      <strong id="company-name">—</strong>
+      <span id="demo-badge" class="demo-badge hidden">DEMO · Datos de demostración</span>
+    </div>
+    <div class="user-chip">
+      <span id="user-name">—</span>
+      <span id="user-role" class="role-badge">—</span>
+      <button id="logout-btn" class="btn-ghost">Cerrar sesión</button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav id="sidebar" class="sidebar" aria-label="Navegación principal">
+      <a href="#/inicio" data-route="inicio" class="nav-item">Inicio</a>
+      <a href="#/empresa" data-route="empresa" class="nav-item">Mi empresa</a>
+      <a href="#/diagnostico" data-route="diagnostico" class="nav-item">Diagnóstico</a>
+      <a href="#/resumen" data-route="resumen" class="nav-item">Resumen</a>
+      <a href="#/hallazgos" data-route="hallazgos" class="nav-item">Hallazgos</a>
+      <a href="#/oportunidades" data-route="oportunidades" class="nav-item">Oportunidades</a>
+      <a href="#/predicciones" data-route="predicciones" class="nav-item">Predicciones</a>
+      <a href="#/advisor" data-route="advisor" class="nav-item">Advisor</a>
+      <a href="#/auditoria" data-route="auditoria" class="nav-item" id="nav-auditoria">Auditoría</a>
+    </nav>
+    <main id="main" class="main" aria-live="polite"></main>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

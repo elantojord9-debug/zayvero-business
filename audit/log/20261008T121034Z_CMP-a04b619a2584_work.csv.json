@@ -1,0 +1,199 @@
+{
+  "file_name": "work.csv",
+  "company_id": "CMP-a04b619a2584",
+  "processed_at_utc": "2026-10-08T12:10:34.434250+00:00",
+  "n_original_rows": 1,
+  "n_processed_rows": 0,
+  "rows_dropped": 1,
+  "ingestion_summary": {
+    "sheets_processed": [
+      null
+    ],
+    "per_sheet": [
+      {
+        "sheet": null,
+        "n_original_rows": 1,
+        "n_processed_rows": 0,
+        "rows_dropped": 1,
+        "duplicate_rows": 0
+      }
+    ]
+  },
+  "column_resolution": {
+    "renamed": {},
+    "unmapped": [
+      "esto",
+      "no",
+      "es",
+      "un",
+      "csv",
+      "valido"
+    ],
+    "missing_canonical": [
+      "Invoice",
+      "StockCode",
+      "Description",
+      "Quantity",
+      "InvoiceDate",
+      "UnitPrice",
+      "CustomerID",
+      "Country"
+    ]
+  },
+  "quality_report": {
+    "n_rows": 1,
+    "n_cols": 6,
+    "columns": [
+      "esto",
+      "no",
+      "es",
+      "un",
+      "csv",
+      "valido"
+    ],
+    "dtypes": {
+      "esto": "int64",
+      "no": "int64",
+      "es": "float64",
+      "un": "float64",
+      "csv": "float64",
+      "valido": "float64"
+    },
+    "null_counts": {
+      "esto": 0,
+      "no": 0,
+      "es": 1,
+      "un": 1,
+      "csv": 1,
+      "valido": 1
+    },
+    "null_pct": {
+      "esto": 0.0,
+      "no": 0.0,
+      "es": 100.0,
+      "un": 100.0,
+      "csv": 100.0,
+      "valido": 100.0
+    },
+    "duplicate_rows": 0,
+    "invalid_dates": {},
+    "invalid_quantities": 0,
+    "invalid_prices": 0,
+    "negative_quantities": 0,
+    "zero_or_negative_prices": 0,
+    "notes": [
+      "Columna de fecha 'InvoiceDate' no encontrada; chequeo omitido.",
+      "Columna 'Quantity' no encontrada; chequeo omitido.",
+      "Columna 'UnitPrice' no encontrada; chequeo omitido."
+    ]
+  },
+  "transformations": [
+    "[(única)] map:Invoice->Transaction (columna ausente -> NA)",
+    "[(única)] map:StockCode->Product (columna ausente -> NA)",
+    "[(única)] map:CustomerID->Customer (columna ausente -> NA)",
+    "[(única)] map:InvoiceDate->Date (columna ausente -> NA)",
+    "[(única)] map:Quantity->Quantity (columna ausente -> NA)",
+    "[(única)] map:UnitPrice->UnitPrice (columna ausente -> NA)",
+    "[(única)] map:Country->Country (columna ausente -> NA)",
+    "[(única)] coerce:Date a datetime (no parseables -> NaT: 0)",
+    "[(única)] coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "[(única)] coerce:Transaction,Product,Customer,Country a string",
+    "[(única)] calc:Revenue=Quantity*UnitPrice (0 filas con Revenue válido)",
+    "[(única)] status:transaction_status con reglas {'invoice_prefix': 'C'} -> {}",
+    "[(única)] trace:source_sheet='None', source_file='work.csv' asignados a 0 filas",
+    "[(única)] multiempresa:company_id='CMP-a04b619a2584' asignado a todas las filas"
+  ],
+  "errors": [
+    "Descuadre de filas: original=1 procesado=0"
+  ],
+  "warnings": [
+    "[(única)] Columnas sin mapear: ['esto', 'no', 'es', 'un', 'csv', 'valido']",
+    "[(única)] Columnas canónicas ausentes: ['Invoice', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID', 'Country']"
+  ],
+  "output_path": "/home/hatch/workspace/zayvero-business/data/processed/CMP-a04b619a2584/malo.parquet",
+  "sheets": [
+    {
+      "sheet": null,
+      "n_original_rows": 1,
+      "n_processed_rows": 0,
+      "rows_dropped": 1,
+      "columns": [
+        "esto",
+        "no",
+        "es",
+        "un",
+        "csv",
+        "valido"
+      ],
+      "duplicate_rows": 0,
+      "quality": {
+        "n_rows": 1,
+        "n_cols": 6,
+        "columns": [
+          "esto",
+          "no",
+          "es",
+          "un",
+          "csv",
+          "valido"
+        ],
+        "dtypes": {
+          "esto": "int64",
+          "no": "int64",
+          "es": "float64",
+          "un": "float64",
+          "csv": "float64",
+          "valido": "float64"
+        },
+        "null_counts": {
+          "esto": 0,
+          "no": 0,
+          "es": 1,
+          "un": 1,
+          "csv": 1,
+          "valido": 1
+        },
+        "null_pct": {
+          "esto": 0.0,
+          "no": 0.0,
+          "es": 100.0,
+          "un": 100.0,
+          "csv": 100.0,
+          "valido": 100.0
+        },
+        "duplicate_rows": 0,
+        "invalid_dates": {},
+        "invalid_quantities": 0,
+        "invalid_prices": 0,
+        "negative_quantities": 0,
+        "zero_or_negative_prices": 0,
+        "notes": [
+          "Columna de fecha 'InvoiceDate' no encontrada; chequeo omitido.",
+          "Columna 'Quantity' no encontrada; chequeo omitido.",
+          "Columna 'UnitPrice' no encontrada; chequeo omitido."
+        ]
+      },
+      "column_resolution": {
+        "renamed": {},
+        "unmapped": [
+          "esto",
+          "no",
+          "es",
+          "un",
+          "csv",
+          "valido"
+        ],
+        "missing_canonical": [
+          "Invoice",
+          "StockCode",
+          "Description",
+          "Quantity",
+          "InvoiceDate",
+          "UnitPrice",
+          "CustomerID",
+          "Country"
+        ]
+      }
+    }
+  ]
+}

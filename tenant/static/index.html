@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZAYVERO — Prueba de acceso (FASE 6A)</title>
+<style>
+body{font-family:system-ui,Arial,sans-serif;max-width:480px;margin:40px auto;padding:0 16px;color:#1a1a2e}
+h1{font-size:20px}.card{border:1px solid #ddd;border-radius:8px;padding:16px;margin-top:16px}
+input{width:100%;padding:8px;margin:6px 0;box-sizing:border-box}
+button{padding:10px 16px;cursor:pointer}
+#msg{margin-top:10px;font-size:14px}.ok{color:green}.err{color:#b00020}
+.demo{font-size:12px;color:#666;background:#f6f6f6;padding:8px;border-radius:6px;margin-top:12px}
+</style>
+</head>
+<body>
+<h1>ZAYVERO Business — Acceso (FASE 6A)</h1>
+<div class="card" id="loginCard">
+  <h3>Iniciar sesión</h3>
+  <input id="email" type="email" placeholder="email" autocomplete="username">
+  <input id="password" type="password" placeholder="contraseña" autocomplete="current-password">
+  <button onclick="doLogin()">Entrar</button>
+  <div id="msg"></div>
+</div>
+<div class="card" id="statusCard" style="display:none">
+  <h3>Sesión activa</h3>
+  <div id="status"></div>
+  <button onclick="doLogout()">Cerrar sesión</button>
+</div>
+<div class="demo">Página mínima de prueba de autenticación multi-tenant.
+Los datos demo (demo-retail) pertenecen a la empresa demo y están aislados.</div>
+<script>
+async function refresh(){
+  const r = await fetch('/api/me');
+  if(r.ok){
+    const j = await r.json();
+    document.getElementById('loginCard').style.display='none';
+    document.getElementById('statusCard').style.display='block';
+    const p = await (await fetch('/api/permissions')).json();
+    document.getElementById('status').innerHTML =
+      '<b>'+j.user.name+'</b> ('+j.user.email+')<br>Empresa: '+j.user.company_name+
+      '<br>Rol: '+j.user.role+'<br>Permisos: '+(p.permissions||[]).join(', ');
+  } else {
+    document.getElementById('loginCard').style.display='block';
+    document.getElementById('statusCard').style.display='none';
+  }
+}
+async function doLogin(){
+  const m = document.getElementById('msg');
+  const r = await fetch('/api/login',{method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({email:document.getElementById('email').value,
+                         password:document.getElementById('password').value})});
+  if(r.ok){ m.textContent=''; refresh(); }
+  else { m.innerHTML='<span class="err">Credenciales inválidas.</span>'; }
+}
+async function doLogout(){
+  await fetch('/api/logout',{method:'POST'});
+  document.getElementById('password').value='';
+  refresh();
+}
+refresh();
+</script>
+</body>
+</html>

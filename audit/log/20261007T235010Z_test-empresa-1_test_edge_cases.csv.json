@@ -1,0 +1,142 @@
+{
+  "file_name": "test_edge_cases.csv",
+  "company_id": "test-empresa-1",
+  "processed_at_utc": "2026-10-07T23:50:10.375285+00:00",
+  "n_original_rows": 12240,
+  "n_processed_rows": 12240,
+  "rows_dropped": 0,
+  "ingestion_summary": {
+    "file_name": "test_edge_cases.csv",
+    "format": "csv",
+    "n_rows": 12240,
+    "n_cols": 8,
+    "columns": [
+      "Invoice Number",
+      "Product Code",
+      "Description",
+      "Qty",
+      "Fecha",
+      "Precio",
+      "Cliente",
+      "Pais"
+    ],
+    "dtypes": {
+      "Invoice Number": "str",
+      "Product Code": "str",
+      "Description": "str",
+      "Qty": "int64",
+      "Fecha": "str",
+      "Precio": "float64",
+      "Cliente": "str",
+      "Pais": "str"
+    },
+    "empty_columns": [],
+    "null_counts": {
+      "Invoice Number": 0,
+      "Product Code": 0,
+      "Description": 4048,
+      "Qty": 0,
+      "Fecha": 2482,
+      "Precio": 0,
+      "Cliente": 4008,
+      "Pais": 0
+    },
+    "null_pct": {
+      "Invoice Number": 0.0,
+      "Product Code": 0.0,
+      "Description": 33.07,
+      "Qty": 0.0,
+      "Fecha": 20.28,
+      "Precio": 0.0,
+      "Cliente": 32.75,
+      "Pais": 0.0
+    },
+    "duplicate_rows": 240
+  },
+  "column_resolution": {
+    "renamed": {
+      "Invoice Number": "Invoice",
+      "Product Code": "StockCode",
+      "Description": "Description",
+      "Qty": "Quantity",
+      "Fecha": "InvoiceDate",
+      "Precio": "UnitPrice",
+      "Cliente": "CustomerID",
+      "Pais": "Country"
+    },
+    "unmapped": [],
+    "missing_canonical": []
+  },
+  "quality_report": {
+    "n_rows": 12240,
+    "n_cols": 8,
+    "columns": [
+      "Invoice",
+      "StockCode",
+      "Description",
+      "Quantity",
+      "InvoiceDate",
+      "UnitPrice",
+      "CustomerID",
+      "Country"
+    ],
+    "dtypes": {
+      "Invoice": "str",
+      "StockCode": "str",
+      "Description": "str",
+      "Quantity": "int64",
+      "InvoiceDate": "str",
+      "UnitPrice": "float64",
+      "CustomerID": "str",
+      "Country": "str"
+    },
+    "null_counts": {
+      "Invoice": 0,
+      "StockCode": 0,
+      "Description": 4048,
+      "Quantity": 0,
+      "InvoiceDate": 2482,
+      "UnitPrice": 0,
+      "CustomerID": 4008,
+      "Country": 0
+    },
+    "null_pct": {
+      "Invoice": 0.0,
+      "StockCode": 0.0,
+      "Description": 33.07,
+      "Quantity": 0.0,
+      "InvoiceDate": 20.28,
+      "UnitPrice": 0.0,
+      "CustomerID": 32.75,
+      "Country": 0.0
+    },
+    "duplicate_rows": 240,
+    "invalid_dates": {
+      "InvoiceDate": 7276
+    },
+    "invalid_quantities": 0,
+    "invalid_prices": 0,
+    "negative_quantities": 4098,
+    "zero_or_negative_prices": 2946,
+    "notes": []
+  },
+  "transformations": [
+    "map:Invoice->Transaction",
+    "map:StockCode->Product",
+    "map:CustomerID->Customer",
+    "map:InvoiceDate->Date",
+    "map:Quantity->Quantity",
+    "map:UnitPrice->UnitPrice",
+    "map:Country->Country",
+    "keep:orig_Description",
+    "coerce:Date a datetime (no parseables -> NaT: 7276)",
+    "coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "coerce:Transaction,Product,Customer,Country a string",
+    "calc:Revenue=Quantity*UnitPrice (12240 filas con Revenue válido)",
+    "status:transaction_status con reglas {'invoice_prefix': 'C'} -> {'completed': 11610, 'cancelled': 630}",
+    "multiempresa:company_id='test-empresa-1' asignado a todas las filas"
+  ],
+  "errors": [],
+  "warnings": [],
+  "output_path": "/home/hatch/workspace/zayvero-business/data/processed/test-empresa-1/test_edge_cases.parquet"
+}

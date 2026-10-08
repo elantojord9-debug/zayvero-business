@@ -1,0 +1,132 @@
+{
+  "file_name": "t4_cancel.csv",
+  "company_id": "test-profiling",
+  "processed_at_utc": "2026-10-08T00:08:05.854484+00:00",
+  "n_original_rows": 120,
+  "n_processed_rows": 120,
+  "rows_dropped": 0,
+  "ingestion_summary": {
+    "sheets_processed": [
+      null
+    ],
+    "per_sheet": [
+      {
+        "sheet": null,
+        "n_original_rows": 120,
+        "n_processed_rows": 120,
+        "rows_dropped": 0,
+        "duplicate_rows": 0
+      }
+    ]
+  },
+  "column_resolution": null,
+  "quality_report": null,
+  "transformations": [
+    "[(única)] map:Invoice->Transaction",
+    "[(única)] map:StockCode->Product",
+    "[(única)] map:CustomerID->Customer",
+    "[(única)] map:InvoiceDate->Date",
+    "[(única)] map:Quantity->Quantity",
+    "[(única)] map:UnitPrice->UnitPrice",
+    "[(única)] map:Country->Country",
+    "[(única)] keep:orig_Description",
+    "[(única)] coerce:Date a datetime (no parseables -> NaT: 0)",
+    "[(única)] coerce:Quantity,UnitPrice a numérico (no numéricos -> NaN)",
+    "[(única)] coerce:Transaction,Product,Customer,Country a string",
+    "[(única)] calc:Revenue=Quantity*UnitPrice (120 filas con Revenue válido)",
+    "[(única)] status:transaction_status con reglas {'invoice_prefix': 'C'} -> {'completed': 90, 'cancelled': 30}",
+    "[(única)] trace:source_sheet='None', source_file='t4_cancel.csv' asignados a 120 filas",
+    "[(única)] multiempresa:company_id='test-profiling' asignado a todas las filas"
+  ],
+  "errors": [],
+  "warnings": [
+    "El Parquet /home/hatch/workspace/zayvero-business/data/processed/test-profiling/t4_cancel.parquet ya existía y será sobrescrito. Use --output-name para no perder la versión anterior."
+  ],
+  "output_path": "/home/hatch/workspace/zayvero-business/data/processed/test-profiling/t4_cancel.parquet",
+  "sheets": [
+    {
+      "sheet": null,
+      "n_original_rows": 120,
+      "n_processed_rows": 120,
+      "rows_dropped": 0,
+      "columns": [
+        "Invoice",
+        "StockCode",
+        "Description",
+        "Quantity",
+        "InvoiceDate",
+        "UnitPrice",
+        "Customer ID",
+        "Country"
+      ],
+      "duplicate_rows": 0,
+      "quality": {
+        "n_rows": 120,
+        "n_cols": 8,
+        "columns": [
+          "Invoice",
+          "StockCode",
+          "Description",
+          "Quantity",
+          "InvoiceDate",
+          "UnitPrice",
+          "CustomerID",
+          "Country"
+        ],
+        "dtypes": {
+          "Invoice": "str",
+          "StockCode": "str",
+          "Description": "str",
+          "Quantity": "int64",
+          "InvoiceDate": "str",
+          "UnitPrice": "float64",
+          "CustomerID": "int64",
+          "Country": "str"
+        },
+        "null_counts": {
+          "Invoice": 0,
+          "StockCode": 0,
+          "Description": 0,
+          "Quantity": 0,
+          "InvoiceDate": 0,
+          "UnitPrice": 0,
+          "CustomerID": 0,
+          "Country": 0
+        },
+        "null_pct": {
+          "Invoice": 0.0,
+          "StockCode": 0.0,
+          "Description": 0.0,
+          "Quantity": 0.0,
+          "InvoiceDate": 0.0,
+          "UnitPrice": 0.0,
+          "CustomerID": 0.0,
+          "Country": 0.0
+        },
+        "duplicate_rows": 0,
+        "invalid_dates": {
+          "InvoiceDate": 0
+        },
+        "invalid_quantities": 0,
+        "invalid_prices": 0,
+        "negative_quantities": 30,
+        "zero_or_negative_prices": 0,
+        "notes": []
+      },
+      "column_resolution": {
+        "renamed": {
+          "Invoice": "Invoice",
+          "StockCode": "StockCode",
+          "Description": "Description",
+          "Quantity": "Quantity",
+          "InvoiceDate": "InvoiceDate",
+          "UnitPrice": "UnitPrice",
+          "Customer ID": "CustomerID",
+          "Country": "Country"
+        },
+        "unmapped": [],
+        "missing_canonical": []
+      }
+    }
+  ]
+}
