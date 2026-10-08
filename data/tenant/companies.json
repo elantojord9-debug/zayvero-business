@@ -81,5 +81,20 @@
     "timezone": "America/Santo_Domingo",
     "date_format": "dd/mm/yyyy",
     "number_format": "es"
+  },
+  {
+    "company_id": "CMP-29bdedca08d9",
+    "name": "ZAYVERO SOLUTIONS",
+    "status": "active",
+    "is_demo": false,
+    "created_at": "2026-10-08T22:09:55.482648+00:00",
+    "updated_at": "2026-10-08T22:09:55.482648+00:00",
+    "country": "DO",
+    "industry": "technology",
+    "language": "es",
+    "currency": "DOP",
+    "timezone": "America/Santo_Domingo",
+    "date_format": "dd/mm/yyyy",
+    "number_format": "es"
   }
 ]
