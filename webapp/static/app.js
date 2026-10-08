@@ -300,8 +300,17 @@
     var h = "<section class='section demo-card' aria-labelledby='h-demo'><h2 id='h-demo'>" +
       esc(T("demo.explore.title")) + "</h2>";
     if (isDemo) {
-      h += "<div class='demo-banner' role='status'>" + esc(T("demo.explore.active")) + "</div>" +
-        "<p><a class='btn' href='#/diagnostico'>" + esc(T("product.action.view_diagnostic")) + "</a></p>";
+      h += "<div class='demo-banner' role='status'>" + esc(T("demo.explore.active")) + "</div>";
+      /* Modo demo iniciado desde "Explorar demo": ofrece volver a la
+       * empresa origen sin pedir login (la sesión origen sigue válida en
+       * el servidor). Sin la marca, es un usuario demo directo: se conserva
+       * el comportamiento anterior. */
+      var inDemoMode = false;
+      try { inDemoMode = sessionStorage.getItem("zb_demo") === "1"; } catch (e) {}
+      if (inDemoMode) {
+        h += "<p><button class='btn' id='demo-back'>" + esc(T("demo.return")) + "</button></p>";
+      }
+      h += "<p><a class='btn' href='#/diagnostico'>" + esc(T("product.action.view_diagnostic")) + "</a></p>";
     } else {
       h += "<p class='muted'>" + esc(T("demo.explore.desc")) + "</p>" +
         "<button class='btn' id='demo-go'>" + esc(T("demo.explore.cta")) + "</button>";
@@ -383,13 +392,42 @@
 
     main.innerHTML = html;
 
-    /* Botón "Explorar demo": sale de la sesión actual y muestra el login
-     * para entrar con una cuenta demo. Nunca mezcla datos entre empresas. */
+    /* Botón "Explorar demo": entra a la demo SIN destruir la sesión actual.
+     * Crea una sesión demo ligada a demo-retail (rol viewer, TTL 1h);
+     * la sesión origen queda intacta para poder volver. Nunca mezcla datos. */
     var dg = document.getElementById("demo-go");
     if (dg) dg.addEventListener("click", async function () {
-      try { await api("/api/logout", { method: "POST" }); } catch (e) {}
-      location.hash = "#/inicio";
-      showLogin("Para explorar la demo, inicia sesión con una cuenta de demostración.");
+      dg.disabled = true;
+      try {
+        await api("/api/demo/enter", { method: "POST" });
+        try { sessionStorage.setItem("zb_demo", "1"); } catch (e) {}
+        await boot();
+      } catch (e) {
+        /* 401: api() ya mostró el login con mensaje claro. */
+        if (e && e.message !== "auth") {
+          var msg = (e.payload && e.payload.error) || friendlyError(e);
+          showLogin(T("demo.enter.failed") + " " + msg);
+        }
+      } finally { dg.disabled = false; }
+    });
+
+    /* Botón "Volver a mi empresa": revoca la sesión demo y restaura la
+     * sesión origen (el servidor repone la cookie). */
+    var db = document.getElementById("demo-back");
+    if (db) db.addEventListener("click", async function () {
+      db.disabled = true;
+      try {
+        var r = await api("/api/demo/exit", { method: "POST" });
+        try { sessionStorage.removeItem("zb_demo"); } catch (e) {}
+        await boot();
+        if (r && r.login_required) {
+          showLogin(T("demo.exit.session_expired"));
+        }
+      } catch (e) {
+        if (e && e.message !== "auth") {
+          showLogin(T("demo.exit.failed") + " " + friendlyError(e));
+        }
+      } finally { db.disabled = false; }
     });
   }
 
