@@ -951,6 +951,9 @@ class WebappHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
+        # Evita que el navegador conserve un app.js viejo tras un despliegue:
+        # siempre revalida los archivos estáticos con el servidor.
+        self.send_header("Cache-Control", "no-cache, must-revalidate")
         self.end_headers()
         self.wfile.write(body)
 
