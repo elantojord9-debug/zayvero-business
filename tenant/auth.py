@@ -14,7 +14,7 @@ from datetime import datetime, timedelta, timezone
 
 from . import audit as audit_mod
 from .models import Session, TenantContext, User
-from .store import TenantStore, utcnow_iso
+from .store import TenantStore, utcnow_iso, DEMO_COMPANY_ID
 from .crypto import hash_password, verify_password
 from . import roles as roles_mod
 
@@ -203,3 +203,99 @@ def logout(store: TenantStore, token: str) -> bool:
         metadata={"session": audit_mod.token_fingerprint(token)},
     )
     return True
+
+
+DEMO_SESSION_TTL_HOURS = 1
+
+
+def _demo_viewer(store: TenantStore):
+    """Usuario lector de la empresa demo (solo lectura)."""
+    for u in store.list_users_by_company(DEMO_COMPANY_ID):
+        if u.status == "active" and u.role_id == "viewer":
+            return u
+    return None
+
+
+def enter_demo(store: TenantStore, ctx: TenantContext,
+               origin_token: str) -> tuple[str, TenantContext]:
+    """Crea una sesión de demostración ligada a la empresa demo-retail.
+
+    Requiere un contexto autenticado válido (el llamante ya inició sesión).
+    La sesión demo usa el usuario lector de la demo (rol viewer: solo
+    lectura) y expira en 1 hora. La sesión origen NO se revoca; su token
+    queda guardado en el registro de la sesión demo (solo servidor) para
+    poder volver sin pedir login. Los datos nunca se mezclan: la sesión
+    es o de la empresa real o de la demo, nunca ambas.
+    """
+    if not origin_token:
+        raise AuthError("sesión inválida")
+    demo_company = store.get_company(DEMO_COMPANY_ID)
+    if (demo_company is None or demo_company.status != "active"
+            or not demo_company.is_demo):
+        raise AuthError("demo no disponible")
+    demo_user = _demo_viewer(store)
+    if demo_user is None:
+        raise AuthError("demo no disponible")
+
+    token = secrets.token_urlsafe(32)
+    now = _now()
+    session = Session(
+        session_id=token,
+        user_id=demo_user.user_id,
+        company_id=DEMO_COMPANY_ID,
+        created_at=now.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        expires_at=(now + timedelta(hours=DEMO_SESSION_TTL_HOURS)).strftime(
+            "%Y-%m-%dT%H:%M:%SZ"),
+        revoked=False,
+        origin_session_id=origin_token,
+    )
+    store.save_session(session)
+    demo_ctx = build_tenant_context(store, demo_user,
+                                    company_name=demo_company.name)
+    audit_mod.log_event(
+        store, company_id=DEMO_COMPANY_ID, user_id=ctx.user_id,
+        action=audit_mod.DEMO_ENTER,
+        metadata={
+            "session": audit_mod.token_fingerprint(token),
+            "origin_company_id": ctx.company_id,
+            "origin_email": ctx.email,
+        },
+    )
+    return token, demo_ctx
+
+
+def exit_demo(store: TenantStore, demo_token: str) -> str:
+    """Sale de la demo: revoca la sesión demo y devuelve el token de la
+    sesión origen si sigue válida ("" si expiró o fue revocada).
+
+    Solo acepta tokens cuya sesión pertenezca a la empresa demo; nunca
+    revoca ni devuelve sesiones ajenas.
+    """
+    session = store.get_session(demo_token) if demo_token else None
+    if (session is None or session.revoked
+            or session.company_id != DEMO_COMPANY_ID
+            or not session.origin_session_id):
+        raise AuthError("no hay sesión demo activa")
+    origin_token = session.origin_session_id
+    session.revoked = True
+    store.save_session(session)
+    audit_mod.log_event(
+        store, company_id=DEMO_COMPANY_ID, user_id=session.user_id,
+        action=audit_mod.DEMO_EXIT,
+        metadata={"session": audit_mod.token_fingerprint(demo_token)},
+    )
+    origin = store.get_session(origin_token)
+    if origin is None or origin.revoked:
+        return ""
+    try:
+        exp = datetime.strptime(
+            origin.expires_at, "%Y-%m-%dT%H:%M:%SZ").replace(
+                tzinfo=timezone.utc)
+    except Exception:
+        return ""
+    if exp < _now():
+        return ""
+    origin_company = store.get_company(origin.company_id)
+    if origin_company is None or origin_company.status != "active":
+        return ""
+    return origin_token
