@@ -3,3 +3,11 @@ __pycache__/
 *.pyc
 data/tenant/sessions.json
 .env
+visual-qa-local/
+data/raw/
+audit/log/
+# Credenciales de usuarios: nunca en el repo (Secret File en Render).
+data/tenant/users.json
+
+# Seed de producción con hashes (NUNCA commitear)
+hidden-ops/

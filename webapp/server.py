@@ -964,6 +964,10 @@ def run_server(port: int = 8701, host: str | None = None):
     if host is None:
         host = os.environ.get("HOST", "127.0.0.1")
     port = int(os.environ.get("PORT", port))
+    # Falla rápido si la configuración de autenticación es inválida
+    # (p.ej. ZAYVERO_REQUIRE_SECRET_FILE=1 sin Secret File): mejor que
+    # arrancar un servicio que no puede autenticar a nadie.
+    get_store()
     server = ThreadingHTTPServer((host, port), WebappHandler)
     print(f"FASE 6B web app en http://{host}:{port}")
     server.serve_forever()

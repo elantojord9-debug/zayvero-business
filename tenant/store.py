@@ -21,6 +21,47 @@ from .models import AuditEvent, Company, Session, User
 
 DEFAULT_DATA_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "tenant")
 
+# Render Secret Files se montan aquí. Ver docs/security-remediation-plan.md.
+RENDER_SECRETS_USERS_FILE = "/etc/secrets/users.json"
+
+# Variable de entorno para apuntar explícitamente al archivo de usuarios.
+# Prioridad de resolución: ZAYVERO_USERS_FILE > /etc/secrets/users.json > <data_dir>/users.json
+USERS_FILE_ENV_VAR = "ZAYVERO_USERS_FILE"
+
+# Si ZAYVERO_REQUIRE_SECRET_FILE=1 (o true/yes/on), la resolución NUNCA puede
+# caer silenciosamente a la copia local del repo: si el origen resuelto es
+# "local", se aborta con RuntimeError. Pensado para producción (Render):
+# evita que un users.json re-commiteado por error reactive credenciales viejas.
+REQUIRE_SECRET_FILE_ENV_VAR = "ZAYVERO_REQUIRE_SECRET_FILE"
+
+
+def _strtobool(value: str) -> bool:
+    return (value or "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def resolve_users_file(data_dir: str) -> tuple[str, str]:
+    """Resuelve la ruta del archivo de usuarios.
+
+    Devuelve (ruta, origen) donde origen es "env" | "render-secret" | "local".
+    Si el archivo no existe en la ruta resuelta, el store arranca vacío:
+    la app funciona pero nadie puede iniciar sesión (comportamiento seguro
+    y explícito; NUNCA se crean usuarios por defecto).
+    """
+    env_path = os.environ.get(USERS_FILE_ENV_VAR, "").strip()
+    if env_path:
+        path, origin = env_path, "env"
+    elif os.path.exists(RENDER_SECRETS_USERS_FILE):
+        path, origin = RENDER_SECRETS_USERS_FILE, "render-secret"
+    else:
+        path, origin = os.path.join(data_dir, "users.json"), "local"
+    if origin == "local" and _strtobool(os.environ.get(REQUIRE_SECRET_FILE_ENV_VAR, "")):
+        raise RuntimeError(
+            f"{REQUIRE_SECRET_FILE_ENV_VAR}=1 exige un archivo de usuarios fuera del "
+            f"repo (variable {USERS_FILE_ENV_VAR} o {RENDER_SECRETS_USERS_FILE}); "
+            f"no se permite la ruta local {path}."
+        )
+    return path, origin
+
 # company_id de la empresa demo. El dataset UCI Online Retail II NUNCA se
 # presenta como datos de un cliente real.
 DEMO_COMPANY_ID = "demo-retail"
@@ -45,7 +86,26 @@ class TenantStore:
         self.data_dir = os.path.abspath(data_dir or DEFAULT_DATA_DIR)
         os.makedirs(self.data_dir, exist_ok=True)
         self._companies_file = os.path.join(self.data_dir, "companies.json")
-        self._users_file = os.path.join(self.data_dir, "users.json")
+        # La ruta de usuarios se resuelve por prioridad:
+        # ZAYVERO_USERS_FILE > /etc/secrets/users.json > <data_dir>/users.json
+        # Si el archivo no existe, el store arranca vacío (nadie puede entrar).
+        self._users_file, self._users_file_origin = resolve_users_file(self.data_dir)
+        import logging
+        _log = logging.getLogger(__name__)
+        if not os.path.exists(self._users_file):
+            _log.warning(
+                "users.json no encontrado en %s (origen: %s). "
+                "Sin usuarios: nadie puede iniciar sesión. "
+                "Provea %s o un Secret File en Render.",
+                self._users_file, self._users_file_origin, USERS_FILE_ENV_VAR,
+            )
+        else:
+            # Línea informativa para verificar en logs de Render qué fuente
+            # de usuarios está activa (sin exponer contenido).
+            _log.info(
+                "users.json activo: %s (origen: %s)",
+                self._users_file, self._users_file_origin,
+            )
         self._sessions_file = os.path.join(self.data_dir, "sessions.json")
         self._audit_file = os.path.join(self.data_dir, "audit.jsonl")
 
@@ -61,7 +121,7 @@ class TenantStore:
         with open(tmp, "w", encoding="utf-8") as f:
             json.dump(items, f, ensure_ascii=False, indent=2)
         os.replace(tmp, path)
-        if path.endswith("users.json"):
+        if path == self._users_file or path.endswith("users.json"):
             os.chmod(path, 0o600)
 
     # ---- companies -----------------------------------------------------
