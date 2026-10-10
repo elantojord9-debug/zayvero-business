@@ -321,5 +321,85 @@ class FullPipelineReproTest(unittest.TestCase):
         self.assertNotIn("structural_gaps", comps)
 
 
+class ExpenseAmountValidationTest(unittest.TestCase):
+    """Tipo=gasto solo se excluye de la alerta con Gasto_DOP positivo.
+
+    Regresión: un registro con Tipo=gasto pero Gasto_DOP ausente, vacío,
+    cero o negativo NO se excluye automáticamente de la alerta de precios
+    no positivos (tratamiento conservador: se evalúa como venta).
+    """
+
+    def _df(self, rows):
+        # rows: tuplas (orig_Tipo, orig_Gasto_DOP, UnitPrice)
+        return pd.DataFrame(
+            {
+                "orig_Tipo": [r[0] for r in rows],
+                "orig_Gasto_DOP": [r[1] for r in rows],
+                "UnitPrice": [r[2] for r in rows],
+            }
+        )
+
+    def _comps(self, df):
+        from profiling.quality_score import compute_quality_score
+
+        qs = compute_quality_score(df, {"column_resolution": {"unmapped": []}})
+        return {d["component"]: d for d in qs["deductions"]}
+
+    def test_36_gasto_sin_importe_si_alerta(self):
+        # Tipo=gasto + Gasto_DOP vacío (None) + precio 0 -> SÍ alerta.
+        comps = self._comps(self._df([("Gasto", None, 0)]))
+        self.assertIn("non_positive_prices", comps)
+        det = comps["non_positive_prices"]["detail"]
+        self.assertIn("1 precios", det)
+        self.assertIn("sin importe positivo", det)
+
+    def test_37_gasto_importe_cero_si_alerta(self):
+        # Tipo=gasto + Gasto_DOP = 0 + precio 0 -> SÍ alerta.
+        comps = self._comps(self._df([("Gasto", 0, 0)]))
+        self.assertIn("non_positive_prices", comps)
+
+    def test_38_gasto_importe_negativo_si_alerta(self):
+        # Tipo=gasto + Gasto_DOP negativo + precio 0 -> SÍ alerta.
+        comps = self._comps(self._df([("Gasto", -500, 0)]))
+        self.assertIn("non_positive_prices", comps)
+
+    def test_39_gasto_importe_positivo_no_alerta(self):
+        # Tipo=gasto + Gasto_DOP positivo + precio 0 -> NO alerta.
+        comps = self._comps(self._df([("Gasto", 1500, 0)]))
+        self.assertNotIn("non_positive_prices", comps)
+
+    def test_40_gasto_sin_columna_importe_si_alerta(self):
+        # Sin columna orig_Gasto_DOP: conservador, el gasto SÍ cuenta.
+        df = pd.DataFrame({"orig_Tipo": ["Gasto"], "UnitPrice": [0]})
+        comps = self._comps(df)
+        self.assertIn("non_positive_prices", comps)
+
+    def test_41_mensaje_distinguie_confirmados(self):
+        # Mezcla: el detalle distingue confirmados de no confirmados.
+        comps = self._comps(
+            self._df([("Gasto", 1500, 0), ("Gasto", 0, 0), ("Venta", 0, 0)])
+        )
+        det = comps["non_positive_prices"]["detail"]
+        self.assertIn("2 precios", det)  # gasto sin importe + venta
+        self.assertIn("1 gasto(s) confirmado(s)", det)
+        self.assertIn("sin importe positivo", det)
+
+    def test_42_helper_solo_confirma_con_importe(self):
+        # _identify_expenses exige ambas condiciones.
+        from profiling.quality_score import _identify_expenses
+
+        df = self._df(
+            [
+                ("Gasto", 1500, 0),   # confirmado
+                ("Gasto", 0, 0),      # no confirmado
+                ("Gasto", None, 0),   # no confirmado
+                ("Venta", 1500, 0),   # no es gasto
+                ("gasto", "2000", 0),  # confirmado (texto, minúsculas)
+            ]
+        )
+        is_exp = _identify_expenses(df)
+        self.assertEqual(list(is_exp), [True, False, False, False, True])
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

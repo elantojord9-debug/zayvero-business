@@ -63,13 +63,12 @@ STRUCTURAL_GAP_POINTS = 8
 STRUCTURAL_GAP_CAP = 20
 
 
-def _identify_expenses(df: pd.DataFrame) -> "pd.Series":
-    """Filas identificadas positivamente como gastos.
+def _tipo_gasto_mask(df: pd.DataFrame) -> "pd.Series":
+    """Filas con orig_Tipo == 'gasto' (sin validar el importe).
 
-    Requiere orig_Tipo (conservada por normalize) con valor 'gasto'
-    (insensible a mayúsculas y espacios). Sin orig_Tipo, o con valor
-    nulo/distinto, la fila NO se considera gasto (tratamiento conservador:
-    un registro sin tipo identificable sigue evaluándose como venta).
+    Insensible a mayúsculas y espacios. Sin orig_Tipo, o con valor
+    nulo/distinto, la fila NO marca (tratamiento conservador: un registro
+    sin tipo identificable se evalúa como venta).
     """
     import pandas as pd
 
@@ -77,6 +76,29 @@ def _identify_expenses(df: pd.DataFrame) -> "pd.Series":
         return pd.Series(False, index=df.index)
     tipo = df["orig_Tipo"].astype("string").str.strip().str.lower()
     return (tipo == "gasto").fillna(False)
+
+
+def _identify_expenses(df: pd.DataFrame) -> "pd.Series":
+    """Filas confirmadas como gastos (exclusión conservadora de alertas).
+
+    Un registro solo se excluye de la alerta de precios no positivos cuando
+    cumple AMBAS condiciones:
+    1) orig_Tipo (conservada por normalize) con valor 'gasto'
+       (insensible a mayúsculas y espacios), y
+    2) orig_Gasto_DOP con importe numérico positivo (> 0).
+
+    Todo lo demás —Tipo=gasto con Gasto_DOP ausente, vacío, cero, negativo
+    o no numérico, o sin la columna orig_Gasto_DOP— NO se excluye: se evalúa
+    de forma conservadora como venta y su precio no positivo sí genera
+    alerta.
+    """
+    import pandas as pd
+
+    is_gasto = _tipo_gasto_mask(df)
+    if "orig_Gasto_DOP" not in df.columns:
+        return pd.Series(False, index=df.index)
+    importe = pd.to_numeric(df["orig_Gasto_DOP"], errors="coerce")
+    return is_gasto & (importe > 0)
 
 
 def _pct(part: int, total: int) -> float:
@@ -224,19 +246,27 @@ def compute_quality_score(
             "corresponder a devoluciones/cancelaciones, pero se señalan.",
         )
 
-    # 7) Precios ≤ 0 en VENTAS. Los gastos legítimos (Tipo=gasto) no se
-    #    penalizan como ventas con precio incorrecto; los registros sin tipo
-    #    identificable se tratan de forma conservadora (sí cuentan).
+    # 7) Precios ≤ 0 en VENTAS. Solo los gastos CONFIRMADOS (Tipo=gasto con
+    #    importe positivo en Gasto_DOP) quedan fuera de la alerta; los
+    #    registros con Tipo=gasto pero sin importe positivo, y los sin tipo
+    #    identificable, se tratan de forma conservadora (sí cuentan).
     if "UnitPrice" in df.columns:
         is_expense = _identify_expenses(df)
-        sales_bad = (df["UnitPrice"] <= 0) & ~is_expense
+        price_bad = df["UnitPrice"] <= 0
+        sales_bad = price_bad & ~is_expense
         n_zp = int(sales_bad.sum())
-        n_zp_exp = int(((df["UnitPrice"] <= 0) & is_expense).sum())
+        n_zp_exp = int((price_bad & is_expense).sum())
+        n_unconf = int((price_bad & _tipo_gasto_mask(df) & ~is_expense).sum())
         detail = f"{n_zp} precios ≤ 0 en ventas ({_pct(n_zp, n)}%)."
         if n_zp_exp:
             detail += (
-                f" {n_zp_exp} gasto(s) con precio 0 no penalizados "
-                "(importe en Gasto_DOP)."
+                f" {n_zp_exp} gasto(s) confirmado(s) con precio 0 no "
+                "penalizados (Tipo=gasto, Gasto_DOP > 0)."
+            )
+        if n_unconf:
+            detail += (
+                f" {n_unconf} registro(s) con Tipo=gasto pero sin importe "
+                "positivo en Gasto_DOP sí cuentan (conservador)."
             )
         deduct(
             "non_positive_prices",
