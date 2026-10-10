@@ -91,6 +91,11 @@ def _identify_expenses(df: pd.DataFrame) -> "pd.Series":
     o no numérico, o sin la columna orig_Gasto_DOP— NO se excluye: se evalúa
     de forma conservadora como venta y su precio no positivo sí genera
     alerta.
+
+    La máscara resultante nunca contiene ausentes: cualquier NA (p. ej. de
+    columnas Arrow-string con valores faltantes, donde pd.to_numeric
+    produce Int64 con <NA>) se convierte explícitamente en False para que
+    ningún registro se omita silenciosamente del conteo.
     """
     import pandas as pd
 
@@ -98,7 +103,7 @@ def _identify_expenses(df: pd.DataFrame) -> "pd.Series":
     if "orig_Gasto_DOP" not in df.columns:
         return pd.Series(False, index=df.index)
     importe = pd.to_numeric(df["orig_Gasto_DOP"], errors="coerce")
-    return is_gasto & (importe > 0)
+    return (is_gasto & (importe > 0)).fillna(False)
 
 
 def _pct(part: int, total: int) -> float:

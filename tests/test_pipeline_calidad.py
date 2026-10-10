@@ -400,6 +400,28 @@ class ExpenseAmountValidationTest(unittest.TestCase):
         is_exp = _identify_expenses(df)
         self.assertEqual(list(is_exp), [True, False, False, False, True])
 
+    def test_43_gasto_importe_ausente_arrow_string_si_alerta(self):
+        # Caso real del pipeline: normalize conserva orig_Gasto_DOP como
+        # texto Arrow-string; un ausente (pd.NA) no debe escapar de la
+        # alerta ni convertirse en cero.
+        from profiling.quality_score import _identify_expenses
+
+        df = pd.DataFrame({
+            "orig_Tipo": pd.Series(["Gasto", "Gasto"], dtype="string"),
+            "orig_Gasto_DOP": pd.Series(["1500", None], dtype="string"),
+            "UnitPrice": [0, 0],
+        })
+        is_exp = _identify_expenses(df)
+        # La mascara no propaga ausentes: valores booleanos explicitos.
+        self.assertFalse(bool(is_exp.isna().any()))
+        self.assertEqual(list(is_exp.astype(bool)), [True, False])
+        comps = self._comps(df)
+        self.assertIn("non_positive_prices", comps)
+        self.assertIn("sin importe positivo",
+                      comps["non_positive_prices"]["detail"])
+        # El ausente sigue identificado como faltante, no convertido a cero.
+        self.assertTrue(bool(df["orig_Gasto_DOP"].isna()[1]))
+
 
 if __name__ == "__main__":
     unittest.main(verbosity=2)
