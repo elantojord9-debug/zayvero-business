@@ -91,11 +91,21 @@ def suggest_mapping(columns: List[str]) -> Dict[str, Any]:
     needs_confirmation = any(
         s["status"] == "needs_review" for s in suggestions
     )
+    by_canonical = {s["canonical"]: s for s in suggestions}
+    warnings: List[str] = []
+    if not (by_canonical.get("Invoice") or {}).get("source"):
+        warnings.append(
+            "Tu archivo no tiene una columna de factura (Invoice) asignada: "
+            "no habrá identificador de transacción y el análisis de "
+            "cancelaciones quedará limitado. Puedes continuar si tu reporte "
+            "legítimamente no usa facturas."
+        )
     return {
         "suggestions": suggestions,
         "needs_confirmation": needs_confirmation,
         "canonical_columns": CANONICAL_COLUMNS,
         "required": REQUIRED_CANONICAL,
+        "warnings": warnings,
         # Columnas originales del archivo, en orden: el selector del
         # frontend las muestra TODAS (incluso sin sugerencia) para
         # asignación manual.

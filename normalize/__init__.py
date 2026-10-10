@@ -66,10 +66,20 @@ STATUS_UNKNOWN = "unknown"
 def detect_cancellation(
     invoice: Any, rules: dict[str, Any] | None = None
 ) -> str:
-    """Clasifica una factura según reglas configurables."""
+    """Clasifica una factura según reglas configurables.
+
+    Valores ausentes (None, NaN, pd.NA, pd.NaT) -> "unknown", como indica
+    la documentación del módulo ("Sin Invoice -> unknown").
+    """
     rules = rules or {"invoice_prefix": "C"}
-    if invoice is None or (isinstance(invoice, float) and pd.isna(invoice)):
+    if invoice is None:
         return STATUS_UNKNOWN
+    try:
+        if bool(pd.isna(invoice)):
+            return STATUS_UNKNOWN
+    except (TypeError, ValueError):
+        # Objeto no escalar: se evalúa como texto más abajo.
+        pass
     inv = str(invoice).strip()
 
     prefix = rules.get("invoice_prefix")

@@ -8,21 +8,31 @@ Cada penalización se calcula sobre el % de filas afectadas y queda
 registrada en `deductions` con su explicación en lenguaje claro.
 
 COMPONENTES (pesos y topes documentados):
-    - missing_critical:  filas con algún campo crítico nulo
+    - missing_critical:  filas con algún campo crítico nulo, SOLO en campos
+                         cuya columna existe en el archivo
                          (Transaction, Date, Quantity, UnitPrice):
                          pct × 3, tope 30
+    - structural_gaps:   campos críticos cuya columna nunca existió en el
+                         archivo (ausencia estructural, p. ej. reportes sin
+                         facturas). NO es corrupción de datos: penalización
+                         fija 8 pts por campo, tope 20, con advertencia visible.
     - duplicates:        filas duplicadas (del reporte de calidad de FASE 1A
                          si está disponible; si no, se recalcula):
                          pct × 2, tope 20
-    - invalid_dates:     Date = NaT con fecha original no nula:
-                         pct × 2, tope 15
-    - invalid_quantities: Quantity = NaN (no numérico en origen):
-                         pct × 2, tope 15
-    - invalid_prices:    UnitPrice = NaN (no numérico en origen):
-                         pct × 2, tope 15
+    - invalid_dates:     Date = NaT con fecha original no nula (se omite si
+                         Date es estructuralmente ausente): pct × 2, tope 15
+    - invalid_quantities: Quantity = NaN (no numérico en origen; se omite si
+                         Quantity es estructuralmente ausente): pct × 2, tope 15
+    - invalid_prices:    UnitPrice = NaN (no numérico en origen; se omite si
+                         UnitPrice es estructuralmente ausente): pct × 2, tope 15
     - negative_quantities: Quantity < 0: pct × 1, tope 10
     - non_positive_prices: UnitPrice ≤ 0: pct × 1, tope 10
     - unmapped_columns:  columnas sin mapear (del audit): 2 pts c/u, tope 10
+
+La ausencia estructural se detecta por las columnas orig_<canónico>:
+normalize() solo las crea cuando la columna existía en el archivo.
+Sin ninguna columna orig_ (formato antiguo), se conserva el
+comportamiento anterior a este cambio.
 
 El score NUNCA esconde problemas: `explanation` enumera cada deducción
 con conteos reales. Un dataset vacío recibe score 0 con explicación.
@@ -35,6 +45,20 @@ import pandas as pd
 from profiling.trace import make_trace, to_jsonable
 
 CRITICAL_FIELDS = ["Transaction", "Date", "Quantity", "UnitPrice"]
+
+# Campo crítico -> columna orig_ que demuestra existencia estructural.
+# normalize() solo crea orig_<canónico> si la columna existía en el archivo.
+CRITICAL_ORIGIN = {
+    "Transaction": "orig_Invoice",
+    "Date": "orig_InvoiceDate",
+    "Quantity": "orig_Quantity",
+    "UnitPrice": "orig_UnitPrice",
+}
+
+# Penalización fija por campo crítico estructuralmente ausente (no escalada
+# por filas: la ausencia de la columna no es corrupción de datos).
+STRUCTURAL_GAP_POINTS = 8
+STRUCTURAL_GAP_CAP = 20
 
 
 def _pct(part: int, total: int) -> float:
@@ -77,9 +101,25 @@ def compute_quality_score(
             }
         )
 
-    # 1) Campos críticos nulos
+    # Distingue ausencia estructural (la columna nunca existió en el archivo)
+    # de valores faltantes dentro de columnas existentes. Sin ninguna columna
+    # orig_ se conserva el comportamiento anterior (compatibilidad).
+    has_any_orig = any(o in df.columns for o in CRITICAL_ORIGIN.values())
+    if has_any_orig:
+        structural_absent = [
+            f for f in CRITICAL_FIELDS
+            if CRITICAL_ORIGIN[f] not in df.columns
+        ]
+        present_critical = [
+            f for f in CRITICAL_FIELDS if f not in structural_absent
+        ]
+    else:
+        structural_absent = []
+        present_critical = list(CRITICAL_FIELDS)
+
+    # 1) Campos críticos nulos (solo en campos estructuralmente presentes)
     missing_mask = pd.Series(False, index=df.index)
-    for col in CRITICAL_FIELDS:
+    for col in present_critical:
         if col in df.columns:
             missing_mask = missing_mask | df[col].isna()
     n_missing = int(missing_mask.sum())
@@ -87,8 +127,20 @@ def compute_quality_score(
         "missing_critical",
         min(_pct(n_missing, n) * 3, 30),
         f"{n_missing} filas ({_pct(n_missing, n)}%) con algún campo crítico "
-        f"nulo {CRITICAL_FIELDS}.",
+        f"nulo {present_critical}.",
     )
+
+    # 1b) Brechas estructurales: advertencia visible, penalización fija
+    # (no escalada por filas: no es corrupción de datos).
+    if structural_absent:
+        deduct(
+            "structural_gaps",
+            min(len(structural_absent) * STRUCTURAL_GAP_POINTS,
+                STRUCTURAL_GAP_CAP),
+            f"{len(structural_absent)} campo(s) crítico(s) sin columna de "
+            f"origen en el archivo: {', '.join(structural_absent)}. "
+            "Limitación estructural del reporte, no datos corruptos.",
+        )
 
     # 2) Duplicados: del audit de FASE 1A si existe; si no, recálculo
     n_dup = None
@@ -112,8 +164,9 @@ def compute_quality_score(
         f"{n_dup} filas duplicadas ({_pct(n_dup, n)}%).",
     )
 
-    # 3) Fechas inválidas (NaT con original no nulo)
-    if "Date" in df.columns:
+    # 3) Fechas inválidas (NaT con original no nulo; se omite si Date es
+    #    estructuralmente ausente: no hay fechas que evaluar)
+    if "Date" in df.columns and "Date" not in structural_absent:
         if "orig_InvoiceDate" in df.columns:
             bad_dates = int(
                 (df["Date"].isna() & df["orig_InvoiceDate"].notna()).sum()
@@ -126,12 +179,13 @@ def compute_quality_score(
             f"{bad_dates} fechas no parseables ({_pct(bad_dates, n)}%).",
         )
 
-    # 4-5) Cantidades / precios no numéricos (NaN con original no nulo)
-    for col, orig, comp in (
-        ("Quantity", "orig_Quantity", "invalid_quantities"),
-        ("UnitPrice", "orig_UnitPrice", "invalid_prices"),
+    # 4-5) Cantidades / precios no numéricos (NaN con original no nulo;
+    #    se omiten si el campo es estructuralmente ausente)
+    for col, orig, comp, crit in (
+        ("Quantity", "orig_Quantity", "invalid_quantities", "Quantity"),
+        ("UnitPrice", "orig_UnitPrice", "invalid_prices", "UnitPrice"),
     ):
-        if col in df.columns:
+        if col in df.columns and crit not in structural_absent:
             if orig in df.columns:
                 bad = int((df[col].isna() & df[orig].notna()).sum())
             else:
@@ -208,6 +262,7 @@ def compute_quality_score(
             "explanation": explanation,
             "components_evaluated": [
                 "missing_critical",
+                "structural_gaps",
                 "duplicates",
                 "invalid_dates",
                 "invalid_quantities",
@@ -218,13 +273,15 @@ def compute_quality_score(
             ],
             "trace": make_trace(
                 formula="score = 100 − Σ penalizaciones (topes: missing 30, "
-                "duplicados 20, fechas/cantidades/precios inválidos 15 c/u, "
-                "negativos 10, precios≤0 10, unmapped 10)",
+                "estructurales 20, duplicados 20, fechas/cantidades/precios "
+                "inválidos 15 c/u, negativos 10, precios≤0 10, unmapped 10)",
                 filters="todas las filas del Parquet normalizado + reporte "
                 "de calidad del audit de FASE 1A",
                 rows_considered=n,
                 period="n/a (calidad, no temporal)",
-                notes="El score describe calidad de datos, no del negocio.",
+                notes="El score describe calidad de datos, no del negocio. "
+                "structural_gaps marca campos críticos sin columna de origen "
+                "(limitación del reporte, no corrupción).",
             ),
         }
     )

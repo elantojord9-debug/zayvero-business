@@ -1551,6 +1551,9 @@
       if (mappingState.confirmed) {
         h += "<div class='ok-banner'>✓ Mapeo de columnas confirmado.</div>";
       }
+      (sug.warnings || []).forEach(function (w) {
+        h += "<div class='warning'>⚠ " + esc(w) + "</div>";
+      });
       h += "<p>ZAYVERO sugiere la correspondencia de tus columnas. Revísala y confirma.</p><div class='table-scroll'><table class='mapping'><thead><tr><th>Campo</th><th>Tu columna</th><th>Estado</th></tr></thead><tbody>";
       (sug.suggestions || []).forEach(function (s) {
         var sel = "<select data-canonical='" + esc(s.canonical) + "' " + (mappingState.confirmed ? "disabled" : "") + ">";
