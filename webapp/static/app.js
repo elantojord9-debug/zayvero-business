@@ -22,7 +22,8 @@
   function esc(s) {
     return String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
   }
   function dash(v) {
     return (v === null || v === undefined || v === "") ? "—" : v;
@@ -1568,6 +1569,7 @@
         h += "<p><small>* Campos necesarios para el análisis.</small></p><button class='btn' id='map-confirm'>Confirmar mapeo</button> <span id='map-msg' aria-live='polite'></span>";
       }
       box.innerHTML = h;
+      guardMappingDuplicates(box);
       var btn = document.getElementById("map-confirm");
       if (btn) btn.addEventListener("click", async function () {
         var selects = box.querySelectorAll("select[data-canonical]");
@@ -1588,13 +1590,77 @@
       });
     }
     function revCols(sug) {
-      // columnas del archivo: usar las de la sugerencia si trae candidatas
+      // TODAS las columnas originales del archivo (incluso sin sugerencia
+      // automática), para permitir asignación manual. Fallback al
+      // comportamiento anterior si el servidor no trae la lista.
+      if (sug.columns && sug.columns.length) return sug.columns.slice();
       var set = {};
       (sug.suggestions || []).forEach(function (s) {
         if (s.source) set[s.source] = 1;
         (s.candidates || []).forEach(function (c) { set[c] = 1; });
       });
       return Object.keys(set);
+    }
+    function guardMappingDuplicates(box) {
+      // Cada columna de origen solo puede asignarse a un campo destino.
+      // Marca "en uso" las opciones ocupadas en otros selectores y revierte
+      // cualquier cambio que cree un duplicado, con mensaje explicativo.
+      var msg = document.getElementById("map-msg");
+      function usedBy() {
+        var m = {};
+        box.querySelectorAll("select[data-canonical]").forEach(function (s2) {
+          if (s2.value) m[s2.value] = s2.getAttribute("data-canonical");
+        });
+        return m;
+      }
+      function refresh() {
+        var used = usedBy();
+        box.querySelectorAll("select[data-canonical]").forEach(function (s2) {
+          var mine = s2.getAttribute("data-canonical");
+          Array.prototype.forEach.call(s2.options, function (o) {
+            if (!o.value) return;
+            if (!o.getAttribute("data-base")) o.setAttribute("data-base", o.text);
+            var other = used[o.value] && used[o.value] !== mine;
+            o.disabled = !!other;
+            o.text = o.getAttribute("data-base") + (other ? " · en uso" : "");
+          });
+        });
+      }
+      box.querySelectorAll("select[data-canonical]").forEach(function (s2) {
+        if (s2.disabled) return;
+        s2.setAttribute("data-prev", s2.value);
+        s2.addEventListener("change", function () {
+          var val = s2.value, clash = null;
+          box.querySelectorAll("select[data-canonical]").forEach(function (o2) {
+            if (o2 !== s2 && o2.value && o2.value === val) {
+              clash = o2.getAttribute("data-canonical");
+            }
+          });
+          if (val && clash) {
+            s2.value = s2.getAttribute("data-prev");
+            if (msg) msg.innerHTML = "<span class='error'>La columna '" + esc(val) +
+              "' ya está asignada a '" + esc(clash) +
+              "'. Libérala primero o elige otra.</span>";
+          } else {
+            s2.setAttribute("data-prev", s2.value);
+            if (msg) msg.textContent = "";
+          }
+          refresh();
+        });
+      });
+      refresh();
+      // Avisa si el estado inicial ya trae un duplicado (p. ej. mapeo previo).
+      var seen = {}, dup = null;
+      box.querySelectorAll("select[data-canonical]").forEach(function (s2) {
+        if (s2.value) {
+          if (seen[s2.value]) dup = s2.value;
+          seen[s2.value] = 1;
+        }
+      });
+      if (dup && msg) {
+        msg.innerHTML = "<span class='error'>La columna '" + esc(dup) +
+          "' aparece asignada a más de un campo. Corrígela antes de confirmar.</span>";
+      }
     }
 
     /* --- vista previa --- */

@@ -312,6 +312,75 @@ class MappingTest(unittest.TestCase):
         for word in ("parquet", "pipeline", "dataframe", "python", "json", "backend"):
             self.assertNotIn(word, blob)
 
+    # --- FIX mapeo-selector: CSV dominicano de prueba (30 registros) ---
+    COLS_DO = ["Tipo", "Producto_o_concepto", "Cantidad",
+               "Precio_unitario_DOP", "Gasto_DOP", "Fecha"]
+
+    def test_25_suggest_fecha_exacta(self):
+        sug = suggest_mapping(self.COLS_DO)
+        by = {s["canonical"]: s for s in sug["suggestions"]}
+        self.assertEqual(by["InvoiceDate"]["source"], "Fecha")
+        self.assertEqual(by["InvoiceDate"]["status"], "suggested")
+        self.assertEqual(by["Quantity"]["source"], "Cantidad")
+
+    def test_26_suggest_precio_dop(self):
+        sug = suggest_mapping(self.COLS_DO)
+        by = {s["canonical"]: s for s in sug["suggestions"]}
+        self.assertEqual(by["UnitPrice"]["source"], "Precio_unitario_DOP")
+        self.assertEqual(by["UnitPrice"]["status"], "suggested")
+
+    def test_27_gasto_dop_no_es_precio(self):
+        # Gasto_DOP es un concepto distinto: NO debe mapearse a UnitPrice
+        # ni a ningún otro canónico; queda disponible sin asignar.
+        sug = suggest_mapping(self.COLS_DO)
+        for s in sug["suggestions"]:
+            self.assertNotEqual(s["source"], "Gasto_DOP")
+
+    def test_28_suggest_incluye_todas_las_columnas(self):
+        # El selector debe mostrar TODAS las columnas originales, incluso
+        # las desconocidas (Tipo, Producto_o_concepto, Gasto_DOP).
+        sug = suggest_mapping(self.COLS_DO)
+        self.assertEqual(sug["columns"], self.COLS_DO)
+        by = {s["canonical"]: s for s in sug["suggestions"]}
+        for canon in ("Invoice", "StockCode", "Description",
+                      "CustomerID", "Country"):
+            self.assertEqual(by[canon]["status"], "needs_review")
+            self.assertIsNone(by[canon]["source"])
+
+    def test_29_suggest_sin_duplicados(self):
+        # Ninguna columna de origen se propone dos veces.
+        sug = suggest_mapping(self.COLS_DO)
+        srcs = [s["source"] for s in sug["suggestions"] if s["source"]]
+        self.assertEqual(len(srcs), len(set(srcs)))
+
+    def test_30_confirm_rechaza_duplicado(self):
+        mp = {"Quantity": "Cantidad", "UnitPrice": "Cantidad",
+              "InvoiceDate": "Fecha"}
+        res = confirm_mapping(self.COLS_DO, mp)
+        self.assertFalse(res["ok"])
+        self.assertTrue(any("Cantidad" in e and "más de un campo" in e
+                            for e in res["errors"]))
+
+    def test_31_confirm_mapeo_do_ok(self):
+        mp = {"Quantity": "Cantidad", "InvoiceDate": "Fecha",
+              "UnitPrice": "Precio_unitario_DOP"}
+        res = confirm_mapping(self.COLS_DO, mp)
+        self.assertTrue(res["ok"])
+        self.assertEqual(res["mapping"]["UnitPrice"], "Precio_unitario_DOP")
+        # Las desconocidas simplemente quedan fuera del mapeo, sin error.
+        self.assertNotIn("Gasto_DOP", res["mapping"].values())
+
+    def test_32_online_retail_ii_intacto(self):
+        # Compatibilidad: el esquema original sigue mapeando 1:1.
+        cols = ["Invoice", "StockCode", "Description", "Quantity",
+                "InvoiceDate", "UnitPrice", "CustomerID", "Country"]
+        sug = suggest_mapping(cols)
+        by = {s["canonical"]: s for s in sug["suggestions"]}
+        for c in cols:
+            self.assertEqual(by[c]["source"], c)
+            self.assertEqual(by[c]["status"], "suggested")
+        self.assertFalse(sug["needs_confirmation"])
+
 
 class PreviewTest(unittest.TestCase):
     """Vista previa (unit)."""

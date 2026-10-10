@@ -47,6 +47,11 @@ CANONICAL_ALIASES: dict[str, list[str]] = {
     "UnitPrice": [
         "unitprice", "unit price", "price", "precio", "precio unitario",
         "unit_price",
+        # Variantes con moneda (p. ej. CSV dominicanos en DOP). "Gasto" se
+        # deja FUERA a propósito: gasto != precio unitario (conceptos
+        # distintos) y no existe un campo canónico de gastos.
+        "precio dop", "precio unitario dop", "precio rd", "precio unitario rd",
+        "unit price dop",
     ],
     "CustomerID": [
         "customer id", "customerid", "customer_id", "customer", "client id",

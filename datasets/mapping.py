@@ -96,6 +96,10 @@ def suggest_mapping(columns: List[str]) -> Dict[str, Any]:
         "needs_confirmation": needs_confirmation,
         "canonical_columns": CANONICAL_COLUMNS,
         "required": REQUIRED_CANONICAL,
+        # Columnas originales del archivo, en orden: el selector del
+        # frontend las muestra TODAS (incluso sin sugerencia) para
+        # asignación manual.
+        "columns": list(columns),
     }
 
 
