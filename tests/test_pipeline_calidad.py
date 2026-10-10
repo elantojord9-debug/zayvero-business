@@ -22,26 +22,37 @@ from profiling.quality_score import compute_quality_score  # noqa: E402
 
 
 def _demo_cols():
-    return ["Tipo", "Producto_o_concepto", "Cantidad",
-            "Precio_unitario_DOP", "Gasto_DOP", "Fecha"]
+    return ["Nota", "Fecha", "Tipo", "Producto_o_concepto", "Cantidad",
+            "Precio_unitario_DOP", "Gasto_DOP"]
 
 
-def _synthetic_csv(path):
-    """CSV sintético equivalente a zayvero_demo.csv: 30 filas,
-    22 ventas (precio positivo) + 8 gastos (precio 0)."""
+def _synthetic_csv(path, empty_price_row=False):
+    """CSV sintético equivalente al zayvero_demo.csv real: 7 columnas,
+    30 filas (21 ventas + 9 gastos, 1-30 sep 2026). Los 9 gastos suman
+    RD$17,350. Si empty_price_row=True, un gasto lleva la celda de precio
+    vacía (reproduce el conteo 8 de producción)."""
+    gastos_montos = [2000, 1500, 3000, 1200, 2500, 1800, 2200, 1950, 1200]
+    assert sum(gastos_montos) == 17350
+    gasto_dias = {3: 0, 7: 1, 11: 2, 14: 3, 18: 4, 21: 5, 24: 6, 27: 7, 30: 8}
     rows = []
-    gasto_idx = {2, 6, 10, 14, 18, 22, 26, 29}
-    for i in range(30):
-        es_gasto = i in gasto_idx
-        rows.append({
-            "Tipo": "gasto" if es_gasto else "venta",
-            "Producto_o_concepto": f"Concepto {i + 1}",
-            "Cantidad": (i % 5) + 1,
-            "Precio_unitario_DOP": 0 if es_gasto else 100 * (i + 1),
-            "Gasto_DOP": 50 if es_gasto else 0,
-            "Fecha": f"2026-09-{(i % 30) + 1:02d}",
-        })
-    pd.DataFrame(rows).to_csv(path, index=False)
+    for d in range(1, 31):
+        fecha = f"2026-09-{d:02d}"
+        if d in gasto_dias:
+            gi = gasto_dias[d]
+            precio = "" if (empty_price_row and gi == 0) else 0
+            rows.append({
+                "Nota": f"Gasto operativo {d}", "Fecha": fecha, "Tipo": "Gasto",
+                "Producto_o_concepto": f"Gasto #{gi + 1}", "Cantidad": 1,
+                "Precio_unitario_DOP": precio, "Gasto_DOP": gastos_montos[gi],
+            })
+        else:
+            rows.append({
+                "Nota": "", "Fecha": fecha, "Tipo": "Venta",
+                "Producto_o_concepto": f"Producto {d}",
+                "Cantidad": (d % 5) + 1,
+                "Precio_unitario_DOP": 250 + d * 137, "Gasto_DOP": 0,
+            })
+    pd.DataFrame(rows, columns=_demo_cols()).to_csv(path, index=False)
     return path
 
 
@@ -131,6 +142,23 @@ class StructuralQualityTest(unittest.TestCase):
         self.assertIn("missing_critical", comps)
         self.assertNotIn("structural_gaps", comps)
 
+    def test_14_sin_canonicos_sigue_dando_cero_filas(self):
+        # Regresión test_28: un archivo sin ninguna columna canónica debe
+        # producir 0 filas (el pipeline lo reporta como ERROR por descuadre),
+        # no pasar a READY. El bucle de orig_ no debe crear filas solo.
+        df = pd.DataFrame({"esto": [1], "no": [2], "valido": [None]})
+        df_norm, _ = normalize(df, "test-company")
+        self.assertEqual(len(df_norm), 0)
+        self.assertNotIn("orig_esto", df_norm.columns)
+
+    def test_15_con_canonicos_conserva_orig(self):
+        # Con al menos un canónico, las columnas no canónicas sí se conservan.
+        df = pd.DataFrame({"Quantity": [2], "Tipo": ["Gasto"]})
+        df_norm, _ = normalize(df, "test-company")
+        self.assertEqual(len(df_norm), 1)
+        self.assertIn("orig_Tipo", df_norm.columns)
+        self.assertEqual(df_norm["orig_Tipo"].iloc[0], "Gasto")
+
     def test_13_dataset_completo_sin_cambios(self):
         # Como Online Retail II: todo presente y válido -> sin deducciones nuevas.
         df = self._base_df(with_orig_invoice=True)
@@ -169,20 +197,31 @@ class MappingInvoiceWarningTest(unittest.TestCase):
 class FullPipelineReproTest(unittest.TestCase):
     """CSV sintético de 30 filas por el pipeline real (caso zayvero_demo.csv)."""
 
-    def test_30_pipeline_completo(self):
+    def _run_pipeline(self, csv_path, work_dir):
         from datasets.processing import _apply_mapping_work_copy
         from ingestion.aliases import resolve_columns
 
-        csv_path = _synthetic_csv("/tmp/repro_demo.csv")
         res = confirm_mapping(
             _demo_cols(),
             {"Quantity": "Cantidad", "InvoiceDate": "Fecha",
              "UnitPrice": "Precio_unitario_DOP"},
         )
         self.assertTrue(res["ok"])
-        work = _apply_mapping_work_copy(csv_path, res["mapping"], "/tmp/work_repro2")
+        work = _apply_mapping_work_copy(csv_path, res["mapping"], work_dir)
         df_canon, resolution = resolve_columns(pd.read_csv(work))
         df_norm, _ = normalize(df_canon, "test-company")
+        return df_norm, resolution
+
+    def test_30_pipeline_completo(self):
+        from profiling.quality_score import compute_quality_score
+
+        df_norm, resolution = self._run_pipeline(
+            _synthetic_csv("/tmp/repro_demo.csv"), "/tmp/work_repro3")
+        # Las 30 filas se procesan (ninguna descartada).
+        self.assertEqual(len(df_norm), 30)
+        # Columnas no canónicas conservadas como orig_ (no descartadas).
+        for c in ("orig_Nota", "orig_Tipo", "orig_Gasto_DOP"):
+            self.assertIn(c, df_norm.columns)
 
         # Transaction: ausente estructural -> status unknown (no "completed").
         self.assertEqual(int(df_norm["Transaction"].isna().sum()), 30)
@@ -194,14 +233,92 @@ class FullPipelineReproTest(unittest.TestCase):
         comps = {d["component"]: d for d in qs["deductions"]}
         self.assertIn("structural_gaps", comps)
         self.assertNotIn("missing_critical", comps)
-        # 8 gastos con precio 0 -> non_positive se mantiene (regla sin cambiar).
-        # 26.67% x 1 = 26.67, con tope 10 -> 10 pts.
-        self.assertEqual(comps["non_positive_prices"]["points"], 10)
-        # 3 sin mapear -> 6 pts.
-        self.assertEqual(comps["unmapped_columns"]["points"], 6)
-        # Score honesto: 100 - 8 (estructural) - 10 (precios<=0) - 6 (unmapped)
-        # = 76 (antes: 100 - 30 - 10 - 6 = 54 con -30 injusto por Transaction).
-        self.assertAlmostEqual(qs["score"], 76.0, places=1)
+        # Los 9 gastos (Tipo=gasto, precio 0) NO penalizan como ventas.
+        self.assertNotIn("non_positive_prices", comps)
+        # 4 sin mapear (Nota, Tipo, Producto_o_concepto, Gasto_DOP) -> 8 pts.
+        self.assertEqual(comps["unmapped_columns"]["points"], 8)
+        # Score honesto: 100 - 8 (estructural) - 8 (unmapped) = 84.
+        self.assertAlmostEqual(qs["score"], 84.0, places=1)
+
+    def test_31_ventas_y_gastos_identificados(self):
+        from profiling.quality_score import _identify_expenses
+
+        df_norm, _ = self._run_pipeline(
+            _synthetic_csv("/tmp/repro_demo2.csv"), "/tmp/work_repro4")
+        is_exp = _identify_expenses(df_norm)
+        # 21 ventas y 9 gastos identificados correctamente.
+        self.assertEqual(int(is_exp.sum()), 9)
+        self.assertEqual(int((~is_exp).sum()), 21)
+        # Ningún gasto clasificado como venta con precio inválido.
+        bad_sales = ((df_norm["UnitPrice"] <= 0) & ~is_exp).sum()
+        self.assertEqual(int(bad_sales), 0)
+        # Los 9 gastos suman RD$17,350 (importe en Gasto_DOP conservado).
+        total = pd.to_numeric(df_norm.loc[is_exp, "orig_Gasto_DOP"],
+                              errors="coerce").sum()
+        self.assertEqual(int(total), 17350)
+
+    def test_32_venta_precio_cero_si_alerta(self):
+        # Una VENTA con precio 0 sí genera la alerta.
+        from profiling.quality_score import compute_quality_score
+
+        df_norm, _ = self._run_pipeline(
+            _synthetic_csv("/tmp/repro_demo3.csv"), "/tmp/work_repro5")
+        df_norm.loc[df_norm["orig_InvoiceDate"] == "2026-09-01",
+                    "UnitPrice"] = 0
+        qs = compute_quality_score(
+            df_norm, {"column_resolution": {"unmapped": []}})
+        comps = {d["component"]: d for d in qs["deductions"]}
+        self.assertIn("non_positive_prices", comps)
+        self.assertIn("1 precios", comps["non_positive_prices"]["detail"])
+
+    def test_33_sin_tipo_es_conservador(self):
+        # Registro sin tipo identificable + precio 0 -> sí cuenta (conservador).
+        from profiling.quality_score import compute_quality_score
+
+        df_norm, _ = self._run_pipeline(
+            _synthetic_csv("/tmp/repro_demo4.csv"), "/tmp/work_repro6")
+        mask = df_norm["orig_InvoiceDate"] == "2026-09-02"
+        df_norm.loc[mask, "orig_Tipo"] = None
+        df_norm.loc[mask, "UnitPrice"] = 0
+        qs = compute_quality_score(
+            df_norm, {"column_resolution": {"unmapped": []}})
+        comps = {d["component"]: d for d in qs["deductions"]}
+        self.assertIn("non_positive_prices", comps)
+
+    def test_34_discrepancia_8_vs_9(self):
+        # Causa raíz: una celda VACÍA (no "0") -> NaN -> no cuenta en <= 0.
+        from profiling.quality_score import compute_quality_score
+
+        df_norm, resolution = self._run_pipeline(
+            _synthetic_csv("/tmp/repro_demo5.csv", empty_price_row=True),
+            "/tmp/work_repro7")
+        n_le0 = int((df_norm["UnitPrice"] <= 0).sum())
+        self.assertEqual(n_le0, 8)  # producción contó 8, no 9
+        qs = compute_quality_score(
+            df_norm, {"column_resolution": resolution.to_dict()})
+        comps = {d["component"]: d for d in qs["deductions"]}
+        # Con la regla corregida, los 8 gastos restantes tampoco penalizan.
+        self.assertNotIn("non_positive_prices", comps)
+
+    def test_35_online_retail_ii_sin_cambios(self):
+        # Online Retail II conserva los resultados previos (94.33).
+        import glob
+
+        from profiling.quality_score import compute_quality_score
+
+        cands = glob.glob(
+            os.path.join(os.path.dirname(os.path.dirname(
+                os.path.abspath(__file__))),
+                "data/processed/demo-retail/*.parquet"))
+        if not cands:
+            self.skipTest("sin parquet demo local")
+        df = pd.read_parquet(cands[0])
+        if "company_id" in df.columns:
+            df = df[df["company_id"] == "demo-retail"].copy()
+        qs = compute_quality_score(df, None)
+        self.assertAlmostEqual(qs["score"], 94.33, places=1)
+        comps = {d["component"] for d in qs["deductions"]}
+        self.assertNotIn("structural_gaps", comps)
 
 
 if __name__ == "__main__":

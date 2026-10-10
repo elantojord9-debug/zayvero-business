@@ -131,6 +131,22 @@ def normalize(
         out["orig_Description"] = df["Description"].astype("string")
         transformations.append("keep:orig_Description")
 
+    # Columnas no canónicas (p. ej. Tipo, Gasto_DOP, Nota): se conservan como
+    # orig_<col> en vez de descartarse silenciosamente. Permiten identificar
+    # el tipo de registro (venta/gasto) tras la normalización sin alterar el
+    # esquema núcleo (quedan en las columnas extra, ordenadas al final).
+    # Solo cuando ya hay filas: un archivo sin ninguna columna canónica debe
+    # seguir produciendo 0 filas para que el pipeline lo reporte como ERROR
+    # (descuadre de filas) en vez de pasarlo a READY.
+    mapped_canonicals = set(CANONICAL_TO_NORMALIZED) | {"Description"}
+    if len(out):
+        for col in df.columns:
+            if col not in mapped_canonicals and f"orig_{col}" not in out.columns:
+                out[f"orig_{col}"] = df[col].astype("string")
+                transformations.append(
+                    f"keep:orig_{col} (columna no canónica conservada)"
+                )
+
     # 2) Tipos
     out["Date"] = pd.to_datetime(out["Date"], errors="coerce")
     n_bad_dates = int(out["Date"].isna().sum() - out["orig_InvoiceDate"].isna().sum()) \

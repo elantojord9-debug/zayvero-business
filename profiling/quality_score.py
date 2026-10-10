@@ -26,7 +26,9 @@ COMPONENTES (pesos y topes documentados):
     - invalid_prices:    UnitPrice = NaN (no numérico en origen; se omite si
                          UnitPrice es estructuralmente ausente): pct × 2, tope 15
     - negative_quantities: Quantity < 0: pct × 1, tope 10
-    - non_positive_prices: UnitPrice ≤ 0: pct × 1, tope 10
+    - non_positive_prices: UnitPrice ≤ 0 en VENTAS (los gastos identificados
+                         por Tipo=gasto no se penalizan; sin tipo identificable
+                         se es conservador y sí cuentan): pct × 1, tope 10
     - unmapped_columns:  columnas sin mapear (del audit): 2 pts c/u, tope 10
 
 La ausencia estructural se detecta por las columnas orig_<canónico>:
@@ -59,6 +61,22 @@ CRITICAL_ORIGIN = {
 # por filas: la ausencia de la columna no es corrupción de datos).
 STRUCTURAL_GAP_POINTS = 8
 STRUCTURAL_GAP_CAP = 20
+
+
+def _identify_expenses(df: pd.DataFrame) -> "pd.Series":
+    """Filas identificadas positivamente como gastos.
+
+    Requiere orig_Tipo (conservada por normalize) con valor 'gasto'
+    (insensible a mayúsculas y espacios). Sin orig_Tipo, o con valor
+    nulo/distinto, la fila NO se considera gasto (tratamiento conservador:
+    un registro sin tipo identificable sigue evaluándose como venta).
+    """
+    import pandas as pd
+
+    if "orig_Tipo" not in df.columns:
+        return pd.Series(False, index=df.index)
+    tipo = df["orig_Tipo"].astype("string").str.strip().str.lower()
+    return (tipo == "gasto").fillna(False)
 
 
 def _pct(part: int, total: int) -> float:
@@ -206,13 +224,24 @@ def compute_quality_score(
             "corresponder a devoluciones/cancelaciones, pero se señalan.",
         )
 
-    # 7) Precios ≤ 0
+    # 7) Precios ≤ 0 en VENTAS. Los gastos legítimos (Tipo=gasto) no se
+    #    penalizan como ventas con precio incorrecto; los registros sin tipo
+    #    identificable se tratan de forma conservadora (sí cuentan).
     if "UnitPrice" in df.columns:
-        n_zp = int((df["UnitPrice"] <= 0).sum())
+        is_expense = _identify_expenses(df)
+        sales_bad = (df["UnitPrice"] <= 0) & ~is_expense
+        n_zp = int(sales_bad.sum())
+        n_zp_exp = int(((df["UnitPrice"] <= 0) & is_expense).sum())
+        detail = f"{n_zp} precios ≤ 0 en ventas ({_pct(n_zp, n)}%)."
+        if n_zp_exp:
+            detail += (
+                f" {n_zp_exp} gasto(s) con precio 0 no penalizados "
+                "(importe en Gasto_DOP)."
+            )
         deduct(
             "non_positive_prices",
             min(_pct(n_zp, n) * 1, 10),
-            f"{n_zp} precios ≤ 0 ({_pct(n_zp, n)}%).",
+            detail,
         )
 
     # 8) Columnas sin mapear (del audit)
@@ -281,7 +310,8 @@ def compute_quality_score(
                 period="n/a (calidad, no temporal)",
                 notes="El score describe calidad de datos, no del negocio. "
                 "structural_gaps marca campos críticos sin columna de origen "
-                "(limitación del reporte, no corrupción).",
+                "(limitación del reporte, no corrupción). non_positive_prices "
+                "solo cuenta ventas (Tipo=gasto excluido; sin tipo, conservador).",
             ),
         }
     )
