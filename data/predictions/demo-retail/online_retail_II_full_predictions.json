@@ -1,12 +1,12 @@
 {
  "report_metadata": {
-  "generated_at": "2026-10-08T01:32:05.596655+00:00",
+  "generated_at": "2026-10-08T23:27:01.752820+00:00",
   "company_id": "demo-retail",
   "dataset": "Demo Dataset — UCI Online Retail II",
   "dataset_doi": "https://doi.org/10.24432/C5CG6D",
   "parquet": "data/processed/demo-retail/online_retail_II_full.parquet",
   "n_rows_input": 1047877,
-  "runtime_seconds": 1.6,
+  "runtime_seconds": 2.1,
   "phase": "4A — Prediction Engine MVP"
  },
  "summary": {
@@ -36,9 +36,9 @@
    "INSUFFICIENT_DATA": 0
   },
   "decline_risk": {
-   "LOW": 30,
-   "MEDIUM": 2,
-   "HIGH": 3,
+   "LOW": 15,
+   "MEDIUM": 5,
+   "HIGH": 15,
    "INSUFFICIENT_DATA": 0
   }
  },
@@ -59,7 +59,7 @@
    "upper_bound": 3597724.98,
    "confidence_score": 73.5,
    "trend": "UPWARD",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -73,7 +73,7 @@
     "relative_rmse": 0.327
    },
    "evidence_quality": "HIGH",
-   "explanation": "ZAYVERO estima revenue de £1,916,432 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 322,358.3, RMSE 360,010.2). Confianza estimada: 73.5/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £1,916,432 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 322,358.3, RMSE 360,010.2). Confianza estimada: 73.5/100. Tendencia: UPWARD. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 34.6% en validación",
@@ -175,7 +175,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +9.2% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -41.9841,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -194,7 +196,7 @@
    "upper_bound": 1791920.59,
    "confidence_score": 75.9,
    "trend": "UPWARD",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -208,7 +210,7 @@
     "relative_rmse": 0.3318
    },
    "evidence_quality": "HIGH",
-   "explanation": "ZAYVERO estima unidades de uds929,745 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 160,273.0, RMSE 183,381.9). Confianza estimada: 75.9/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima unidades de uds929,745 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 160,273.0, RMSE 183,381.9). Confianza estimada: 75.9/100. Tendencia: UPWARD. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 37.4% en validación",
@@ -310,7 +312,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +10.1% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -43.9202,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -451,7 +455,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +4.4% por periodo (dentro de ±5%)"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 31.5295,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -470,7 +476,7 @@
    "upper_bound": 49819.36,
    "confidence_score": 70.6,
    "trend": "DOWNWARD",
-   "decline_risk": "HIGH",
+   "decline_risk": "MEDIUM",
    "stockout_status": "NOT_AVAILABLE",
    "method": "moving_average",
    "training_period": "2010-03 a 2011-09",
@@ -484,7 +490,7 @@
     "relative_rmse": 0.3241
    },
    "evidence_quality": "HIGH",
-   "explanation": "ZAYVERO estima revenue de £33,088 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 19 meses (2010-03 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 3,231.2, RMSE 3,574.9). Confianza estimada: 70.6/100. Tendencia: DOWNWARD. Riesgo de caída: HIGH.",
+   "explanation": "ZAYVERO estima revenue de £33,088 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 19 meses (2010-03 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 3,231.2, RMSE 3,574.9). Confianza estimada: 70.6/100. Tendencia: DOWNWARD. Riesgo de caída: MEDIUM.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 40.4% en validación",
@@ -587,10 +593,13 @@
      "detail": "pendiente relativa -6.7% por periodo"
     },
     "decline_signals": [
-     "tendencia descendente (pendiente relativa -6.7% por periodo)",
+     "tendencia histórica descendente (pendiente relativa -6.7% por periodo)",
      "caída de 47% vs. la ventana anterior",
-     "descenso estable (CV 0.19 < 0.4)"
-    ]
+     "descenso histórico estable (CV 0.19 < 0.4)",
+     "señal histórica de deterioro eleva el nivel un escalón"
+    ],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -609,7 +618,7 @@
    "upper_bound": 69263.38,
    "confidence_score": 48.9,
    "trend": "DOWNWARD",
-   "decline_risk": "MEDIUM",
+   "decline_risk": "LOW",
    "stockout_status": "NOT_AVAILABLE",
    "method": "moving_average",
    "training_period": "2009-12 a 2011-09",
@@ -623,7 +632,7 @@
     "relative_rmse": 1.1246
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £25,299 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 8,211.1, RMSE 9,483.7). Confianza estimada: 48.9/100. Tendencia: DOWNWARD. Riesgo de caída: MEDIUM.",
+   "explanation": "ZAYVERO estima revenue de £25,299 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 8,211.1, RMSE 9,483.7). Confianza estimada: 48.9/100. Tendencia: DOWNWARD. Riesgo de caída: LOW.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 544.9% en validación",
@@ -726,9 +735,11 @@
      "detail": "pendiente relativa -8.3% por periodo"
     },
     "decline_signals": [
-     "tendencia descendente (pendiente relativa -8.3% por periodo)",
+     "tendencia histórica descendente (pendiente relativa -8.3% por periodo)",
      "caída de 41% vs. la ventana anterior"
-    ]
+    ],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -747,7 +758,7 @@
    "upper_bound": 99675.21,
    "confidence_score": 68.3,
    "trend": "UPWARD",
-   "decline_risk": "LOW",
+   "decline_risk": "MEDIUM",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -761,7 +772,7 @@
     "relative_rmse": 0.5192
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £59,618 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 9,733.7, RMSE 12,934.0). Confianza estimada: 68.3/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £59,618 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 9,733.7, RMSE 12,934.0). Confianza estimada: 68.3/100. Tendencia: UPWARD. Riesgo de caída: MEDIUM.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 32.7% en validación",
@@ -863,7 +874,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +11.8% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -20.2255,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -882,7 +895,7 @@
    "upper_bound": 45216.78,
    "confidence_score": 61.1,
    "trend": "DOWNWARD",
-   "decline_risk": "HIGH",
+   "decline_risk": "MEDIUM",
    "stockout_status": "NOT_AVAILABLE",
    "method": "moving_average",
    "training_period": "2009-12 a 2011-09",
@@ -896,7 +909,7 @@
     "relative_rmse": 0.7275
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £21,125 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 4,725.2, RMSE 5,122.6). Confianza estimada: 61.1/100. Tendencia: DOWNWARD. Riesgo de caída: HIGH.",
+   "explanation": "ZAYVERO estima revenue de £21,125 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: promedio móvil de 3 periodos, elegido por backtesting temporal (MAE 4,725.2, RMSE 5,122.6). Confianza estimada: 61.1/100. Tendencia: DOWNWARD. Riesgo de caída: MEDIUM.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 104.5% en validación",
@@ -999,10 +1012,13 @@
      "detail": "pendiente relativa -10.3% por periodo"
     },
     "decline_signals": [
-     "tendencia descendente (pendiente relativa -10.3% por periodo)",
+     "tendencia histórica descendente (pendiente relativa -10.3% por periodo)",
      "caída de 34% vs. la ventana anterior",
-     "descenso estable (CV 0.32 < 0.4)"
-    ]
+     "descenso histórico estable (CV 0.32 < 0.4)",
+     "señal histórica de deterioro eleva el nivel un escalón"
+    ],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -1137,7 +1153,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +11.4% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -1322,9 +1340,11 @@
     },
     "decline_signals": [
      "aceleración negativa: la caída se intensifica en la ventana reciente",
-     "tendencia descendente (pendiente relativa -11.3% por periodo)",
-     "descenso estable (CV 0.36 < 0.4)"
-    ]
+     "tendencia histórica descendente (pendiente relativa -11.3% por periodo)",
+     "descenso histórico estable (CV 0.36 < 0.4)"
+    ],
+    "forecast_pct": -70.6109,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -1343,7 +1363,7 @@
    "upper_bound": 18619.32,
    "confidence_score": 65.9,
    "trend": "UPWARD",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -1357,7 +1377,7 @@
     "relative_rmse": 0.5065
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £6,488 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 2,195.1, RMSE 2,581.5). Confianza estimada: 65.9/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £6,488 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 2,195.1, RMSE 2,581.5). Confianza estimada: 65.9/100. Tendencia: UPWARD. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 59.4% en validación",
@@ -1459,7 +1479,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +11.0% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -57.566,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -1478,7 +1500,7 @@
    "upper_bound": 23238.71,
    "confidence_score": 67.2,
    "trend": "DOWNWARD",
-   "decline_risk": "MEDIUM",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -1492,7 +1514,7 @@
     "relative_rmse": 0.4778
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £8,350 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,232.8, RMSE 3,370.6). Confianza estimada: 67.2/100. Tendencia: DOWNWARD. Riesgo de caída: MEDIUM.",
+   "explanation": "ZAYVERO estima revenue de £8,350 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,232.8, RMSE 3,370.6). Confianza estimada: 67.2/100. Tendencia: DOWNWARD. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 60.5% en validación",
@@ -1595,8 +1617,10 @@
      "detail": "pendiente relativa -5.2% por periodo"
     },
     "decline_signals": [
-     "tendencia descendente (pendiente relativa -5.2% por periodo)"
-    ]
+     "tendencia histórica descendente (pendiente relativa -5.2% por periodo)"
+    ],
+    "forecast_pct": -60.5435,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -1615,7 +1639,7 @@
    "upper_bound": 66539.19,
    "confidence_score": 43.8,
    "trend": "UNSTABLE",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -1629,7 +1653,7 @@
     "relative_rmse": 0.8812
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £20,612 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 9,289.6, RMSE 13,478.2). Confianza estimada: 43.8/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £20,612 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 9,289.6, RMSE 13,478.2). Confianza estimada: 43.8/100. Tendencia: UNSTABLE. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 44.0% en validación",
@@ -1731,7 +1755,9 @@
      "n_recent": 6,
      "detail": "CV reciente 1.42 > 0.6: volatilidad domina la dirección"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -55.0808,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -1750,7 +1776,7 @@
    "upper_bound": 25707.39,
    "confidence_score": 58.9,
    "trend": "UPWARD",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -1764,7 +1790,7 @@
     "relative_rmse": 0.7314
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £7,919 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,282.3, RMSE 4,584.4). Confianza estimada: 58.9/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £7,919 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,282.3, RMSE 4,584.4). Confianza estimada: 58.9/100. Tendencia: UPWARD. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 42.9% en validación",
@@ -1866,7 +1892,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +20.8% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -57.8846,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -1933,7 +1961,7 @@
    "upper_bound": 36428.76,
    "confidence_score": 55.4,
    "trend": "UPWARD",
-   "decline_risk": "LOW",
+   "decline_risk": "MEDIUM",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -1947,7 +1975,7 @@
     "relative_rmse": 0.7664
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £16,271 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 4,537.3, RMSE 6,241.6). Confianza estimada: 55.4/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £16,271 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 4,537.3, RMSE 6,241.6). Confianza estimada: 55.4/100. Tendencia: UPWARD. Riesgo de caída: MEDIUM.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 44.4% en validación",
@@ -2049,7 +2077,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +7.1% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -33.405,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -2184,7 +2214,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +19.4% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -2203,7 +2235,7 @@
    "upper_bound": 21961.37,
    "confidence_score": 43.4,
    "trend": "UNSTABLE",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -2217,7 +2249,7 @@
     "relative_rmse": 0.8645
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £8,102 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,826.6, RMSE 4,829.7). Confianza estimada: 43.4/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £8,102 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 3,826.6, RMSE 4,829.7). Confianza estimada: 43.4/100. Tendencia: UNSTABLE. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 58.9% en validación",
@@ -2319,7 +2351,9 @@
      "n_recent": 6,
      "detail": "CV reciente 1.57 > 0.6: volatilidad domina la dirección"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -51.659,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -2338,7 +2372,7 @@
    "upper_bound": 8568.21,
    "confidence_score": 70.7,
    "trend": "STABLE",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -2352,7 +2386,7 @@
     "relative_rmse": 0.568
    },
    "evidence_quality": "HIGH",
-   "explanation": "ZAYVERO estima revenue de £2,329 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 1,155.4, RMSE 1,435.8). Confianza estimada: 70.7/100. Tendencia: STABLE. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £2,329 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 1,155.4, RMSE 1,435.8). Confianza estimada: 70.7/100. Tendencia: STABLE. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 109.4% en validación",
@@ -2454,7 +2488,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +2.3% por periodo (dentro de ±5%)"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -69.2851,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -2589,7 +2625,9 @@
      "n_recent": 6,
      "detail": "CV reciente 0.73 > 0.6: volatilidad domina la dirección"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 6.4651,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -2608,7 +2646,7 @@
    "upper_bound": 7180.5,
    "confidence_score": 61.4,
    "trend": "UPWARD",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -2622,7 +2660,7 @@
     "relative_rmse": 0.7503
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £1,733 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 1,275.5, RMSE 1,434.3). Confianza estimada: 61.4/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £1,733 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 1,275.5, RMSE 1,434.3). Confianza estimada: 61.4/100. Tendencia: UPWARD. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 151.2% en validación",
@@ -2724,7 +2762,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +14.6% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -69.7876,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -2743,7 +2783,7 @@
    "upper_bound": 5823.4,
    "confidence_score": 66.9,
    "trend": "STABLE",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -2757,7 +2797,7 @@
     "relative_rmse": 0.5071
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £1,968 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 704.8, RMSE 832.3). Confianza estimada: 66.9/100. Tendencia: STABLE. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £1,968 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 704.8, RMSE 832.3). Confianza estimada: 66.9/100. Tendencia: STABLE. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 59.6% en validación",
@@ -2859,7 +2899,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa -4.5% por periodo (dentro de ±5%)"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -60.0271,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -2994,7 +3036,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +6.3% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 10.8275,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -3177,7 +3221,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +3.5% por periodo (dentro de ±5%)"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -3196,7 +3242,7 @@
    "upper_bound": 24522.53,
    "confidence_score": 54.4,
    "trend": "UNSTABLE",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -3210,7 +3256,7 @@
     "relative_rmse": 0.473
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £11,204 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 2,283.7, RMSE 3,007.6). Confianza estimada: 54.4/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £11,204 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 2,283.7, RMSE 3,007.6). Confianza estimada: 54.4/100. Tendencia: UNSTABLE. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 32.3% en validación",
@@ -3312,7 +3358,9 @@
      "n_recent": 6,
      "detail": "CV reciente 2.27 > 0.6: volatilidad domina la dirección"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -41.2689,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -3447,7 +3495,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +8.5% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -3582,7 +3632,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +11.2% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -3601,7 +3653,7 @@
    "upper_bound": 3185395.81,
    "confidence_score": 71.7,
    "trend": "UPWARD",
-   "decline_risk": "LOW",
+   "decline_risk": "MEDIUM",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -3615,7 +3667,7 @@
     "relative_rmse": 0.3196
    },
    "evidence_quality": "HIGH",
-   "explanation": "ZAYVERO estima revenue de £1,777,866 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 258,207.6, RMSE 304,336.9). Confianza estimada: 71.7/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £1,777,866 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 258,207.6, RMSE 304,336.9). Confianza estimada: 71.7/100. Tendencia: UPWARD. Riesgo de caída: MEDIUM.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 29.4% en validación",
@@ -3717,7 +3769,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +8.6% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -37.7703,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -3852,7 +3906,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +21.8% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -3871,7 +3927,7 @@
    "upper_bound": 90832.11,
    "confidence_score": 62.4,
    "trend": "UNSTABLE",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -3885,7 +3941,7 @@
     "relative_rmse": 0.4544
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £35,184 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 10,014.6, RMSE 11,861.7). Confianza estimada: 62.4/100. Tendencia: UNSTABLE. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £35,184 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 10,014.6, RMSE 11,861.7). Confianza estimada: 62.4/100. Tendencia: UNSTABLE. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 55.9% en validación",
@@ -3987,7 +4043,9 @@
      "n_recent": 6,
      "detail": "CV reciente 0.76 > 0.6: volatilidad domina la dirección"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -55.0712,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -4006,7 +4064,7 @@
    "upper_bound": 72883.41,
    "confidence_score": 70.8,
    "trend": "STABLE",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -4020,7 +4078,7 @@
     "relative_rmse": 0.502
    },
    "evidence_quality": "HIGH",
-   "explanation": "ZAYVERO estima revenue de £23,953 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 11,196.0, RMSE 11,319.0). Confianza estimada: 70.8/100. Tendencia: STABLE. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £23,953 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 11,196.0, RMSE 11,319.0). Confianza estimada: 70.8/100. Tendencia: STABLE. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 68.3% en validación",
@@ -4122,7 +4180,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +2.0% por periodo (dentro de ±5%)"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -64.5922,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -4141,7 +4201,7 @@
    "upper_bound": 78133.5,
    "confidence_score": 68.4,
    "trend": "UPWARD",
-   "decline_risk": "LOW",
+   "decline_risk": "HIGH",
    "stockout_status": "NOT_AVAILABLE",
    "method": "naive",
    "training_period": "2009-12 a 2011-09",
@@ -4155,7 +4215,7 @@
     "relative_rmse": 0.4956
    },
    "evidence_quality": "MEDIUM",
-   "explanation": "ZAYVERO estima revenue de £21,885 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 11,507.1, RMSE 11,983.7). Confianza estimada: 68.4/100. Tendencia: UPWARD. Riesgo de caída: LOW.",
+   "explanation": "ZAYVERO estima revenue de £21,885 para los próximos 3 meses (2012-01 a 2012-03) utilizando el historial de 22 meses (2009-12 a 2011-09). Método: naive (repite el último valor), elegido por backtesting temporal (MAE 11,507.1, RMSE 11,983.7). Confianza estimada: 68.4/100. Tendencia: UPWARD. Riesgo de caída: HIGH.",
    "limitations": [
     "esto es una estimación basada en historial, no un hecho",
     "MAPE 92.5% en validación",
@@ -4257,7 +4317,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +14.2% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -69.8304,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -4392,7 +4454,9 @@
      "n_recent": 6,
      "detail": "CV reciente 0.69 > 0.6: volatilidad domina la dirección"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": -0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -4527,7 +4591,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +15.1% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -4662,7 +4728,9 @@
      "n_recent": 6,
      "detail": "pendiente relativa +17.9% por periodo"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -4797,7 +4865,9 @@
      "n_recent": 6,
      "detail": "CV reciente 0.84 > 0.6: volatilidad domina la dirección"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   },
   {
@@ -4932,7 +5002,9 @@
      "n_recent": 6,
      "detail": "CV reciente 1.30 > 0.6: volatilidad domina la dirección"
     },
-    "decline_signals": []
+    "decline_signals": [],
+    "forecast_pct": 0.0,
+    "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados"
    }
   }
  ],

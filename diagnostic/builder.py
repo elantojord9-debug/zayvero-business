@@ -243,6 +243,10 @@ def build_diagnostic(
         key=lambda f: (_priority_rank(f.get("business_priority")),
                        -(f.get("impact_score") or 0)),
     )
+    n_priority_total = sum(
+        1 for f in findings
+        if str(f.get("business_priority") or "").upper() in ("URGENT", "IMPORTANT")
+    )
     priority_attention = []
     for f in ordered_findings:
         if str(f.get("business_priority") or "").upper() not in ("URGENT", "IMPORTANT"):
@@ -343,6 +347,8 @@ def build_diagnostic(
             "forecast_quality": ins.get("forecast_quality"),
             "uncertainty_level": ins.get("uncertainty_level"),
             "trend": ins.get("trend"),
+            "forecast_direction": ins.get("forecast_direction"),
+            "trend_discrepancy_note": ins.get("trend_discrepancy_note"),
             "decline_risk": ins.get("decline_risk"),
             "method": ins.get("method"),
             "business_interpretation": ins.get("business_interpretation"),
@@ -447,6 +453,22 @@ def build_diagnostic(
         "suggested_question": "¿Qué debería revisar primero?",
     })
 
+    # ---- conteo de secciones (etiquetas "Mostrando N de M") ---------------
+    # Cada sección puede mostrar una selección; los totales permiten al
+    # frontend etiquetarlo honestamente sin mezclar categorías.
+    section_counts = {
+        "priority_attention": {"shown": len(priority_attention),
+                               "total": n_priority_total},
+        "risks": {"shown": len(risks_view), "total": len(risks)},
+        "opportunities": {"shown": len(opps_view), "total": n_opp},
+        "predictions": {"shown": len(preds_view), "total": n_pred},
+        "recommendations": {"shown": len(recs_view),
+                            "total": len(recommendations)},
+        "trends_observed": {"shown": len(observed[:4]), "total": len(observed)},
+        "trends_projected": {"shown": len(projected[:4]),
+                             "total": len(projected)},
+    }
+
     # ---- evidencia y trazabilidad -------------------------------------------
     evidence_used = _collect_evidence(
         priority_attention, risks_view, opps_view,
@@ -502,6 +524,7 @@ def build_diagnostic(
         "predictions": preds_view,
         "recommendations": recs_view,
         "limitations": lims_view,
+        "section_counts": section_counts,
         "next_steps": next_steps,
         "suggested_advisor_questions": list(SUGGESTED_ADVISOR_QUESTIONS),
         "evidence_used": evidence_used,

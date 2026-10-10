@@ -194,41 +194,68 @@ def business_interpretation(
     uncertainty_level: str,
     trend_text: str,
     risk_text: str,
+    forecast_direction_text: str | None = None,
+    discrepancy_note_text: str | None = None,
+    period_display: str | None = None,
 ) -> str:
-    """Interpretación empresarial neutral. Sin causalidad, sin certezas."""
+    """Interpretación empresarial neutral. Sin causalidad, sin certezas.
+
+    Estructura (corrección de calidad): la tendencia HISTÓRICA y la
+    dirección del PRONÓSTICO se presentan por separado, con nota de
+    discrepancia cuando difieren. Nunca se describe una caída
+    proyectada como "crecimiento".
+    """
     ptype = pred.get("prediction_type", "")
     desc = type_descriptor(ptype)
     entity = entity_descriptor(pred.get("entity") or {})
     confidence = pred.get("confidence_score")
-    period = pred.get("period") or "el horizonte analizado"
+    period = period_display or pred.get("period") or "el horizonte analizado"
 
     sentences: List[str] = []
     sentences.append(
         "ZAYVERO estima %s para %s durante %s." % (
             desc["what"], entity, period)
     )
+    # Señal 1: pasado observado (tendencia histórica).
     sentences.append(trend_text)
 
+    # Señal 2: futuro estimado (dirección del pronóstico).
     pct = comparison.get("percentage_change")
+    if forecast_direction_text:
+        sentences.append(forecast_direction_text)
     if pct is not None:
-        if pct >= 0:
-            change_word, change_adj = "incremento", "esperado"
+        if abs(pct) < 0.05:
+            sentences.append(
+                "El modelo proyecta %s de %s (%.1f%%) respecto a los "
+                "niveles recientes observados: un cambio esperado futuro "
+                "prácticamente nulo, no un cambio ya observado." % (
+                    "sin cambio esperado",
+                    fmt_value(ptype, abs(comparison.get("absolute_change") or 0)),
+                    abs(pct))
+            )
         else:
-            change_word, change_adj = "disminución", "esperada"
-        sentences.append(
-            "El modelo proyecta un%s %s %s de %s (%.1f%%) respecto a los "
-            "niveles recientes observados. Se trata de un cambio esperado "
-            "futuro, no de un cambio ya observado." % (
-                "a" if change_word == "disminución" else "",
-                change_word, change_adj,
-                fmt_value(ptype, abs(comparison.get("absolute_change") or 0)),
-                abs(pct))
-        )
+            if pct >= 0:
+                change_word, change_adj = "incremento", "esperado"
+            else:
+                change_word, change_adj = "disminución", "esperada"
+            sentences.append(
+                "El modelo proyecta un%s %s %s de %s (%.1f%%) respecto a los "
+                "niveles recientes observados. Se trata de un cambio esperado "
+                "futuro, no de un cambio ya observado." % (
+                    "a" if change_word == "disminución" else "",
+                    change_word, change_adj,
+                    fmt_value(ptype, abs(comparison.get("absolute_change") or 0)),
+                    abs(pct))
+            )
     else:
         sentences.append(
             "No se pudo calcular el cambio porcentual esperado por falta de "
             "referencia histórica válida."
         )
+
+    # Discrepancia historial vs. pronóstico (solo cuando difieren).
+    if discrepancy_note_text:
+        sentences.append(discrepancy_note_text)
 
     sentences.append(
         "La confianza del modelo es %s/100 y la calidad de la predicción se "

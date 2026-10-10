@@ -245,7 +245,7 @@ class TestOpportunitiesUX(Webapp6CTest):
         status, body = c.get("/api/opportunities")
         self.assertEqual(status, 200)
         self.assertIsInstance(body["opportunities"], list)
-        self.assertEqual(len(body["opportunities"]), 66)
+        self.assertEqual(len(body["opportunities"]), 60)
 
     def test_app_js_opportunity_language(self):
         js = _read_static("app.js")

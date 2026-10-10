@@ -144,12 +144,11 @@ def _build_prediction(
     method = bt["best_method"]
     m = bt["best_metrics"]
 
-    # 2. Tendencia, riesgo, confianza.
+    # 2. Tendencia y confianza (el riesgo de caída se calcula en el
+    #    paso 4, cuando ya existe el pronóstico y su cambio porcentual).
     trend_info = trends.detect_trend(train)
-    decline = risk.decline_risk(trend_info, train, 0.0)  # confianza aún no calculada
     conf, factors = conf_mod.confidence_score(train, validation, m["rmse"], trend_info["trend"], method)
     ev_quality = conf_mod.evidence_quality(conf, len(train), cont)
-    decline = risk.decline_risk(trend_info, train, conf)
     stock = risk.stockout_status()
 
     # 3. Pronóstico final sobre la serie completa + intervalo.
@@ -168,6 +167,19 @@ def _build_prediction(
 
     predicted_total = float(np.sum(forecast_vals))
     unit = UNIT_LABEL[prediction_type]
+
+    # 4. Riesgo de caída en el horizonte proyectado: el cambio proyectado
+    #    es la señal principal (ver prediction/risk.py para los umbrales
+    #    documentados). Nivel reciente = últimos `horizon` observados,
+    #    misma escala que el pronóstico.
+    _obs = series.to_numpy(dtype=float)
+    _recent_level = float(np.sum(_obs[-horizon:])) if len(_obs) >= horizon else float(np.sum(_obs))
+    forecast_pct = (
+        (predicted_total - _recent_level) / abs(_recent_level) * 100.0
+        if _recent_level != 0 else None
+    )
+    decline = risk.decline_risk(trend_info, train, conf, forecast_pct=forecast_pct)
+
     explanation = (
         f"ZAYVERO estima {METRIC_LABEL[prediction_type]} de {unit}{predicted_total:,.0f} "
         f"para los próximos {horizon} {freq_pl} ({labels[0]} a {labels[-1]}) "
@@ -215,6 +227,8 @@ def _build_prediction(
             "confidence_formula": "100*(0.30*H + 0.25*S + 0.25*E + 0.10*T + 0.05*Sea + 0.05*Q); ver prediction/confidence.py",
             "trend_detail": trend_info,
             "decline_signals": decline["signals"],
+            "forecast_pct": round(forecast_pct, 4) if forecast_pct is not None else None,
+            "forecast_pct_formula": "(pronóstico − nivel_reciente) / |nivel_reciente| * 100; nivel_reciente = suma de los últimos `horizon` observados",
         }
     )
 

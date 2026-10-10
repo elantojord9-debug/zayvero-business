@@ -11,6 +11,7 @@ from __future__ import annotations
 from typing import Any, Dict, List
 
 from .interpretation import entity_descriptor
+from .periods import format_period_display
 
 
 def build_recommendations(
@@ -22,7 +23,9 @@ def build_recommendations(
 ) -> List[str]:
     recs: List[str] = []
     entity = entity_descriptor(pred.get("entity") or {})
-    period = pred.get("period") or "el periodo proyectado"
+    # Periodo legible (mismo formateador que el resto del diagnóstico);
+    # nunca el crudo "2011-12-12/2011-12-18 a ...".
+    period = format_period_display(pred.get("period")) or "el periodo proyectado"
     horizon = pred.get("forecast_horizon") or 1
     validation = pred.get("validation_period") or "el periodo de validación"
 

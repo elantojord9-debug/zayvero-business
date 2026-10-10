@@ -166,9 +166,14 @@ def test_uncertainty_unknown():
 
 
 def test_trend_texts():
+    # Los textos describen el HISTORIAL (pasado observado), nunca la proyección.
     assert "crecimiento" in interpret_trend("UPWARD")
+    assert "histórico" in interpret_trend("UPWARD")
     assert "descendente" in interpret_trend("DOWNWARD")
-    assert "no identifica un cambio relevante" in interpret_trend("STABLE")
+    assert "histórico" in interpret_trend("DOWNWARD")
+    assert "no muestra un cambio relevante" in interpret_trend("STABLE")
+    assert "proyecta" not in interpret_trend("UPWARD")
+    assert "proyecta" not in interpret_trend("STABLE")
     assert "variabilidad" in interpret_trend("UNSTABLE")
     assert "suficiente información" in interpret_trend("INSUFFICIENT_DATA")
 
@@ -176,6 +181,7 @@ def test_trend_texts():
 def test_decline_risk_texts():
     high = interpret_decline_risk("HIGH")
     assert "elevado" in high and "va a caer" not in high
+    assert "horizonte proyectado" in high
     assert "No se genera alarma" in interpret_decline_risk("LOW")
     assert "revis" in interpret_decline_risk("MEDIUM")
 

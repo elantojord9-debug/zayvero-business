@@ -2,9 +2,15 @@
 
 Reglas deterministas y documentadas:
 
-1. Crecimiento proyectado 4B: insights con trend UPWARD, forecast_quality
-   en (HIGH, MODERATE) y attention_level en (REVIEW, IMPORTANT).
-   Lenguaje: "posible oportunidad". No se afirma certeza.
+1. Crecimiento proyectado 4B: insights con forecast_direction == "UP"
+   (dirección del cambio PRONOSTICADO, no la tendencia histórica),
+   forecast_quality en (HIGH, MODERATE) y attention_level en
+   (REVIEW, IMPORTANT). Corrección de calidad: antes se usaba la
+   tendencia histórica UPWARD, lo que generaba "oportunidades de
+   crecimiento" sobre pronósticos de caída. Lenguaje: "posible
+   oportunidad". No se afirma certeza. La explicación incluye el
+   nombre de la métrica (ingresos, unidades, ...) para distinguir
+   oportunidades de métricas diferentes.
 2. Producto con comportamiento positivo recurrente 2B/2C: hallazgos de tipo
    PRODUCT_ANOMALY con percentage_difference > 0 (observado mayor que lo
    esperado), recurrence == "recurrent" y evidence_quality en (HIGH, MEDIUM).
@@ -18,6 +24,17 @@ explanation, recommendation y trace.
 """
 
 from __future__ import annotations
+
+# Nombre legible de la métrica por tipo de predicción (para que dos
+# oportunidades de métricas distintas no se lean como duplicadas).
+_METRIC_NAMES = {
+    "DEMAND_REVENUE": "ingresos",
+    "DEMAND_QUANTITY": "unidades",
+}
+
+
+def _metric_name(prediction_type) -> str:
+    return _METRIC_NAMES.get(str(prediction_type or "").upper(), "indicador")
 
 
 def _elabel(entity) -> str:
@@ -58,27 +75,34 @@ def build_key_opportunities(pi_report, findings_report, context_report, profile,
             }
         )
 
-    # 1) Crecimiento proyectado (4B)
+    # 1) Crecimiento proyectado (4B). Se usa forecast_direction (dirección
+    #    del cambio PRONOSTICADO), no la tendencia histórica: un historial
+    #    UPWARD con pronóstico a la baja no es una oportunidad.
     for ins in sorted((pi_report.get("prediction_insights", []) or []),
                       key=lambda x: x.get("insight_id", "")):
-        if (ins.get("trend") == "UPWARD"
+        if (ins.get("forecast_direction") == "UP"
                 and ins.get("forecast_quality") in ("HIGH", "MODERATE")
                 and ins.get("attention_level") in ("REVIEW", "IMPORTANT")):
+            metric = _metric_name(ins.get("prediction_type"))
+            pct = ins.get("percentage_change")
+            pct_txt = (" (incremento estimado de %.1f%%)" % abs(pct)) if pct is not None else ""
             add(
                 otype="PROJECTED_GROWTH",
                 importance="MEDIUM" if ins.get("forecast_quality") == "MODERATE" else "HIGH",
                 explanation=(
-                    f"Posible oportunidad: el modelo proyecta una tendencia de crecimiento "
-                    f"para {_elabel(ins.get('entity'))} durante {ins.get('period')} "
-                    f"(confianza {ins.get('confidence_score')}/100, calidad "
+                    f"Posible oportunidad: la proyección estima un incremento en los "
+                    f"{metric} para {_elabel(ins.get('entity'))} durante {ins.get('period')}"
+                    f"{pct_txt} (confianza {ins.get('confidence_score')}/100, calidad "
                     f"{ins.get('forecast_quality')}). Debe interpretarse considerando el "
                     "error histórico del modelo y contrastarse con resultados reales."
                 ),
                 source="FASE_4B:data/prediction_intelligence/demo-retail/online_retail_II_prediction_intelligence.json",
                 recommendation=(ins.get("recommendations") or [None])[0],
                 source_record=ins.get("insight_id"),
-                field="trend",
-                value={"entity": ins.get("entity"), "trend": "UPWARD",
+                field="forecast_direction",
+                value={"entity": ins.get("entity"), "metric": metric,
+                       "forecast_direction": "UP",
+                       "percentage_change": ins.get("percentage_change"),
                        "forecast_quality": ins.get("forecast_quality"),
                        "predicted_value": ins.get("predicted_value")},
             )

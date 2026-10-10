@@ -214,7 +214,7 @@ class WebappTest(unittest.TestCase):
         cards = data["cards"]
         self.assertEqual(cards["urgent_findings"], 25)
         self.assertEqual(cards["important_findings"], 480)
-        self.assertEqual(cards["opportunities"], 66)
+        self.assertEqual(cards["opportunities"], 60)
         self.assertEqual(cards["predictions"], 38)
         self.assertEqual(data["attention_level"], "CRITICAL")
 
@@ -285,7 +285,7 @@ class WebappTest(unittest.TestCase):
         code, data = self.c.get("/api/opportunities")
         self.assertEqual(code, 200)
         opps = data["opportunities"]
-        self.assertEqual(len(opps), 66)
+        self.assertEqual(len(opps), 60)
         raw = json.dumps(opps, ensure_ascii=False).lower()
         self.assertIn("posible oportunidad", raw)
         self.assertNotIn("ganancia garantizada", raw)

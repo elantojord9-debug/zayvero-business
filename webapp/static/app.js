@@ -541,7 +541,7 @@
     html += "</section>";
 
     /* ---- OPORTUNIDADES ---- */
-    html += "<section class='section' aria-labelledby='h-opp'><h2 id='h-opp'>Posibles oportunidades</h2>" +
+    html += "<section class='section' aria-labelledby='h-opp'><h2 id='h-opp'>Posibles oportunidades</h2>" + showingOf("opportunities") +
       "<p class='muted'>Detectadas a partir de la evidencia. <strong>Posible oportunidad: no es una garantía de resultado.</strong></p>";
     var opps = (state.opportunities || []).slice(0, 3);
     if (!opps.length) {
@@ -557,7 +557,7 @@
     var observed = trends.filter(function (t) { return t.trend_type === "OBSERVED_TREND"; });
     var projected = trends.filter(function (t) { return t.trend_type !== "OBSERVED_TREND"; });
     html += "<section class='section' aria-labelledby='h-trends'><h2 id='h-trends'>Tendencias</h2>";
-    html += "<h3 class='sub-h'>Observadas</h3>";
+    html += "<h3 class='sub-h'>Observadas</h3>" + showingOf("trends_observed");
     if (!observed.length) {
       html += emptyHTML("Datos insuficientes para generar este análisis.");
     } else {
@@ -566,7 +566,7 @@
           esc(dash(t.period)) + "<br><span class='muted'>" + esc(dash(t.interpretation)) + "</span></p>";
       });
     }
-    html += "<h3 class='sub-h'>Proyectadas</h3>";
+    html += "<h3 class='sub-h'>Proyectadas</h3>" + showingOf("trends_projected");
     if (!projected.length) {
       html += emptyHTML("No existen proyecciones disponibles.");
     } else {
@@ -656,7 +656,8 @@
       "<span class='tag'>Intervalo: " + esc(fmtMoney(i.lower_bound)) + " – " + esc(fmtMoney(i.upper_bound)) + "</span>" +
       "<span class='tag'>Confianza: " + esc(dash(i.confidence_score)) + "</span>" +
       "<span class='tag'>Calidad: " + esc(dash(i.forecast_quality)) + "</span>" +
-      "<span class='tag'>Tendencia: " + esc(dash(i.trend)) + "</span>" +
+      "<span class='tag'>" + esc(T("prediction.historical_trend")) + ": " + esc(dash(i.trend)) + "</span>" +
+      (i.forecast_direction ? "<span class='tag'>" + esc(T("prediction.forecast_direction")) + ": " + esc(dash(i.forecast_direction)) + "</span>" : "") +
       "<span class='tag'>Riesgo de caída: " + esc(dash(i.decline_risk)) + "</span>" +
       "<span class='tag'>Método: " + esc(dash(i.method)) + "</span>" +
       "<span class='tag tag-status'>" + esc(statusLabel) + "</span></div>" +
@@ -707,6 +708,18 @@
 
     var sum = d.executive_summary || {};
     var st = d.business_status || {};
+    var sc = d.section_counts || {};
+
+    /* Etiqueta "Mostrando N de M" cuando la sección es una selección. */
+    function showingOf(key) {
+      var c = sc[key] || {};
+      var shown = c.shown || 0, total = c.total || 0;
+      if (total > shown && shown > 0) {
+        return "<p class='muted'>" + esc(T("diagnostic.showing_of")
+          .replace("{shown}", String(shown)).replace("{total}", String(total))) + "</p>";
+      }
+      return "";
+    }
 
     /* ---- A. Resumen ejecutivo ---- */
     html += "<section class='section' aria-labelledby='h-resumen'><h2 id='h-resumen'>Resumen ejecutivo</h2>" +
@@ -732,7 +745,7 @@
       "</div></section>";
 
     /* ---- C. Lo que requiere atención ---- */
-    html += "<section class='section' aria-labelledby='h-atencion'><h2 id='h-atencion'>Lo que requiere atención</h2>";
+    html += "<section class='section' aria-labelledby='h-atencion'><h2 id='h-atencion'>Lo que requiere atención</h2>" + showingOf("priority_attention");
     var att = d.priority_attention || [];
     if (!att.length) {
       html += emptyHTML("Sin hallazgos disponibles.");
@@ -743,7 +756,7 @@
     html += "</section>";
 
     /* ---- D. Riesgos a revisar ---- */
-    html += "<section class='section' aria-labelledby='h-riesgos'><h2 id='h-riesgos'>Riesgos a revisar</h2>" +
+    html += "<section class='section' aria-labelledby='h-riesgos'><h2 id='h-riesgos'>Riesgos a revisar</h2>" + showingOf("risks") +
       "<p class='muted'>Riesgos identificados a partir de la evidencia. <strong>Requieren revisión; no son certezas.</strong></p>";
     var risks = d.risks || [];
     if (!risks.length) {
@@ -784,7 +797,7 @@
     html += "</section>";
 
     /* ---- G. Predicciones ---- */
-    html += "<section class='section' aria-labelledby='h-pred'><h2 id='h-pred'>Predicciones que requieren atención</h2>" +
+    html += "<section class='section' aria-labelledby='h-pred'><h2 id='h-pred'>Predicciones que requieren atención</h2>" + showingOf("predictions") +
       "<p class='muted'>Estimaciones basadas en el historial. No son certezas.</p>";
     var preds = d.predictions || [];
     if (!preds.length) {
@@ -796,7 +809,7 @@
     html += "</section>";
 
     /* ---- H. Recomendaciones prioritarias ---- */
-    html += "<section class='section' aria-labelledby='h-recs'><h2 id='h-recs'>Recomendaciones prioritarias</h2>" +
+    html += "<section class='section' aria-labelledby='h-recs'><h2 id='h-recs'>Recomendaciones prioritarias</h2>" + showingOf("recommendations") +
       "<p class='muted'>Sugerencias de revisión; no ejecutan ninguna acción.</p>";
     var recs = d.recommendations || [];
     if (!recs.length) {

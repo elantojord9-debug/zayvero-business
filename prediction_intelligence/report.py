@@ -27,7 +27,13 @@ from .interpretation import (
 from .quality import classify_quality
 from .recommendations import build_recommendations
 from .risk import interpret_decline_risk
-from .trend import interpret_trend
+from .trend import (
+    interpret_trend,
+    classify_forecast_direction,
+    interpret_forecast_direction,
+    discrepancy_note,
+)
+from .periods import format_period_display
 from .uncertainty import classify_uncertainty
 
 
@@ -45,6 +51,15 @@ def build_insight(pred: Dict[str, Any], index: int) -> Dict[str, Any]:
     decline_risk = pred.get("decline_risk") or "INSUFFICIENT_DATA"
     trend_text = interpret_trend(trend)
     risk_text = interpret_decline_risk(decline_risk)
+    # Dirección del pronóstico (futuro estimado), separada de la
+    # tendencia histórica (pasado observado). Ver trend.py.
+    forecast_direction = classify_forecast_direction(
+        comparison.get("percentage_change"))
+    forecast_direction_text = interpret_forecast_direction(
+        comparison.get("percentage_change"))
+    trend_discrepancy = discrepancy_note(trend, forecast_direction)
+    # Periodo en formato legible y consistente (el crudo queda en trace).
+    period_display = format_period_display(pred.get("period"))
 
     if status_ok:
         score, level, components = compute_attention(
@@ -56,7 +71,9 @@ def build_insight(pred: Dict[str, Any], index: int) -> Dict[str, Any]:
             percentage_change=comparison.get("percentage_change"),
         )
         business_text = business_interpretation(
-            pred, comparison, quality, uncertainty_level, trend_text, risk_text)
+            pred, comparison, quality, uncertainty_level, trend_text,
+            risk_text, forecast_direction_text, trend_discrepancy,
+            period_display)
         implication = possible_implication(pred, trend, decline_risk)
         uncertainty_full = uncertainty_explanation(pred, uncertainty_level, uncertainty_evidence)
     else:
@@ -90,7 +107,8 @@ def build_insight(pred: Dict[str, Any], index: int) -> Dict[str, Any]:
         "prediction_id": prediction_id,
         "prediction_type": ptype,
         "entity": copy.deepcopy(pred.get("entity")),
-        "period": pred.get("period"),
+        "period": period_display,
+        "period_raw": pred.get("period"),
         "forecast_horizon": pred.get("forecast_horizon"),
         "prediction_status": pred.get("prediction_status"),
         # Valores de 4A, copiados sin modificar:
@@ -100,6 +118,9 @@ def build_insight(pred: Dict[str, Any], index: int) -> Dict[str, Any]:
         "confidence_score": pred.get("confidence_score"),
         "method": pred.get("method"),
         "trend": trend,
+        "forecast_direction": forecast_direction,
+        "forecast_direction_text": forecast_direction_text,
+        "trend_discrepancy_note": trend_discrepancy,
         "decline_risk": decline_risk,
         "stockout_status": pred.get("stockout_status"),
         # Magnitud (trazable):
@@ -155,6 +176,10 @@ def build_insight(pred: Dict[str, Any], index: int) -> Dict[str, Any]:
                 "confidence_score": pred.get("confidence_score"),
                 "method": pred.get("method"),
                 "trend": trend,
+                "trend_historical_note": "describe el pasado observado (4A)",
+                "forecast_direction": forecast_direction,
+                "forecast_direction_note": "derivado del percentage_change (±20 % material)",
+                "period_raw": pred.get("period"),
                 "decline_risk": decline_risk,
                 "stockout_status": pred.get("stockout_status"),
                 "training_period": pred.get("training_period"),
