@@ -102,34 +102,18 @@ def _behind_cloudflare() -> bool:
     """Opt-in explícito: la app corre tras Cloudflare (Render).
 
     Desactivado por defecto. Activarlo SOLO cuando esté verificado que
-    TODO el tráfico que llega al proceso pasó por Cloudflare (en
-    Render: el plan Free no acepta tráfico privado entrante, por lo
-    que no existe ruta interna que evite a Cloudflare). Si el plan se
-    sube a pago o se agregan servicios internos con acceso directo,
+    TODO el tráfico público que llega al proceso pasó por el edge de
+    Cloudflare (verificado en vivo 2026-10-11: tanto *.onrender.com
+    como el dominio propio responden `Server: cloudflare` + CF-RAY, y
+    la cabecera CF-Connecting-IP llega presente, única y válida).
+    Cloudflare sobrescribe CF-Connecting-IP con la IP real del
+    visitante en cada petición: un valor falsificado por el cliente no
+    sobrevive al edge. Si la infraestructura cambia (nuevo dominio sin
+    proxy, cambio de plan, rutas internas con acceso directo),
     revalidar antes de mantenerlo activo.
     """
     return (os.environ.get("ZAYVERO_BEHIND_CLOUDFLARE", "") or "").strip().lower() in (
         "1", "true", "yes", "on")
-
-
-# Red privada de la plataforma (Render usa 10.0.0.0/8). Intencionalmente
-# limitado a RFC 1918: ipaddress.is_private es más amplio (incluye
-# rangos de documentación como 198.51.100.0/24) y no sirve como
-# señal de "llegó por la red interna".
-_PRIVATE_NETS = (
-    ipaddress.ip_network("10.0.0.0/8"),
-    ipaddress.ip_network("172.16.0.0/12"),
-    ipaddress.ip_network("192.168.0.0/16"),
-)
-
-
-def _is_private_ip(ip: str) -> bool:
-    """True si la IP pertenece a RFC 1918 (defensa en profundidad)."""
-    try:
-        addr = ipaddress.ip_address(ip.strip())
-        return any(addr in net for net in _PRIVATE_NETS)
-    except Exception:
-        return False
 
 
 def _valid_single_ip(value: str) -> str | None:
@@ -145,79 +129,6 @@ def _valid_single_ip(value: str) -> str | None:
         return str(ipaddress.ip_address(v))
     except Exception:
         return None
-
-
-def _seg07_diag_enabled() -> bool:
-    """Opt-in temporal del diagnóstico SEG-07B. Desactivado por defecto.
-
-    Independiente de ZAYVERO_BEHIND_CLOUDFLARE: solo observa, nunca
-    decide. Se lee por petición para poder desactivarlo con un simple
-    cambio de variable (Render reinicia el servicio al cambiarlas).
-    """
-    return (os.environ.get("ZAYVERO_SEG07_DIAG", "") or "").strip().lower() in (
-        "1", "true", "yes", "on")
-
-
-def seg07_diag_state(handler) -> dict:
-    """Estado del diagnóstico SEG-07B: SOLO booleanos, nunca valores.
-
-    No registra direcciones IP (ni completas ni parciales), valores
-    de cabeceras, emails, ni ningún dato sensible: solo si la
-    cabecera CF-Connecting-IP está presente, si hay exactamente una
-    ocurrencia, si esa única ocurrencia es una IP válida, y si el
-    peer pertenece a RFC 1918.
-    """
-    try:
-        occurrences = handler.headers.get_all("CF-Connecting-IP") or []
-    except Exception:
-        occurrences = []
-    n = len(occurrences)
-    valid = n == 1 and _valid_single_ip(occurrences[0]) is not None
-    try:
-        peer = (handler.client_address[0] or "").strip()
-    except Exception:
-        peer = ""
-    return {
-        "cf_header_present": n >= 1,
-        "cf_header_unique": n == 1,
-        "cf_header_valid": valid,
-        "peer_rfc1918": _is_private_ip(peer),
-    }
-
-
-# Emisión única por proceso del diagnóstico SEG-07B.
-_diag_lock = threading.Lock()
-_diag_emitted = False
-
-
-def _seg07_diag_reset() -> None:
-    """Solo tests: re-arma la emisión única por proceso."""
-    global _diag_emitted
-    with _diag_lock:
-        _diag_emitted = False
-
-
-def seg07_emit_diag_once(handler) -> None:
-    """Emite el diagnóstico UNA sola vez por proceso (thread-safe).
-
-    La comprobación y el marcado de emisión son atómicos bajo candado:
-    ni N hilos concurrentes generan más de una línea. Sin opt-in no
-    emite nada. Solo booleanos + identificador SEG07_DIAG; nunca IPs,
-    emails ni datos sensibles. Render captura stdout en sus logs.
-    """
-    if not _seg07_diag_enabled():
-        return
-    global _diag_emitted
-    with _diag_lock:
-        if _diag_emitted:
-            return
-        _diag_emitted = True
-    st = seg07_diag_state(handler)
-    line = "SEG07_DIAG " + " ".join(f"{k}={int(v)}" for k, v in st.items())
-    try:
-        print(line, flush=True)
-    except Exception:
-        pass
 
 
 class LoginRateLimiter:
@@ -458,16 +369,18 @@ def client_origin_ip(handler) -> str:
     Orden de resolución:
 
     1. CF-Connecting-IP — SOLO con opt-in explícito
-       (ZAYVERO_BEHIND_CLOUDFLARE=1) Y peer privado, Y exactamente
-       UNA ocurrencia de la cabecera. Cloudflare sobrescribe esta
-       cabecera con la IP real del visitante en todo el tráfico de la
-       ruta pública de Render, y el plan Free no acepta tráfico
-       privado entrante: no existe ruta interna que la evite. El valor
-       debe ser UNA sola IPv4/IPv6 válida; ausente, duplicada (varias
-       líneas), múltiple (comas), vacía, malformada o ambigua se
-       ignora y se cae al punto 2/3 — la lógica preexistente, que
-       puede incluir X-Forwarded-For cuando hay un proxy
-       explícitamente confiable declarado.
+       (ZAYVERO_BEHIND_CLOUDFLARE=1). El opt-in afirma que todo el
+       tráfico público del servicio pasa por el edge de Cloudflare,
+       que sobrescribe esta cabecera con la IP real del visitante en
+       cada petición (verificado en vivo 2026-10-11). El valor debe
+       ser UNA sola IPv4/IPv6 válida en EXACTAMENTE una ocurrencia;
+       ausente, duplicada (varias líneas), múltiple (comas), vacía,
+       malformada o ambigua se ignora y se cae al punto 2/3.
+       NOTA SEG-07C: antes se exigía además peer RFC1918, pero el
+       salto edge→contenedor de Render no usa IPs privadas
+       (verificado: peer_rfc1918=0 en el Render staging público); esa condición
+       solo desactivaba la función. La defensa real contra la
+       falsificación es el propio edge de Cloudflare, no el peer.
     2. X-Forwarded-For con ZAYVERO_TRUSTED_PROXIES (sin cambios):
        SOLO si el peer directo es un proxy confiable declarado; se
        recorre la cadena de derecha a izquierda descartando proxies
@@ -487,11 +400,14 @@ def client_origin_ip(handler) -> str:
         peer = ""
     if not peer:
         peer = "unknown"
-    # SEG-07: CF-Connecting-IP solo en la ruta confiable verificada.
-    # Se exige EXACTAMENTE una ocurrencia de la cabecera: cero o varias
-    # líneas independientes = no confiable. (Con .get() las líneas
+    # SEG-07C: CF-Connecting-IP solo con opt-in explícito. El opt-in
+    # afirma que todo el tráfico público pasa por el edge de
+    # Cloudflare, que sobrescribe la cabecera con la IP real del
+    # visitante (un valor falsificado por el cliente no sobrevive).
+    # Se exige EXACTAMENTE una ocurrencia: cero o varias líneas
+    # independientes = no confiable. (Con .get() las líneas
     # duplicadas pasarían inadvertidas: solo devuelve la primera.)
-    if _behind_cloudflare() and _is_private_ip(peer):
+    if _behind_cloudflare():
         try:
             occurrences = handler.headers.get_all("CF-Connecting-IP") or []
         except Exception:

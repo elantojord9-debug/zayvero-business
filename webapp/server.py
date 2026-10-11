@@ -640,12 +640,6 @@ class WebappHandler(BaseHTTPRequestHandler):
                     {"error": "demasiados intentos. Inténtalo de nuevo "
                               "más tarde."},
                     extra_headers={"Retry-After": str(int(retry_after) + 1)})
-            # SEG-07B: diagnóstico temporal de Cloudflare. Solo tras la
-            # validación de la solicitud y una reserva autorizada por el
-            # rate limiter; UNA sola emisión por proceso (thread-safe).
-            # Desactivado por defecto (opt-in ZAYVERO_SEG07_DIAG=1).
-            # No altera autenticación, CSRF ni respuestas HTTP.
-            rate_limit_mod.seg07_emit_diag_once(self)
             try:
                 token, ctx = login(store, email, str(body.get("password", "")))
             except AuthError:

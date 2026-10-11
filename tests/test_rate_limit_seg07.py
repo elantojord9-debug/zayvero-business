@@ -6,10 +6,11 @@ preservación del comportamiento anterior:
 
 - Sin opt-in: se usa el peer TCP; CF-Connecting-IP y X-Forwarded-For
   se ignoran (salvo ZAYVERO_TRUSTED_PROXIES declarado).
-- Con opt-in + peer privado: CF-Connecting-IP válida (una sola
-  IPv4/IPv6) identifica al visitante.
-- Escenarios inseguros (cabecera falsificada, peer público, valores
-  inválidos/duplicados): fallan de forma conservadora al peer.
+- Con opt-in: CF-Connecting-IP válida (una sola IPv4/IPv6) identifica
+  al visitante. SEG-07C: ya no se exige peer privado (el salto
+  edge→contenedor de Render no usa RFC1918; verificado en vivo).
+- Escenarios inseguros (cabecera falsificada/duplicada/inválida,
+  sin opt-in): fallan de forma conservadora al peer.
 - La cubeta por CUENTA sigue siendo inmune a la suplantación de IP.
 """
 
@@ -150,12 +151,17 @@ class TestClientOriginIp(unittest.TestCase):
 
     # --- Casos conservadores ---
 
-    def test_optin_peer_publico_ignora_cf(self):
-        # Aunque el opt-in esté activo, un peer público (conexión
-        # directa, sin pasar por la plataforma) nunca confía en CF.
+    def test_optin_peer_publico_confia_cf(self):
+        # SEG-07C: el peer público es lo NORMAL en Render (el salto
+        # edge→contenedor no usa RFC1918; verificado en vivo con
+        # peer_rfc1918=0). Con el opt-in activo, la cabecera única y
+        # válida se confía: la defensa contra la falsificación es el
+        # propio edge de Cloudflare (sobrescribe la cabecera), no el
+        # peer. (Antes: se exigía peer privado; eso solo desactivaba
+        # la función en la infraestructura real.)
         os.environ["ZAYVERO_BEHIND_CLOUDFLARE"] = "1"
         h = _FakeHandler("198.51.100.23", cf_ips=["203.0.113.9"])
-        self.assertEqual(rl.client_origin_ip(h), "198.51.100.23")
+        self.assertEqual(rl.client_origin_ip(h), "203.0.113.9")
 
     def test_peer_privado_sin_optin_no_confia(self):
         # "Peer privado" solo NO basta: sin opt-in explícito, la
