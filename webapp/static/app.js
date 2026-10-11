@@ -92,9 +92,73 @@
     return friendlyError(err);
   }
 
+  /* Cierre de sesión: mensaje cuando el servidor NO confirmó la revocación.
+   * Nunca afirma que la sesión se cerró: siempre comunica que el cierre
+   * no está confirmado y que la sesión puede seguir activa.
+   * - 403 ("permiso"): el servidor rechazó la solicitud (p. ej. CSRF).
+   * - 500 ("servidor") / red (TypeError) / otros: fallo temporal.
+   * Función pura (sin DOM) para poder probarla por comportamiento. */
+  function logoutErrorMessage(err) {
+    var base = "No se pudo confirmar el cierre de sesión. " +
+      "Tu sesión puede seguir activa. ";
+    if (err && err.message === "permiso") return base + "Inténtalo de nuevo.";
+    if (err && err.message === "servidor") {
+      return base + "Inténtalo de nuevo más tarde.";
+    }
+    if (err instanceof TypeError) {
+      return "No se pudo conectar con el servidor. " + base +
+        "Verifica tu conexión e inténtalo de nuevo.";
+    }
+    return base + "Inténtalo de nuevo.";
+  }
+
+  /* Núcleo del cierre de sesión, con dependencias inyectables para pruebas.
+   * Éxito (200): limpia el estado local de sesión y muestra el login.
+   * Fallo (403/500/red): NO navega ni muestra el login como exitoso;
+   * informa con claridad que el cierre no está confirmado y conserva la
+   * vista actual, coherente con que la sesión puede seguir viva en el
+   * servidor. El usuario puede reintentar con el mismo botón. */
+  async function doLogout(deps) {
+    /* Sin solicitudes duplicadas: si ya hay un logout en curso, los
+     * clics repetidos se ignoran (el botón se deshabilita al iniciar). */
+    if (deps.btn.disabled) return "pending";
+    deps.btn.disabled = true;
+    try {
+      /* silent401: doLogout es dueño del UX del 401 (ver rama "auth"). */
+      await deps.api("/api/logout", { method: "POST", silent401: true });
+    } catch (e) {
+      deps.btn.disabled = false;
+      if (e && e.message === "auth") {
+        /* 401: el servidor no reconoce la sesión (expirada o inválida).
+         * No hay revocación que confirmar porque ya no hay sesión viva:
+         * se limpia el estado local y se muestra el login informando que
+         * la sesión expiró, sin afirmar un logout exitoso y sin el aviso
+         * de "puede seguir activa" (aquí sería falso). */
+        deps.state.csrfToken = null;
+        deps.state.me = null;
+        deps.setHash("#/inicio");
+        deps.showLogin("Sesión expirada o no autenticado.");
+        return "expired";
+      }
+      deps.toast(logoutErrorMessage(e));
+      return false;
+    }
+    deps.btn.disabled = false;
+    deps.state.csrfToken = null;
+    deps.state.me = null;
+    deps.setHash("#/inicio");
+    deps.showLogin();
+    return true;
+  }
+
   async function api(path, opts) {
     opts = opts || {};
+    /* Los llamadores que gestionan su propio 401 (p. ej. el logout)
+     * pueden desactivar el showLogin automático. La opción no se
+     * propaga a fetch (ver delete más abajo). */
+    var silent401 = opts.silent401 === true;
     var fetchOpts = Object.assign({ credentials: "same-origin" }, opts);
+    delete fetchOpts.silent401;
     if (fetchOpts.body && typeof fetchOpts.body === "object" && !(fetchOpts.body instanceof FormData)) {
       fetchOpts.body = JSON.stringify(fetchOpts.body);
       fetchOpts.headers = Object.assign({ "Content-Type": "application/json" }, fetchOpts.headers || {});
@@ -109,7 +173,7 @@
     var res = await fetch(path, fetchOpts);
     var data = null;
     try { data = await res.json(); } catch (e) { data = {}; }
-    if (res.status === 401) { showLogin("Sesión expirada o no autenticado."); throw new Error("auth"); }
+    if (res.status === 401) { if (!silent401) showLogin("Sesión expirada o no autenticado."); throw new Error("auth"); }
     if (res.status === 403) throw new Error("permiso");
     if (res.status === 404) throw new Error("no-encontrado");
     if (res.status >= 500) throw new Error("servidor");
@@ -190,11 +254,23 @@
     } finally { btn.disabled = false; }
   });
 
-  document.getElementById("logout-btn").addEventListener("click", async function () {
-    try { await api("/api/logout", { method: "POST" }); } catch (e) {}
-    location.hash = "#/inicio";
-    showLogin();
-  });
+  /* El wrapper transmite el mensaje: showLogin(msg) lo necesita para
+   * el caso 401 (sesión expirada); descartarlo dejaría el login sin el
+   * aviso correspondiente. Función nombrada para poder probar el
+   * cableado del botón real. */
+  function onLogoutClick() {
+    /* Los errores NO se silencian: doLogout solo muestra el login cuando
+     * el servidor confirmó la revocación (ver logoutErrorMessage). */
+    doLogout({
+      api: api,
+      toast: toast,
+      showLogin: function (msg) { showLogin(msg); },
+      setHash: function (h) { location.hash = h; },
+      btn: document.getElementById("logout-btn"),
+      state: state
+    });
+  }
+  document.getElementById("logout-btn").addEventListener("click", onLogoutClick);
 
   document.getElementById("menu-toggle").addEventListener("click", function () {
     document.getElementById("sidebar").classList.toggle("open");
