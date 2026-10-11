@@ -47,10 +47,18 @@ Diseño:
   d) `_pending` nunca acumula ceros: las entradas se eliminan al
      llegar a cero y settle() jamás crea registros sin reserva.
 - La IP de origen se determina con client_origin_ip(): por defecto el
-  peer directo (verificable). Con ZAYVERO_TRUSTED_PROXIES se acepta
+  peer directo (verificable). Con ZAYVERO_BEHIND_CLOUDFLARE=1 (opt-in
+  explícito, desactivado por defecto) y peer privado, se acepta
+  CF-Connecting-IP si hay EXACTAMENTE una ocurrencia de la cabecera
+  y es UNA sola IP válida: Cloudflare la sobrescribe con la IP real
+  del visitante en todo el tráfico de la ruta pública de Render, y el
+  plan Free no acepta tráfico privado entrante (sin ruta interna que
+  evite a Cloudflare). Una CF ausente, duplicada o inválida vuelve a
+  la lógica preexistente. Con ZAYVERO_TRUSTED_PROXIES se acepta
   X-Forwarded-For SOLO si el peer es un proxy confiable declarado, y
   se recorre la cadena de derecha a izquierda descartando proxies
-  confiables (algoritmo estándar; sin posiciones fijas).
+  confiables (algoritmo estándar; sin posiciones fijas). En cualquier
+  duda se usa el peer (fail-closed).
 - LIMITACIÓN DOCUMENTADA: en memoria = por proceso. Con múltiples
   workers o instancias cada uno lleva su propio contador; la
   protección global requeriría un almacén compartido (p. ej. Redis).
@@ -62,6 +70,7 @@ Solo stdlib. Sin dependencias nuevas.
 
 from __future__ import annotations
 
+import ipaddress
 import itertools
 import os
 import threading
@@ -87,6 +96,55 @@ def _trusted_proxies() -> set[str]:
     """
     raw = os.environ.get("ZAYVERO_TRUSTED_PROXIES", "") or ""
     return {p.strip() for p in raw.split(",") if p.strip()}
+
+
+def _behind_cloudflare() -> bool:
+    """Opt-in explícito: la app corre tras Cloudflare (Render).
+
+    Desactivado por defecto. Activarlo SOLO cuando esté verificado que
+    TODO el tráfico que llega al proceso pasó por Cloudflare (en
+    Render: el plan Free no acepta tráfico privado entrante, por lo
+    que no existe ruta interna que evite a Cloudflare). Si el plan se
+    sube a pago o se agregan servicios internos con acceso directo,
+    revalidar antes de mantenerlo activo.
+    """
+    return (os.environ.get("ZAYVERO_BEHIND_CLOUDFLARE", "") or "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+# Red privada de la plataforma (Render usa 10.0.0.0/8). Intencionalmente
+# limitado a RFC 1918: ipaddress.is_private es más amplio (incluye
+# rangos de documentación como 198.51.100.0/24) y no sirve como
+# señal de "llegó por la red interna".
+_PRIVATE_NETS = (
+    ipaddress.ip_network("10.0.0.0/8"),
+    ipaddress.ip_network("172.16.0.0/12"),
+    ipaddress.ip_network("192.168.0.0/16"),
+)
+
+
+def _is_private_ip(ip: str) -> bool:
+    """True si la IP pertenece a RFC 1918 (defensa en profundidad)."""
+    try:
+        addr = ipaddress.ip_address(ip.strip())
+        return any(addr in net for net in _PRIVATE_NETS)
+    except Exception:
+        return False
+
+
+def _valid_single_ip(value: str) -> str | None:
+    """Valida una cabecera de IP única: una sola IPv4/IPv6 válida.
+
+    Rechaza valores vacíos, listas con comas, y cualquier valor
+    malformado o ambiguo. Devuelve la IP normalizada o None.
+    """
+    v = (value or "").strip()
+    if not v or "," in v:
+        return None
+    try:
+        return str(ipaddress.ip_address(v))
+    except Exception:
+        return None
 
 
 class LoginRateLimiter:
@@ -324,23 +382,30 @@ def get_limiter() -> LoginRateLimiter:
 def client_origin_ip(handler) -> str:
     """Identifica el origen de la petición para la cubeta por IP.
 
-    Por defecto: el peer directo de la conexión TCP. Es lo único
-    verificable sin confiar en cabeceras del cliente.
+    Orden de resolución:
 
-    Con ZAYVERO_TRUSTED_PROXIES="ip1, ip2" (todas las IPs de proxies
-    entre internet y la app; el puerto de la app alcanzable SOLO a
-    través de ellos), y SOLO si el peer directo es uno de esos proxies,
-    se recorre X-Forwarded-For de derecha a izquierda descartando IPs
-    de proxies confiables: la primera IP NO confiable es el cliente.
-    Este es el algoritmo estándar (sin posiciones fijas): funciona con
-    uno o varios proxies y neutraliza XFF falsificados — un cliente
-    que conecte directo (peer no confiable) nunca logra que se use su
-    XFF.
+    1. CF-Connecting-IP — SOLO con opt-in explícito
+       (ZAYVERO_BEHIND_CLOUDFLARE=1) Y peer privado, Y exactamente
+       UNA ocurrencia de la cabecera. Cloudflare sobrescribe esta
+       cabecera con la IP real del visitante en todo el tráfico de la
+       ruta pública de Render, y el plan Free no acepta tráfico
+       privado entrante: no existe ruta interna que la evite. El valor
+       debe ser UNA sola IPv4/IPv6 válida; ausente, duplicada (varias
+       líneas), múltiple (comas), vacía, malformada o ambigua se
+       ignora y se cae al punto 2/3 — la lógica preexistente, que
+       puede incluir X-Forwarded-For cuando hay un proxy
+       explícitamente confiable declarado.
+    2. X-Forwarded-For con ZAYVERO_TRUSTED_PROXIES (sin cambios):
+       SOLO si el peer directo es un proxy confiable declarado; se
+       recorre la cadena de derecha a izquierda descartando proxies
+       confiables (algoritmo estándar; sin posiciones fijas).
+    3. Peer directo de la conexión TCP (por defecto). Es lo único
+       verificable sin confiar en cabeceras del cliente.
 
-    Si no puede determinarse la IP del cliente de forma confiable
-    (peer confiable pero XFF vacía o toda la cadena son proxies), se
-    usa el peer: alternativa segura (cubeta compartida del proxy,
-    fail-closed para la cubeta IP) y documentada.
+    En todos los casos de duda se usa el peer (fail-closed): un
+    cliente nunca puede elegir su cubeta mediante cabeceras
+    falsificadas. La cubeta por CUENTA (email) es inmune a la
+    suplantación de IP por diseño.
     """
     peer = ""
     try:
@@ -349,6 +414,21 @@ def client_origin_ip(handler) -> str:
         peer = ""
     if not peer:
         peer = "unknown"
+    # SEG-07: CF-Connecting-IP solo en la ruta confiable verificada.
+    # Se exige EXACTAMENTE una ocurrencia de la cabecera: cero o varias
+    # líneas independientes = no confiable. (Con .get() las líneas
+    # duplicadas pasarían inadvertidas: solo devuelve la primera.)
+    if _behind_cloudflare() and _is_private_ip(peer):
+        try:
+            occurrences = handler.headers.get_all("CF-Connecting-IP") or []
+        except Exception:
+            occurrences = []
+        cf = occurrences[0] if len(occurrences) == 1 else ""
+        ip = _valid_single_ip(cf)
+        if ip is not None:
+            return ip
+        # Cabecera ausente, duplicada o inválida: se ignora y se aplica
+        # la lógica preexistente (ZAYVERO_TRUSTED_PROXIES / peer).
     trusted = _trusted_proxies()
     if peer not in trusted:
         return peer
