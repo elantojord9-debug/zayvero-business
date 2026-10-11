@@ -16,6 +16,7 @@ from __future__ import annotations
 from . import audit as audit_mod
 from .models import TenantContext
 from .store import TenantStore
+from .security import csrf_tokens_match
 
 
 class PermissionDenied(Exception):
@@ -64,6 +65,34 @@ def require_company_admin(store: TenantStore, ctx: TenantContext) -> None:
 
 def require_user_admin(store: TenantStore, ctx: TenantContext) -> None:
     require_permission(store, ctx, "user.admin")
+
+
+def require_csrf(store: TenantStore, ctx: TenantContext,
+                 session_token: str, provided_token: str | None,
+                 resource: str = "") -> None:
+    """SEG-03: valida el token CSRF sincronizado con la sesión.
+
+    El token debe coincidir (tiempo constante) con el guardado en la
+    sesión del servidor. Denegado → PermissionDenied + auditoría.
+    Nunca se loguea el valor del token.
+    """
+    session = store.get_session(session_token) if session_token else None
+    expected = session.csrf_token if session and not session.revoked else ""
+    # Defensa en profundidad: el token solo vale para la sesión y empresa
+    # del contexto autenticado.
+    if (session is None or session.revoked
+            or session.user_id != ctx.user_id
+            or session.company_id != ctx.company_id
+            or not csrf_tokens_match(provided_token, expected)):
+        audit_mod.log_event(
+            store, company_id=ctx.company_id, user_id=ctx.user_id,
+            action=audit_mod.PERMISSION_DENIED,
+            resource=resource or "csrf",
+            result="denied",
+            metadata={"reason": "csrf_mismatch"},
+        )
+        raise PermissionDenied("acceso denegado")
+    return None
 
 
 def check_data_access(store: TenantStore, ctx: TenantContext, dataset_id: str) -> str:

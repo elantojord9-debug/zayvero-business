@@ -54,10 +54,11 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from tenant import (
     TenantStore, TenantContext, AuthError, PermissionDenied,
-    login, logout, get_tenant_context, require_permission,
-    enter_demo, exit_demo,
+    login, logout, get_tenant_context, require_permission, require_csrf,
+    get_csrf_token, enter_demo, exit_demo,
 )
 from tenant import audit as audit_mod
+from tenant import security as sec_mod
 
 from intl import config as intl_config_mod
 
@@ -249,17 +250,25 @@ def _parse_cookies(handler: BaseHTTPRequestHandler) -> dict:
 def _send_json(handler: BaseHTTPRequestHandler, status: int, payload: dict,
                set_cookie: str | None = None, clear_cookie: bool = False):
     body = json.dumps(payload, ensure_ascii=False, default=str).encode("utf-8")
+    # SEG-01/02: decisiones INDEPENDIENTES y explícitas del operador.
+    #  - cookie Secure: ZAYVERO_COOKIE_SECURE=1
+    #  - HSTS: ZAYVERO_HSTS=1 (solo con origen público HTTPS confirmado)
+    # Nunca se infieren de cabeceras de la petición (ver tenant/security.py).
+    secure_cookie = sec_mod.cookie_secure_enabled()
+    hsts = sec_mod.hsts_enabled()
     handler.send_response(status)
     handler.send_header("Content-Type", "application/json; charset=utf-8")
     handler.send_header("Content-Length", str(len(body)))
+    for k, v in sec_mod.security_headers(hsts=hsts).items():
+        handler.send_header(k, v)
     if set_cookie:
         handler.send_header(
             "Set-Cookie",
-            f"{COOKIE_NAME}={set_cookie}; Path=/; HttpOnly; SameSite=Lax")
+            sec_mod.build_set_cookie(COOKIE_NAME, set_cookie, secure=secure_cookie))
     if clear_cookie:
         handler.send_header(
             "Set-Cookie",
-            f"{COOKIE_NAME}=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0")
+            sec_mod.build_clear_cookie(COOKIE_NAME, secure=secure_cookie))
     handler.end_headers()
     handler.wfile.write(body)
 
@@ -293,7 +302,7 @@ def _read_json_body(handler: BaseHTTPRequestHandler, max_bytes: int = 65536) -> 
 
 
 def _auth_ctx(handler: BaseHTTPRequestHandler):
-    """Autentica la petición. Devuelve (store, ctx) o envía 401."""
+    """Autentica la petición. Devuelve (store, ctx, token) o envía 401."""
     store = get_store()
     token = _parse_cookies(handler).get(COOKIE_NAME, "")
     try:
@@ -302,7 +311,83 @@ def _auth_ctx(handler: BaseHTTPRequestHandler):
         msg = "sesión expirada" if "expirada" in str(e) else "no autenticado"
         _send_json(handler, 401, {"error": msg})
         return None
-    return store, ctx
+    return store, ctx, token
+
+
+def _csrf_from_request(handler: BaseHTTPRequestHandler) -> str:
+    """Lee el token CSRF de la cabecera X-CSRF-Token (nunca de la URL)."""
+    return (handler.headers.get("X-CSRF-Token", "") or "").strip()
+
+
+def _require_csrf(handler: BaseHTTPRequestHandler, store, ctx,
+                  token: str, resource: str = "") -> bool:
+    """SEG-03: exige token CSRF válido en operaciones con estado.
+
+    Devuelve True si pasa; si falla envía 403 y devuelve False.
+    """
+    try:
+        require_csrf(store, ctx, token, _csrf_from_request(handler),
+                     resource=resource)
+        return True
+    except PermissionDenied:
+        _send_json(handler, 403, {"error": "solicitud rechazada"})
+        return False
+
+
+def _login_request_ok(handler: BaseHTTPRequestHandler) -> bool:
+    """SEG-03 (login-CSRF, endurecido): el inicio de sesión no tiene sesión
+    previa que ancle un token, así que se defiende en dos capas:
+
+    1. Solo se acepta Content-Type: application/json. Un formulario
+       cross-site no puede fijar ese Content-Type (dispararía un preflight
+       CORS que este servidor no atiende: no hay cabeceras CORS).
+    2. Si el navegador envía Origin/Referer, el origen COMPLETO
+       (esquema://host[:puerto]) debe coincidir EXACTAMENTE con:
+         a) el origen público configurado (ZAYVERO_PUBLIC_ORIGIN), cuando
+            existe; o
+         b) http://<Host de la petición> en desarrollo local sin TLS.
+
+    El esquema público NO se deduce de la petición: en producción Render
+    termina TLS en su proxy y el servidor local solo ve HTTP, así que el
+    origen canónico viene de configuración explícita del operador:
+
+        ZAYVERO_PUBLIC_ORIGIN=https://zayvero-business.onrender.com
+
+    Comparar solo el netloc contra el Host sería inseguro: el Host lo fija
+    el cliente y el esquema quedaría sin validar (un http:// maligno con
+    el mismo host pasaría). Sin Origin/Referer (curl, clientes
+    no-navegador) no hay amenaza CSRF —un atacante con curl no tiene las
+    cookies de la víctima— y se permite; la capa 1 sigue aplicando.
+    """
+    ctype = (handler.headers.get("Content-Type", "") or "").split(";")[0]
+    if ctype.strip().lower() != "application/json":
+        return False
+    public = sec_mod.public_origin()
+    host = (handler.headers.get("Host", "") or "").strip().lower()
+    for hdr in ("Origin", "Referer"):
+        val = (handler.headers.get(hdr, "") or "").strip()
+        if not val:
+            continue
+        try:
+            parsed = urllib.parse.urlparse(val)
+        except Exception:
+            return False
+        scheme = (parsed.scheme or "").lower()
+        netloc = (parsed.netloc or "").lower()
+        if not scheme or not netloc:
+            return False
+        candidate = f"{scheme}://{netloc}"
+        if public:
+            # Producción: coincidencia exacta con el origen público
+            # configurado (esquema + host + puerto). Nada de prefijos ni
+            # sufijos: "https://app.onrender.com.evil.com" NO pasa.
+            if candidate != public:
+                return False
+        else:
+            # Desarrollo local: solo http:// contra el propio Host.
+            if scheme != "http" or not host or netloc != host:
+                return False
+    return True
 
 
 class WebappHandler(BaseHTTPRequestHandler):
@@ -331,7 +416,7 @@ class WebappHandler(BaseHTTPRequestHandler):
         auth = _auth_ctx(self)
         if auth is None:
             return
-        store, ctx = auth
+        store, ctx, _token = auth
 
         try:
             if path == "/api/me":
@@ -348,6 +433,9 @@ class WebappHandler(BaseHTTPRequestHandler):
                                 "config": intl_config_mod.config_view(company)
                                 if company else None},
                     "permissions": ctx.permissions,
+                    # SEG-03: token CSRF de la sesión actual (para
+                    # recargas de página: el frontend lo re-sincroniza).
+                    "csrf_token": get_csrf_token(store, _token),
                 })
             # ---- FASE 7C: configuración internacional de la empresa ------
             if path == "/api/company/config":
@@ -525,6 +613,11 @@ class WebappHandler(BaseHTTPRequestHandler):
         store = get_store()
 
         if path == "/api/login":
+            # SEG-03 (login-CSRF): sin sesión previa no hay token que
+            # validar; se exige JSON + misma origen (ver _login_request_ok).
+            if not _login_request_ok(self):
+                return _send_json(self, 403,
+                                  {"error": "solicitud rechazada"})
             body = _read_json_body(self, max_bytes=4096)
             email = str(body.get("email", "") or "").strip().lower()
             try:
@@ -538,23 +631,38 @@ class WebappHandler(BaseHTTPRequestHandler):
                                       {"error": "usuario deshabilitado"})
                 return _send_json(self, 401, {"error": "credenciales incorrectas"})
             return _send_json(self, 200, {"ok": True, "role": ctx.role,
-                                          "company_name": ctx.company_name},
+                                          "company_name": ctx.company_name,
+                                          # SEG-03: token CSRF de la sesión.
+                                          "csrf_token": get_csrf_token(
+                                              store, token)},
                               set_cookie=token)
         if path == "/api/logout":
             token = _parse_cookies(self).get(COOKIE_NAME, "")
+            # SEG-03: el logout también exige CSRF (evita cierre de sesión
+            # forzado; el token viaja en la cabecera, no en la cookie).
+            try:
+                ctx_lo = get_tenant_context(store, token)
+            except AuthError:
+                return _send_json(self, 200, {"ok": True}, clear_cookie=True)
+            if not _require_csrf(self, store, ctx_lo, token,
+                                 resource="logout"):
+                return
             logout(store, token)
             return _send_json(self, 200, {"ok": True}, clear_cookie=True)
 
         auth = _auth_ctx(self)
         if auth is None:
             return
-        store, ctx = auth
+        store, ctx, token = auth
 
         try:
             if path == "/api/demo/enter":
                 # Entra a la demo sin destruir la sesión: crea una sesión
                 # nueva ligada a demo-retail (rol viewer, TTL 1h). La sesión
                 # origen queda intacta para poder volver.
+                if not _require_csrf(self, store, ctx, token,
+                                     resource="demo:enter"):
+                    return
                 origin_token = _parse_cookies(self).get(COOKIE_NAME, "")
                 try:
                     demo_token, demo_ctx = enter_demo(store, ctx,
@@ -563,19 +671,31 @@ class WebappHandler(BaseHTTPRequestHandler):
                     return _send_json(self, 400, {"error": str(e)})
                 return _send_json(self, 200,
                                   {"ok": True,
-                                   "company_name": demo_ctx.company_name},
+                                   "company_name": demo_ctx.company_name,
+                                   # SEG-03: la sesión demo trae su propio
+                                   # token CSRF; el frontend lo actualiza.
+                                   "csrf_token": get_csrf_token(
+                                       store, demo_token)},
                                   set_cookie=demo_token)
 
             if path == "/api/demo/exit":
                 # Sale de la demo: revoca la sesión demo y restaura la
                 # cookie con la sesión origen si sigue válida.
+                if not _require_csrf(self, store, ctx, token,
+                                     resource="demo:exit"):
+                    return
                 demo_token = _parse_cookies(self).get(COOKIE_NAME, "")
                 try:
                     origin_token = exit_demo(store, demo_token)
                 except AuthError as e:
                     return _send_json(self, 400, {"error": str(e)})
                 if origin_token:
-                    return _send_json(self, 200, {"ok": True},
+                    return _send_json(self, 200,
+                                      {"ok": True,
+                                       # SEG-03: token de la sesión origen
+                                       # restaurada.
+                                       "csrf_token": get_csrf_token(
+                                           store, origin_token)},
                                       set_cookie=origin_token)
                 return _send_json(self, 200,
                                   {"ok": True, "login_required": True},
@@ -583,6 +703,9 @@ class WebappHandler(BaseHTTPRequestHandler):
 
             if path == "/api/advisor/ask":
                 require_permission(store, ctx, "advisor.use", "advisor")
+                if not _require_csrf(self, store, ctx, token,
+                                     resource="advisor:ask"):
+                    return
                 body = _read_json_body(self)
                 question = str(body.get("question", "") or "").strip()
                 if not question or len(question) > 2000:
@@ -622,9 +745,9 @@ class WebappHandler(BaseHTTPRequestHandler):
                 return _send_json(self, 200, result)
             # ---- FASE 7A: datasets -------------------------------------
             if path == "/api/datasets/upload":
-                return self._dataset_upload(store, ctx)
+                return self._dataset_upload(store, ctx, token)
             if path.startswith("/api/datasets/"):
-                return self._dataset_post(store, ctx, path)
+                return self._dataset_post(store, ctx, token, path)
         except AuthError:
             return _send_json(self, 401, {"error": "no autenticado"})
         except PermissionDenied:
@@ -642,11 +765,15 @@ class WebappHandler(BaseHTTPRequestHandler):
         auth = _auth_ctx(self)
         if auth is None:
             return
-        store, ctx = auth
+        store, ctx, token = auth
 
         try:
             if path == "/api/company/config":
                 require_permission(store, ctx, "company.config", "company_config")
+                # SEG-03: la configuración cambia estado → token CSRF.
+                if not _require_csrf(self, store, ctx, token,
+                                     resource="company:config"):
+                    return
                 company = store.get_company(ctx.company_id)
                 if company is None:
                     return _send_json(self, 404,
@@ -700,7 +827,7 @@ class WebappHandler(BaseHTTPRequestHandler):
         except Exception:
             return _send_json(self, 500, {"error": "error interno"})
         return _send_json(self, 404, {"error": "no encontrado"})
-    def _dataset_upload(self, store, ctx):
+    def _dataset_upload(self, store, ctx, token):
         """POST /api/datasets/upload — recibe CSV/XLSX (multipart)."""
         from datasets import DatasetStore, receive_upload
         from datasets.upload import UploadError
@@ -709,6 +836,10 @@ class WebappHandler(BaseHTTPRequestHandler):
             require_permission(store, ctx, "data.admin", "datasets:upload")
         except PermissionDenied:
             return _send_json(self, 403, {"error": "acceso denegado"})
+        # SEG-03: la subida multipart también exige token CSRF (cabecera).
+        if not _require_csrf(self, store, ctx, token,
+                             resource="datasets:upload"):
+            return
 
         ctype = self.headers.get("Content-Type", "")
         if "multipart/form-data" not in ctype:
@@ -793,12 +924,16 @@ class WebappHandler(BaseHTTPRequestHandler):
         _DATA_CACHE.pop(ctx.company_id, None)
         return _send_json(self, 200, {"dataset": ds.to_dict()})
 
-    def _dataset_post(self, store, ctx, path):
+    def _dataset_post(self, store, ctx, token, path):
         from datasets import confirm_mapping, process_in_background
 
         parts = path[len("/api/datasets/"):].split("/")
         dataset_id = parts[0]
         action = parts[1] if len(parts) > 1 else ""
+        # SEG-03: mapping/process/activate cambian estado → token CSRF.
+        if not _require_csrf(self, store, ctx, token,
+                             resource=f"datasets:{action or 'dataset'}"):
+            return
         try:
             ds_store, ds = get_dataset_checked(ctx, dataset_id)
         except (PermissionError, KeyError):
@@ -948,9 +1083,14 @@ class WebappHandler(BaseHTTPRequestHandler):
             return _send_json(self, 404, {"error": "no encontrado"})
         with open(path, "rb") as f:
             body = f.read()
+        # SEG-02: las cabeceras también aplican a estáticos (y a index.html,
+        # puerta de entrada de la app). HSTS solo con ZAYVERO_HSTS=1.
+        hsts = sec_mod.hsts_enabled()
         self.send_response(200)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(body)))
+        for k, v in sec_mod.security_headers(hsts=hsts).items():
+            self.send_header(k, v)
         # Evita que el navegador conserve un app.js viejo tras un despliegue:
         # siempre revalida los archivos estáticos con el servidor.
         self.send_header("Cache-Control", "no-cache, must-revalidate")
@@ -968,6 +1108,9 @@ def run_server(port: int = 8701, host: str | None = None):
     # (p.ej. ZAYVERO_REQUIRE_SECRET_FILE=1 sin Secret File): mejor que
     # arrancar un servicio que no puede autenticar a nadie.
     get_store()
+    # SEG-01: avisar si la cookie Secure no está activa (evita olvidos en
+    # producción). Ver tenant/security.py para la configuración.
+    sec_mod.warn_if_insecure()
     server = ThreadingHTTPServer((host, port), WebappHandler)
     print(f"FASE 6B web app en http://{host}:{port}")
     server.serve_forever()

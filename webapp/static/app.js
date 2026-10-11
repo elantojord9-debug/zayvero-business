@@ -9,6 +9,9 @@
 
   var state = {
     me: null,
+    /* SEG-03: token CSRF sincronizado con la sesión. Se obtiene del login
+     * o de /api/me y se envía en X-CSRF-Token en operaciones con estado. */
+    csrfToken: null,
     summary: null,
     findings: { items: [], total: 0, page: 1, per_page: 20, by_priority: {}, by_type: {} },
     filters: { priority: "all", type: "all", period: "all", q: "" },
@@ -66,6 +69,13 @@
     if (fetchOpts.body && typeof fetchOpts.body === "object" && !(fetchOpts.body instanceof FormData)) {
       fetchOpts.body = JSON.stringify(fetchOpts.body);
       fetchOpts.headers = Object.assign({ "Content-Type": "application/json" }, fetchOpts.headers || {});
+    }
+    /* SEG-03: las operaciones con estado llevan el token CSRF de la
+     * sesión. Las lecturas GET no lo necesitan. */
+    var method = (fetchOpts.method || "GET").toUpperCase();
+    if (method !== "GET" && method !== "HEAD" && state.csrfToken) {
+      fetchOpts.headers = Object.assign(
+        { "X-CSRF-Token": state.csrfToken }, fetchOpts.headers || {});
     }
     var res = await fetch(path, fetchOpts);
     var data = null;
@@ -126,7 +136,7 @@
     loginError.classList.add("hidden");
     btn.disabled = true;
     try {
-      await api("/api/login", {
+      var loginRes = await api("/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -134,6 +144,8 @@
           password: document.getElementById("login-password").value,
         }),
       });
+      /* SEG-03: guardar el token CSRF de la sesión recién creada. */
+      if (loginRes && loginRes.csrf_token) state.csrfToken = loginRes.csrf_token;
       document.getElementById("login-password").value = "";
       await boot();
     } catch (err) {
@@ -165,6 +177,8 @@
     try {
       state.me = await api("/api/me");
     } catch (e) { return; }
+    /* SEG-03: re-sincronizar el token CSRF (recargas de página). */
+    if (state.me && state.me.csrf_token) state.csrfToken = state.me.csrf_token;
     /* FASE 8 — entrada del producto: tras el login o al abrir la app con
      * sesión válida, la primera pantalla es siempre #/inicio. Se ignora
      * cualquier hash obsoleto (p. ej. #/resumen de una sesión anterior)
@@ -213,6 +227,17 @@
     return T("onboarding.step.pending");
   }
 
+  /* SEG-02 (CSP): los anchos dinámicos no pueden ir en style="..." inline.
+   * Se marcan con data-w y se aplican por DOM tras el innerHTML. */
+  function fixupProgressBars(root) {
+    if (!root || !root.querySelectorAll) return;
+    root.querySelectorAll(".progress-bar[data-w]").forEach(function (el) {
+      var w = parseInt(el.getAttribute("data-w"), 10);
+      if (!isNaN(w)) el.style.width = Math.max(0, Math.min(100, w)) + "%";
+      el.removeAttribute("data-w");
+    });
+  }
+
   function onboardingHTML(ob) {
     var pct = ob.total ? Math.round(100 * ob.completed / ob.total) : 0;
     var h = "<section class='section' aria-labelledby='h-onb'><h2 id='h-onb'>" +
@@ -220,7 +245,9 @@
       "<p class='muted'>" + esc(T("onboarding.subtitle")) + "</p>" +
       "<div class='progress-wrap' role='progressbar' aria-valuenow='" + pct +
       "' aria-valuemin='0' aria-valuemax='100' aria-label='" + esc(T("onboarding.progress")) + "'>" +
-      "<div class='progress-bar' style='width:" + pct + "%'></div></div>" +
+      /* SEG-02 (CSP): sin style="..." inline; el ancho se asigna por DOM
+       * tras insertar el HTML (ver fixupProgressBars). */
+      "<div class='progress-bar' data-w='" + pct + "'></div></div>" +
       "<p class='muted small'>" + esc(T("onboarding.progress")) + ": " +
       ob.completed + " / " + ob.total + "</p>" +
       "<ol class='onb-steps'>";
@@ -392,6 +419,9 @@
     html += plansHTML(ov.plans || []);
 
     main.innerHTML = html;
+    /* SEG-02 (CSP): asignar anchos de barras de progreso por DOM (el
+     * atributo style="..." inline lo bloquearía la CSP). */
+    fixupProgressBars(main);
 
     /* Botón "Explorar demo": entra a la demo SIN destruir la sesión actual.
      * Crea una sesión demo ligada a demo-retail (rol viewer, TTL 1h);
@@ -400,7 +430,9 @@
     if (dg) dg.addEventListener("click", async function () {
       dg.disabled = true;
       try {
-        await api("/api/demo/enter", { method: "POST" });
+        var de = await api("/api/demo/enter", { method: "POST" });
+        /* SEG-03: la sesión demo trae su propio token CSRF. */
+        if (de && de.csrf_token) state.csrfToken = de.csrf_token;
         try { sessionStorage.setItem("zb_demo", "1"); } catch (e) {}
         await boot();
       } catch (e) {
@@ -419,6 +451,8 @@
       db.disabled = true;
       try {
         var r = await api("/api/demo/exit", { method: "POST" });
+        /* SEG-03: al volver, la sesión origen trae su token CSRF. */
+        if (r && r.csrf_token) state.csrfToken = r.csrf_token;
         try { sessionStorage.removeItem("zb_demo"); } catch (e) {}
         await boot();
         if (r && r.login_required) {
@@ -1495,7 +1529,10 @@
         fd.append("file", fileInput.files[0]);
         fd.append("nombre", nombre);
         try {
-          var res = await fetch("/api/datasets/upload", { method: "POST", body: fd, credentials: "same-origin" });
+          /* SEG-03: la subida multipart también lleva el token CSRF. */
+          var upHeaders = {};
+          if (state.csrfToken) upHeaders["X-CSRF-Token"] = state.csrfToken;
+          var res = await fetch("/api/datasets/upload", { method: "POST", body: fd, credentials: "same-origin", headers: upHeaders });
           var payload = await res.json();
           if (!res.ok) { msg.innerHTML = "<div class='error' role='alert'>" + esc(payload.error || "No se pudo subir el archivo.") + "</div>"; return; }
           location.hash = "#/empresa/" + payload.dataset.dataset_id;

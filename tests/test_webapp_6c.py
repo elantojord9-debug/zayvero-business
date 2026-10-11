@@ -48,6 +48,8 @@ class Client:
     def __init__(self, port):
         self.port = port
         self.jar = http.cookiejar.CookieJar()
+        # SEG-03: como el frontend real: guarda el csrf_token y lo envía.
+        self.csrf_token = ""
 
     def _req(self, method, path, body=None):
         opener = urllib.request.build_opener(
@@ -57,12 +59,17 @@ class Client:
         if body is not None:
             data = json.dumps(body).encode("utf-8")
             headers["Content-Type"] = "application/json"
+        if method in ("POST", "PUT", "PATCH", "DELETE") and self.csrf_token:
+            headers["X-CSRF-Token"] = self.csrf_token
         req = urllib.request.Request(
             f"http://127.0.0.1:{self.port}{path}", data=data,
             headers=headers, method=method)
         try:
             with opener.open(req) as resp:
-                return resp.status, json.loads(resp.read().decode("utf-8"))
+                payload = json.loads(resp.read().decode("utf-8"))
+                if isinstance(payload, dict) and payload.get("csrf_token"):
+                    self.csrf_token = payload["csrf_token"]
+                return resp.status, payload
         except urllib.error.HTTPError as e:
             raw = e.read().decode("utf-8")
             try:

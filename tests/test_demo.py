@@ -35,6 +35,9 @@ class Client:
     def __init__(self, port):
         self.port = port
         self.jar = http.cookiejar.CookieJar()
+        # SEG-03: el cliente de pruebas se comporta como el frontend real:
+        # guarda el csrf_token del login y lo envía en X-CSRF-Token.
+        self.csrf_token = ""
 
     def _req(self, method, path, body=None):
         opener = urllib.request.build_opener(
@@ -44,6 +47,8 @@ class Client:
         if body is not None:
             data = json.dumps(body).encode("utf-8")
             headers["Content-Type"] = "application/json"
+        if method in ("POST", "PUT", "PATCH", "DELETE") and self.csrf_token:
+            headers["X-CSRF-Token"] = self.csrf_token
         req = urllib.request.Request(
             f"http://127.0.0.1:{self.port}{path}", data=data,
             headers=headers, method=method)
@@ -54,6 +59,9 @@ class Client:
                     payload = json.loads(raw) if raw else {}
                 except Exception:
                     payload = {"_raw": raw}
+                # SEG-03: demo enter/exit rotan la sesión y su token CSRF.
+                if isinstance(payload, dict) and payload.get("csrf_token"):
+                    self.csrf_token = payload["csrf_token"]
                 return res.status, payload
         except urllib.error.HTTPError as e:
             raw = e.read().decode("utf-8")
@@ -70,7 +78,9 @@ class Client:
         return self._req("POST", path, body)
 
     def login(self, email, password):
-        return self.post("/api/login", {"email": email, "password": password})
+        st, payload = self.post("/api/login",
+                                {"email": email, "password": password})
+        return st, payload
 
     def cookie_token(self):
         for c in self.jar:

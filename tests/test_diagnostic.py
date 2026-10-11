@@ -452,16 +452,24 @@ class ServerTest(unittest.TestCase):
         jar = http.cookiejar.CookieJar()
         opener = urllib.request.build_opener(
             urllib.request.HTTPCookieProcessor(jar))
+        # SEG-03: el cliente de pruebas se comporta como el frontend real.
+        csrf = {"token": ""}
 
         def call(method, path, body=None):
             data = json.dumps(body).encode() if body is not None else None
+            headers = {"Content-Type": "application/json"}
+            if method in ("POST", "PUT", "PATCH", "DELETE") and csrf["token"]:
+                headers["X-CSRF-Token"] = csrf["token"]
             req = urllib.request.Request(
                 f"http://127.0.0.1:{self.port}{path}", data=data,
-                headers={"Content-Type": "application/json"}, method=method)
+                headers=headers, method=method)
             try:
                 with opener.open(req) as res:
                     raw = res.read().decode("utf-8")
-                    return res.status, (json.loads(raw) if raw else {})
+                    payload = json.loads(raw) if raw else {}
+                    if isinstance(payload, dict) and payload.get("csrf_token"):
+                        csrf["token"] = payload["csrf_token"]
+                    return res.status, payload
             except urllib.error.HTTPError as e:
                 raw = e.read().decode("utf-8")
                 try:

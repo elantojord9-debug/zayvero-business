@@ -83,6 +83,10 @@ class Session:
     # entró a la demo) para poder volver sin pedir login. Solo la usa el
     # servidor; nunca viaja al frontend. "" = sesión normal.
     origin_session_id: str = ""
+    # SEG-03: token CSRF sincronizado con la sesión. Se genera al crear la
+    # sesión, viaja al frontend (JSON, nunca en logs) y el frontend lo
+    # devuelve en la cabecera X-CSRF-Token en operaciones con estado.
+    csrf_token: str = ""
 
     def to_dict(self):
         return asdict(self)

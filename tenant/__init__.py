@@ -21,9 +21,10 @@ from .crypto import hash_password, verify_password
 from .auth import (
     AuthError, create_user, update_user, login, logout,
     get_tenant_context, build_tenant_context, enter_demo, exit_demo,
+    get_csrf_token,
 )
 from .authorization import (
-    PermissionDenied, require_permission, scoped_company_id,
+    PermissionDenied, require_permission, require_csrf, scoped_company_id,
     require_company_admin, require_user_admin, check_data_access,
 )
 from . import audit as audit
@@ -55,7 +56,8 @@ __all__ = [
     "hash_password", "verify_password",
     "AuthError", "create_user", "update_user", "login", "logout",
     "get_tenant_context", "build_tenant_context", "enter_demo", "exit_demo",
-    "PermissionDenied", "require_permission", "scoped_company_id",
+    "get_csrf_token",
+    "PermissionDenied", "require_permission", "require_csrf", "scoped_company_id",
     "require_company_admin", "require_user_admin", "check_data_access",
     "create_company", "audit",
 ]

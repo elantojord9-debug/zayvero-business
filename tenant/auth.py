@@ -17,6 +17,7 @@ from .models import Session, TenantContext, User
 from .store import TenantStore, utcnow_iso, DEMO_COMPANY_ID
 from .crypto import hash_password, verify_password
 from . import roles as roles_mod
+from .security import new_csrf_token
 
 SESSION_TTL_HOURS = 8
 
@@ -137,6 +138,8 @@ def login(store: TenantStore, email: str, password: str) -> tuple[str, TenantCon
         created_at=now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         expires_at=(now + timedelta(hours=SESSION_TTL_HOURS)).strftime("%Y-%m-%dT%H:%M:%SZ"),
         revoked=False,
+        # SEG-03: cada sesión nace con su propio token CSRF.
+        csrf_token=new_csrf_token(),
     )
     store.save_session(session)
     ctx = build_tenant_context(store, user, company_name=company.name)
@@ -248,6 +251,9 @@ def enter_demo(store: TenantStore, ctx: TenantContext,
             "%Y-%m-%dT%H:%M:%SZ"),
         revoked=False,
         origin_session_id=origin_token,
+        # SEG-03: la sesión demo tiene su propio token CSRF (no reutiliza
+        # el de la sesión origen).
+        csrf_token=new_csrf_token(),
     )
     store.save_session(session)
     demo_ctx = build_tenant_context(store, demo_user,
@@ -299,3 +305,15 @@ def exit_demo(store: TenantStore, demo_token: str) -> str:
     if origin_company is None or origin_company.status != "active":
         return ""
     return origin_token
+
+
+def get_csrf_token(store: TenantStore, session_token: str) -> str:
+    """Devuelve el token CSRF de una sesión válida, o "" si no aplica.
+
+    SEG-03: el frontend lo obtiene tras el login (respuesta JSON) y con
+    GET /api/me (recargas), y lo envía en X-CSRF-Token. Nunca va a logs.
+    """
+    session = store.get_session(session_token) if session_token else None
+    if session is None or session.revoked:
+        return ""
+    return session.csrf_token or ""
