@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import json
 import os
+import sys
 import threading
 import traceback
 from typing import Any, Dict, Optional
@@ -31,6 +32,24 @@ from .models import Dataset
 from .store import DatasetStore, utcnow_iso
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+def _diag(kind: str, exc: Exception, **fields: Any) -> None:
+    """Log de diagnóstico seguro (stderr, nunca llega al usuario).
+
+    Último recurso cuando falla la auditoría o la persistencia del
+    estado: deja rastro para el operador sin exponer nada sensible.
+    Solo registra el TIPO de excepción (nunca su mensaje, que puede
+    contener rutas, nombres de archivo o datos privados) más
+    identificadores técnicos seguros. Nunca propaga excepciones.
+    """
+    try:
+        extra = " ".join(f"{k}={v}" for k, v in fields.items())
+        print(f"[zayvero-processing-diag] kind={kind} {extra} "
+              f"error_type={type(exc).__name__}",
+              file=sys.stderr, flush=True)
+    except Exception:
+        pass
 
 
 def _friendly_error(exc: Exception) -> str:
@@ -154,32 +173,87 @@ def process_dataset(store: DatasetStore, dataset_id: str,
     """
     from tenant import audit as audit_mod
 
-    ds = store.get_dataset(dataset_id)
-    if ds is None:
-        raise KeyError("dataset no encontrado")
-    company_id = store.company_id
-    base = ds.base_name
-
     def _audit(action: str, result: str = "ok", metadata: dict | None = None):
-        if tenant_store is not None:
+        # La auditoría es observabilidad secundaria: un fallo suyo nunca
+        # debe interrumpir el procesamiento ni dejar el dataset atascado.
+        # Decisión M1: el pipeline continúa; el fallo queda en el log de
+        # diagnóstico para el operador. Un sistema de monitoreo no debe
+        # tumbar al sistema que monitorea.
+        if tenant_store is None:
+            return
+        try:
             audit_mod.log_event(
-                tenant_store, company_id=company_id, user_id=user_id,
+                tenant_store, company_id=store.company_id, user_id=user_id,
                 action=action, resource=f"dataset:{dataset_id}",
                 result=result, metadata=metadata or {},
             )
+        except Exception as exc:
+            _diag("audit_failed", exc, action=action,
+                  dataset_id=dataset_id, company_id=store.company_id)
 
     def _mark(status: str, **kw):
         ds2 = store.get_dataset(dataset_id)
+        if ds2 is None:
+            raise KeyError("dataset no encontrado")
         ds2.status = status
         for k, v in kw.items():
             setattr(ds2, k, v)
         store.save_dataset(ds2)
         return ds2
 
-    ds = _mark("PROCESSING", processing={
-        "started_at": utcnow_iso(), "finished_at": None,
-        "error": None, "steps": [],
-    })
+    def _fail_before_processing(exc: Exception):
+        """Fallo en la fase previa a PROCESSING: nunca en silencio.
+
+        M1: si el hilo muere antes de registrar PROCESSING (dataset
+        inexistente, error al leer o al persistir el estado inicial),
+        se intenta dejar un estado ERROR coherente y consultable por
+        el usuario, con mensaje empresarial (sin trazas internas). Si
+        ni siquiera eso es posible, al menos queda la auditoría.
+        Nunca propaga excepciones: el hilo no debe morir sin registro.
+        El estado ERROR permite reintentar (el endpoint acepta
+        reprocesar desde ERROR con el mapeo confirmado).
+        """
+        _audit("DATASET_PROCESSING_FAILED", result="error",
+               metadata={"error": type(exc).__name__, "phase": "init"})
+        try:
+            ds_err = store.get_dataset(dataset_id)
+            if ds_err is None:
+                return None
+            ds_err.status = "ERROR"
+            ds_err.processing = {
+                "started_at": utcnow_iso(), "finished_at": utcnow_iso(),
+                "error": ("No pudimos iniciar el procesamiento de estos "
+                          "datos. Vuelve a intentarlo; si el problema "
+                          "continúa, vuelve a cargar el archivo."),
+                "steps": [],
+            }
+            store.save_dataset(ds_err)
+            return store.get_dataset(dataset_id)
+        except Exception as exc2:
+            # Ni la persistencia del ERROR fue posible: queda el rastro
+            # en auditoría (si funcionó) y en el log de diagnóstico.
+            _diag("persist_failed", exc2, dataset_id=dataset_id,
+                  company_id=store.company_id, phase="init")
+            return None
+
+    try:
+        company_id = store.company_id
+        ds = store.get_dataset(dataset_id)
+        if ds is None:
+            raise KeyError("dataset no encontrado")
+        base = ds.base_name
+    except Exception as exc:
+        return _fail_before_processing(exc)
+
+    try:
+        ds = _mark("PROCESSING", processing={
+            "started_at": utcnow_iso(), "finished_at": None,
+            "error": None, "steps": [],
+        })
+    except Exception as exc:
+        return _fail_before_processing(exc)
+    # Protegida por _audit defensiva: si la auditoría falla, el pipeline
+    # continúa (ver decisión M1 en _audit) y el dataset no queda atascado.
     _audit("DATASET_PROCESSING_STARTED",
            metadata={"filename": (ds.upload or {}).get("filename", "")})
     steps = []
