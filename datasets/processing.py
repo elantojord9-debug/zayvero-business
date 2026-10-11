@@ -270,6 +270,10 @@ def process_dataset(store: DatasetStore, dataset_id: str,
             if ds_err is None:
                 return None
             ds_err.status = "ERROR"
+            # QA-006: invariante activo ⟹ READY. Un dataset en ERROR no
+            # puede continuar activo como análisis de la empresa, ni
+            # siquiera si antes lo estaba y se reprocesa por vía directa.
+            ds_err.is_active = False
             ds_err.processing = {
                 "started_at": utcnow_iso(), "finished_at": utcnow_iso(),
                 "error": ("No pudimos iniciar el procesamiento de estos "
@@ -296,7 +300,11 @@ def process_dataset(store: DatasetStore, dataset_id: str,
         return _fail_before_processing(exc)
 
     try:
-        ds = _mark("PROCESSING", processing={
+        # QA-006 (ajuste final): al iniciar el procesamiento el dataset
+        # deja de ser el análisis activo (invariante activo ⟹ READY).
+        # Si el reproceso falla después, el registro nunca queda
+        # PROCESSING/ERROR conservando is_active=True.
+        ds = _mark("PROCESSING", is_active=False, processing={
             "started_at": utcnow_iso(), "finished_at": None,
             "error": None, "steps": [],
         })
@@ -470,6 +478,11 @@ def process_dataset(store: DatasetStore, dataset_id: str,
     except Exception as exc:  # noqa: BLE001 — error empresarial, no stack trace
         ds = store.get_dataset(dataset_id)
         ds.status = "ERROR"
+        # QA-006: invariante activo ⟹ READY. Si el dataset estaba activo
+        # (p. ej. reproceso directo de un READY) y el procesamiento falla,
+        # no puede seguir marcado como el análisis vigente de la empresa.
+        # El guardado es único: estado y activación persisten juntos.
+        ds.is_active = False
         ds.processing = {
             "started_at": (ds.processing or {}).get("started_at"),
             "finished_at": utcnow_iso(),
