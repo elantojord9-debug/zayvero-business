@@ -149,9 +149,12 @@ class WebappTest(unittest.TestCase):
         self.assertEqual(code, 401)
 
     def test_04_login_usuario_deshabilitado(self):
+        # SEG-06: respuesta EXTERNA homogénea (401 genérico). Un usuario
+        # deshabilitado no debe distinguirse de credenciales incorrectas.
         code, data = self.c.login("disabled@demo.test", PASS)
-        self.assertEqual(code, 403)
-        self.assertIn("deshabilitado", data.get("error", ""))
+        self.assertEqual(code, 401)
+        self.assertIn("credenciales", data.get("error", ""))
+        self.assertNotIn("deshabilitado", data.get("error", ""))
 
     def test_05_logout(self):
         self.login_as("owner@demo.test")

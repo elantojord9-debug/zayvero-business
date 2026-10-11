@@ -22,6 +22,7 @@ from . import audit as audit_mod
 from .auth import AuthError, get_tenant_context, login, logout
 from .store import TenantStore
 from . import security as sec_mod
+from . import rate_limit as rate_limit_mod
 
 STATIC_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
 COOKIE_NAME = "zayvero_session"
@@ -142,10 +143,33 @@ class TenantHandler(BaseHTTPRequestHandler):
 
         if path == "/api/login":
             body = _read_json_body(self)
+            email = str(body.get("email", "") or "").strip().lower()
+            # SEG-04: igual que la app principal (ver webapp/server.py).
+            # Reserva atómica con token + liquidación try/finally.
+            limiter = rate_limit_mod.get_limiter()
+            origin_ip = rate_limit_mod.client_origin_ip(self)
+            allowed, retry_after, reservation = limiter.try_acquire(
+                ip=origin_ip, account=email)
+            if not allowed:
+                self.send_response(429)
+                self.send_header("Retry-After", str(int(retry_after) + 1))
+                self.send_header("Content-Type",
+                                 "application/json; charset=utf-8")
+                for k, v in sec_mod.security_headers(
+                        hsts=sec_mod.hsts_enabled()).items():
+                    self.send_header(k, v)
+                self.end_headers()
+                self.wfile.write(b'{"error": "demasiados intentos"}')
+                return
             try:
-                token, ctx = login(store, body.get("email", ""), body.get("password", ""))
+                token, ctx = login(store, email, str(body.get("password", "")))
             except AuthError:
+                limiter.settle(reservation, success=False)
                 return _send_json(self, 401, {"error": "credenciales inválidas"})
+            except Exception:
+                limiter.settle(reservation, success=False)
+                raise
+            limiter.settle(reservation, success=True)
             return _send_json(self, 200, {"ok": True,
                                           "role": ctx.role,
                                           "company_name": ctx.company_name},

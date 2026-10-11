@@ -40,7 +40,7 @@ from diagnostic.models import REQUIRED_TOP_LEVEL, SECTIONS
 from tenant import TenantStore, create_company, create_user
 import webapp.server as server_mod
 
-PASS = "DiagTest123"
+PASS = "DiagTest1234!"
 CTX5A = "data/business_context/demo-retail/online_retail_II_business_context.json"
 INT4B = ("data/prediction_intelligence/demo-retail/"
          "online_retail_II_prediction_intelligence.json")

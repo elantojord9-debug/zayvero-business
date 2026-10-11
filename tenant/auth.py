@@ -18,12 +18,43 @@ from .store import TenantStore, utcnow_iso, DEMO_COMPANY_ID
 from .crypto import hash_password, verify_password
 from . import roles as roles_mod
 from .security import new_csrf_token
+from . import password_policy as pwd_policy_mod
 
 SESSION_TTL_HOURS = 8
 
 
 class AuthError(Exception):
     """Error de autenticación. Mensajes genéricos: no revelan si el email existe."""
+
+
+# SEG-06: hash ficticio para verificación "dummy". Cuando el email no
+# existe, se verifica la contraseña contra este hash con el MISMO esquema
+# PBKDF2, para no revelar por tiempo si la cuenta existe. Reduce la
+# diferencia, no la elimina por completo (ver docstring de login).
+_dummy_hash: str | None = None
+
+
+def _dummy_hash_value() -> str:
+    global _dummy_hash
+    if _dummy_hash is None:
+        _dummy_hash = hash_password(secrets.token_urlsafe(16))
+    return _dummy_hash
+
+
+def _login_failed(store: TenantStore, company_id: str, user_id: str,
+                  email_norm: str, reason: str) -> None:
+    """Registra el fallo con el motivo INTERNO y lanza error genérico.
+
+    `reason` ("unknown_user" | "bad_password" | "disabled" |
+    "company_inactive") queda solo en la auditoría del servidor: nunca
+    se expone al navegador. El mensaje externo es siempre el mismo.
+    """
+    audit_mod.log_event(
+        store, company_id=company_id, user_id=user_id,
+        action=audit_mod.LOGIN_FAILED, result="failed",
+        metadata={"email": email_norm, "reason": reason},
+    )
+    raise AuthError("credenciales inválidas")
 
 
 def _now() -> datetime:
@@ -40,8 +71,11 @@ def create_user(store: TenantStore, *, company_id: str, email: str, name: str,
         raise AuthError("email inválido")
     if not name or len(name) > 120:
         raise AuthError("nombre inválido")
-    if not password or len(password) < 8:
-        raise AuthError("la contraseña debe tener al menos 8 caracteres")
+    # SEG-05: política centralizada para NUEVAS contraseñas (mínimo 12).
+    # Las heredadas (8-11) no pasan por aquí: se siguen verificando.
+    pwd_errors = pwd_policy_mod.validate_new_password(password)
+    if pwd_errors:
+        raise AuthError(pwd_errors[0])
     if not roles_mod.is_valid_role(role_id):
         raise AuthError("rol inválido")
     company = store.get_company(company_id)
@@ -107,27 +141,31 @@ def update_user(store: TenantStore, user_id: str, *, name=None, role_id=None,
 def login(store: TenantStore, email: str, password: str) -> tuple[str, TenantContext]:
     """Autentica y crea una sesión. Devuelve (token, TenantContext).
 
-    Mensaje de error genérico para no revelar si el email existe.
+    SEG-06: el comportamiento EXTERNO es homogéneo para email
+    inexistente, contraseña incorrecta y usuario deshabilitado: siempre
+    AuthError("credenciales inválidas"). El motivo queda solo en la
+    auditoría interna. Para no revelar por tiempo si el email existe,
+    un email desconocido se "verifica" contra un hash ficticio con el
+    mismo esquema PBKDF2 (reduce la diferencia de tiempos; no se
+    afirma inmunidad estadística).
     """
-    user = store.get_user_by_email(email or "")
-    company_id = user.company_id if user else ""
-    if (user is None or user.status != "active"
-            or not verify_password(password or "", user.password_hash)):
-        audit_mod.log_event(
-            store, company_id=company_id, user_id=user.user_id if user else "",
-            action=audit_mod.LOGIN_FAILED, result="failed",
-            metadata={"email": (email or "").strip().lower()},
-        )
-        raise AuthError("credenciales inválidas")
+    email_norm = (email or "").strip().lower()
+    user = store.get_user_by_email(email_norm)
+    if user is None:
+        verify_password(password or "", _dummy_hash_value())
+        _login_failed(store, "", "", email_norm, "unknown_user")
+    # Se verifica el hash ANTES de mirar el estado: "deshabilitado" y
+    # "clave incorrecta" consumen el mismo trabajo.
+    password_ok = verify_password(password or "", user.password_hash)
+    if user.status != "active" or not password_ok:
+        reason = "disabled" if user.status != "active" else "bad_password"
+        _login_failed(store, user.company_id, user.user_id, email_norm,
+                      reason)
 
     company = store.get_company(user.company_id)
     if company is None or company.status != "active":
-        audit_mod.log_event(
-            store, company_id=user.company_id, user_id=user.user_id,
-            action=audit_mod.LOGIN_FAILED, result="failed",
-            metadata={"email": user.email, "reason": "company_inactive"},
-        )
-        raise AuthError("credenciales inválidas")
+        _login_failed(store, user.company_id, user.user_id, email_norm,
+                      "company_inactive")
 
     token = secrets.token_urlsafe(32)
     now = _now()

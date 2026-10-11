@@ -27,6 +27,7 @@ import sys
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 from tenant.crypto import hash_password, verify_password  # noqa: E402
+from tenant import password_policy as pwd_policy_mod  # noqa: E402
 
 
 def main() -> int:
@@ -53,8 +54,10 @@ def main() -> int:
     if not pw1 or pw1 != pw2:
         print("ERROR: las contraseñas no coinciden o están vacías.")
         return 1
-    if len(pw1) < 12:
-        print("ERROR: mínimo 12 caracteres.")
+    # SEG-05: política centralizada (mínimo 12, máximo 128).
+    pwd_errors = pwd_policy_mod.validate_new_password(pw1)
+    if pwd_errors:
+        print(f"ERROR: {pwd_errors[0]}")
         return 1
 
     new_hash = hash_password(pw1)

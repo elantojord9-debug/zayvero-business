@@ -33,7 +33,7 @@ from http.server import ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-PASS = "SegHttp123!"
+PASS = "SegHttp123!45"
 
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 STAGE_DIRS = ["datasets", "uploads", "processed", "profiles", "anomalies",

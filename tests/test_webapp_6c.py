@@ -489,13 +489,16 @@ class TestDemoTenantSecurity(Webapp6CTest):
             self.assertNotIn(secret_word, blob.lower())
 
     def test_login_disabled_user(self):
+        # SEG-06: respuesta EXTERNA homogénea (401 genérico). Un usuario
+        # deshabilitado no debe distinguirse de credenciales incorrectas.
         from tenant import update_user
         update_user(self.store, self.owner.user_id, status="disabled")
         try:
             c = Client(self.port)
-            status, _ = c.post("/api/login",
+            status, data = c.post("/api/login",
                                {"email": "owner6c@demo.test", "password": PASS})
-            self.assertEqual(status, 403)
+            self.assertEqual(status, 401)
+            self.assertNotIn("deshabilitado", (data or {}).get("error", ""))
         finally:
             update_user(self.store, self.owner.user_id, status="active")
 

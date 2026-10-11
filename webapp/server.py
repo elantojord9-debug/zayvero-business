@@ -59,6 +59,7 @@ from tenant import (
 )
 from tenant import audit as audit_mod
 from tenant import security as sec_mod
+from tenant import rate_limit as rate_limit_mod
 
 from intl import config as intl_config_mod
 
@@ -248,7 +249,8 @@ def _parse_cookies(handler: BaseHTTPRequestHandler) -> dict:
 
 
 def _send_json(handler: BaseHTTPRequestHandler, status: int, payload: dict,
-               set_cookie: str | None = None, clear_cookie: bool = False):
+               set_cookie: str | None = None, clear_cookie: bool = False,
+               extra_headers: dict | None = None):
     body = json.dumps(payload, ensure_ascii=False, default=str).encode("utf-8")
     # SEG-01/02: decisiones INDEPENDIENTES y explícitas del operador.
     #  - cookie Secure: ZAYVERO_COOKIE_SECURE=1
@@ -260,6 +262,8 @@ def _send_json(handler: BaseHTTPRequestHandler, status: int, payload: dict,
     handler.send_header("Content-Type", "application/json; charset=utf-8")
     handler.send_header("Content-Length", str(len(body)))
     for k, v in sec_mod.security_headers(hsts=hsts).items():
+        handler.send_header(k, v)
+    for k, v in (extra_headers or {}).items():
         handler.send_header(k, v)
     if set_cookie:
         handler.send_header(
@@ -620,16 +624,41 @@ class WebappHandler(BaseHTTPRequestHandler):
                                   {"error": "solicitud rechazada"})
             body = _read_json_body(self, max_bytes=4096)
             email = str(body.get("email", "") or "").strip().lower()
+            # SEG-04: rate limiting ANTES de buscar al usuario: un 429 no
+            # revela si la cuenta existe (coord. SEG-06). La cubeta por
+            # cuenta usa el email normalizado, igual que el login.
+            # try_acquire() reserva atómicamente con token: los intentos
+            # concurrentes cuentan (sin race TOCTOU). El candado solo
+            # cubre contadores; PBKDF2 corre fuera de él.
+            limiter = rate_limit_mod.get_limiter()
+            origin_ip = rate_limit_mod.client_origin_ip(self)
+            allowed, retry_after, reservation = limiter.try_acquire(
+                ip=origin_ip, account=email)
+            if not allowed:
+                return _send_json(
+                    self, 429,
+                    {"error": "demasiados intentos. Inténtalo de nuevo "
+                              "más tarde."},
+                    extra_headers={"Retry-After": str(int(retry_after) + 1)})
             try:
                 token, ctx = login(store, email, str(body.get("password", "")))
             except AuthError:
-                # Distinguir usuario deshabilitado (búsqueda solo en servidor,
-                # nunca expone si el email existe cuando la contraseña falla).
-                existing = store.get_user_by_email(email)
-                if existing is not None and existing.status != "active":
-                    return _send_json(self, 403,
-                                      {"error": "usuario deshabilitado"})
-                return _send_json(self, 401, {"error": "credenciales incorrectas"})
+                # SEG-04: el fallo liquida la reserva como fallo.
+                # SEG-06: respuesta EXTERNA homogénea (401 genérico) para
+                # email inexistente, clave incorrecta y usuario
+                # deshabilitado. El motivo queda en la auditoría interna.
+                limiter.settle(reservation, success=False)
+                return _send_json(self, 401,
+                                  {"error": "credenciales incorrectas"})
+            except Exception:
+                # Cualquier excepción también liquida como fallo
+                # (fail-closed): un error no permite evadir el límite.
+                limiter.settle(reservation, success=False)
+                raise
+            # SEG-04: el éxito liquida la reserva y perdona la cubeta de
+            # la cuenta (el usuario legítimo que recordó su clave no
+            # queda bloqueado).
+            limiter.settle(reservation, success=True)
             return _send_json(self, 200, {"ok": True, "role": ctx.role,
                                           "company_name": ctx.company_name,
                                           # SEG-03: token CSRF de la sesión.
