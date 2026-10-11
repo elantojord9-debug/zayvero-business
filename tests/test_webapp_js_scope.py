@@ -89,7 +89,11 @@ def _resolves(name, pos, spans, parent):
 
 
 def unresolved_calls(src, func_name):
-    """Nombres invocados en `func_name` sin definición visible."""
+    """Nombres invocados en `func_name` sin definición visible.
+
+    Nota: no elimina comentarios; evita escribir `identificador (`
+    en comentarios dentro de las funciones analizadas.
+    """
     spans = _function_spans(src)
     parent = _scope_tree(spans)
     target = [d for d in spans if d[0] == func_name]

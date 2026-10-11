@@ -505,14 +505,40 @@
       return "";
     }
 
+    /* Texto legible para el campo business_period, que llega como objeto
+       {start, end}. Nunca muestra "[object Object]": sin fechas válidas
+       devuelve "" y el segmento se omite, igual que cuando el período
+       está ausente. */
+    function periodText(bp) {
+      if (!bp || typeof bp !== "object") return "";
+      function part(v) {
+        var m = String(v == null ? "" : v).slice(0, 10)
+          .match(/^(\d{4})-(\d{2})-(\d{2})$/);
+        if (!m) return "";
+        /* Validación real de calendario, incluyendo bisiestos: rechaza
+           fechas imposibles como 2026-02-30 o 2025-02-29. */
+        var y = +m[1], mo = +m[2], d = +m[3];
+        if (mo < 1 || mo > 12 || d < 1) return "";
+        var leap = (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+        var dim = [31, leap ? 29 : 28, 31, 30, 31, 30,
+                   31, 31, 30, 31, 30, 31][mo - 1];
+        if (d > dim) return "";
+        return fmtDate(m[0]);
+      }
+      var a = part(bp.start), b = part(bp.end);
+      if (a && b) return a + " → " + b;
+      return a || b;
+    }
+
     function card(cls, num, cap, helpKey) {
       return "<div class='card " + cls + "'><div class='cap'>" + esc(cap) + "</div>" +
         "<div class='num'>" + esc(dash(num)) + "</div>" + helpHTML(helpKey) + "</div>";
     }
 
+    var periodTxt = periodText(s.business_period);
     var html = "<h1 class='page-title'>Centro de Inteligencia</h1>" +
       "<p class='page-sub'>Estado de tu empresa según la evidencia disponible. " +
-      (s.business_period ? "Período analizado: " + esc(s.business_period) + ". " : "") +
+      (periodTxt ? "Período analizado: " + esc(periodTxt) + ". " : "") +
       "Fuente: " + esc(dash(s.dataset_label)) + ".</p>";
 
     /* ---- ESTADO GENERAL ---- */
