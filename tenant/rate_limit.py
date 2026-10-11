@@ -147,6 +147,79 @@ def _valid_single_ip(value: str) -> str | None:
         return None
 
 
+def _seg07_diag_enabled() -> bool:
+    """Opt-in temporal del diagnóstico SEG-07B. Desactivado por defecto.
+
+    Independiente de ZAYVERO_BEHIND_CLOUDFLARE: solo observa, nunca
+    decide. Se lee por petición para poder desactivarlo con un simple
+    cambio de variable (Render reinicia el servicio al cambiarlas).
+    """
+    return (os.environ.get("ZAYVERO_SEG07_DIAG", "") or "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def seg07_diag_state(handler) -> dict:
+    """Estado del diagnóstico SEG-07B: SOLO booleanos, nunca valores.
+
+    No registra direcciones IP (ni completas ni parciales), valores
+    de cabeceras, emails, ni ningún dato sensible: solo si la
+    cabecera CF-Connecting-IP está presente, si hay exactamente una
+    ocurrencia, si esa única ocurrencia es una IP válida, y si el
+    peer pertenece a RFC 1918.
+    """
+    try:
+        occurrences = handler.headers.get_all("CF-Connecting-IP") or []
+    except Exception:
+        occurrences = []
+    n = len(occurrences)
+    valid = n == 1 and _valid_single_ip(occurrences[0]) is not None
+    try:
+        peer = (handler.client_address[0] or "").strip()
+    except Exception:
+        peer = ""
+    return {
+        "cf_header_present": n >= 1,
+        "cf_header_unique": n == 1,
+        "cf_header_valid": valid,
+        "peer_rfc1918": _is_private_ip(peer),
+    }
+
+
+# Emisión única por proceso del diagnóstico SEG-07B.
+_diag_lock = threading.Lock()
+_diag_emitted = False
+
+
+def _seg07_diag_reset() -> None:
+    """Solo tests: re-arma la emisión única por proceso."""
+    global _diag_emitted
+    with _diag_lock:
+        _diag_emitted = False
+
+
+def seg07_emit_diag_once(handler) -> None:
+    """Emite el diagnóstico UNA sola vez por proceso (thread-safe).
+
+    La comprobación y el marcado de emisión son atómicos bajo candado:
+    ni N hilos concurrentes generan más de una línea. Sin opt-in no
+    emite nada. Solo booleanos + identificador SEG07_DIAG; nunca IPs,
+    emails ni datos sensibles. Render captura stdout en sus logs.
+    """
+    if not _seg07_diag_enabled():
+        return
+    global _diag_emitted
+    with _diag_lock:
+        if _diag_emitted:
+            return
+        _diag_emitted = True
+    st = seg07_diag_state(handler)
+    line = "SEG07_DIAG " + " ".join(f"{k}={int(v)}" for k, v in st.items())
+    try:
+        print(line, flush=True)
+    except Exception:
+        pass
+
+
 class LoginRateLimiter:
     """Ventanas deslizantes por cuenta y por IP, en memoria del proceso."""
 
