@@ -40,6 +40,16 @@
   function fmtDate(s) { return ZBI18N.fmtDate(s); }
   /* FASE 7C — texto de interfaz según el idioma de la empresa (es/en). */
   function T(key) { return ZBI18N.t(key); }
+  /* QA-003 — etiqueta visible para un identificador interno del motor
+   * analítico. El identificador nunca se altera (filtros y API intactos). */
+  function enumLabel(code) { return ZBI18N.labelEnum(code); }
+  /* QA-002 — estado de la empresa en el idioma de la interfaz. */
+  function companyStatusLabel(s) {
+    if (s === null || s === undefined || s === "") return "—";
+    var key = "company.status." + s;
+    var v = ZBI18N.t(key);
+    return (v === key) ? String(s) : v;
+  }
   function fmtPct(v) {
     if (v === null || v === undefined || v === "") return "—";
     var n = Number(v);
@@ -63,6 +73,25 @@
     return "No se pudo completar la operación. Inténtalo de nuevo.";
   }
 
+  /* QA-001 (obs. revisión): mensaje del formulario de login según el
+   * motivo real del fallo, sin enumerar usuarios.
+   * - 401 de /api/login → credenciales incorrectas (el backend responde
+   *   401 homogéneo: email inexistente, clave mala y deshabilitado son
+   *   indistinguibles por diseño SEG-06).
+   * - 429 → límite de intentos, sin revelar información de cuentas.
+   * - 500 / red / otros → fallo temporal, sin afirmar que la clave es
+   *   incorrecta.
+   * Función pura (sin DOM) para poder probarla por comportamiento. */
+  function loginErrorMessage(err) {
+    if (err && err.message === "auth") {
+      return "Credenciales incorrectas. Revisa tu correo y contraseña.";
+    }
+    if (err && err.status === 429) {
+      return "Demasiados intentos. Inténtalo de nuevo más tarde.";
+    }
+    return friendlyError(err);
+  }
+
   async function api(path, opts) {
     opts = opts || {};
     var fetchOpts = Object.assign({ credentials: "same-origin" }, opts);
@@ -84,7 +113,7 @@
     if (res.status === 403) throw new Error("permiso");
     if (res.status === 404) throw new Error("no-encontrado");
     if (res.status >= 500) throw new Error("servidor");
-    if (!res.ok) { var err = new Error("error"); err.payload = data; throw err; }
+    if (!res.ok) { var err = new Error("error"); err.payload = data; err.status = res.status; throw err; }
     return data;
   }
 
@@ -123,7 +152,11 @@
   function showLogin(msg) {
     appView.classList.add("hidden");
     loginView.classList.remove("hidden");
+    /* QA-001: sin mensaje no hay error que mostrar (primer render o
+     * cierre de sesión). Los errores reales (401 en sesión activa,
+     * credenciales incorrectas) siguen pasando su mensaje. */
     if (msg) { loginError.textContent = msg; loginError.classList.remove("hidden"); }
+    else { loginError.textContent = ""; loginError.classList.add("hidden"); }
   }
   function showApp() {
     loginView.classList.add("hidden");
@@ -149,12 +182,11 @@
       document.getElementById("login-password").value = "";
       await boot();
     } catch (err) {
-      if (err.message !== "auth") {
-        loginError.textContent = err.message === "usuario deshabilitado"
-          ? "Este usuario está deshabilitado. Contacta a un administrador."
-          : "Credenciales incorrectas. Revisa tu correo y contraseña.";
-        loginError.classList.remove("hidden");
-      }
+      /* QA-001 (obs. revisión): distinguir el motivo real sin enumerar
+       * usuarios. La "sesión expirada" solo aplica al 401 durante una
+       * sesión activa, que ya muestra api(). */
+      loginError.textContent = loginErrorMessage(err);
+      loginError.classList.remove("hidden");
     } finally { btn.disabled = false; }
   });
 
@@ -578,7 +610,7 @@
     /* ---- ESTADO GENERAL ---- */
     html += "<section class='section' aria-labelledby='h-estado'><h2 id='h-estado'>Estado de mi empresa</h2>" +
       "<div class='attention-banner attention-" + esc(att) + "' role='status'>" +
-      "Nivel de atención actual: <strong>" + esc(att) + "</strong></div>" +
+      "Nivel de atención actual: <strong>" + esc(enumLabel(att)) + "</strong></div>" +
       "<div class='cards'>" +
       card("urgent", c.urgent_findings, "Hallazgos urgentes", "urgent") +
       card("important", c.important_findings, "Hallazgos importantes", "important") +
@@ -704,8 +736,8 @@
     return "<article class='finding-item' data-fid='" + esc(f.finding_id) + "' tabindex='0' role='button' " +
       "aria-label='Ver análisis: " + esc(f.title) + "'>" +
       "<h3>" + esc(f.title) + "</h3>" +
-      "<div class='meta'><span class='prio prio-" + esc(f.business_priority) + "'>" + esc(f.business_priority) + "</span>" +
-      "<span class='tag'>" + esc(f.finding_type) + "</span>" +
+      "<div class='meta'><span class='prio prio-" + esc(f.business_priority) + "'>" + esc(enumLabel(f.business_priority)) + "</span>" +
+      "<span class='tag'>" + esc(enumLabel(f.finding_type)) + "</span>" +
       "<span>Impacto: <strong>" + esc(dash(f.impact_score)) + "</strong></span>" +
       "<span>Confianza: <strong>" + esc(dash(f.confidence_score)) + "</strong></span></div>" +
       "<button class='btn btn-small' data-fid='" + esc(f.finding_id) + "'>Ver análisis</button></article>";
@@ -731,13 +763,13 @@
       "<div class='meta'><span class='tag'>Valor estimado: <strong>" + esc(fmtMoney(i.predicted_value)) + "</strong></span>" +
       "<span class='tag'>Intervalo: " + esc(fmtMoney(i.lower_bound)) + " – " + esc(fmtMoney(i.upper_bound)) + "</span>" +
       "<span class='tag'>Confianza: " + esc(dash(i.confidence_score)) + "</span>" +
-      "<span class='tag'>Calidad: " + esc(dash(i.forecast_quality)) + "</span>" +
-      "<span class='tag'>" + esc(T("prediction.historical_trend")) + ": " + esc(dash(i.trend)) + "</span>" +
-      (i.forecast_direction ? "<span class='tag'>" + esc(T("prediction.forecast_direction")) + ": " + esc(dash(i.forecast_direction)) + "</span>" : "") +
-      "<span class='tag'>Riesgo de caída: " + esc(dash(i.decline_risk)) + "</span>" +
-      "<span class='tag'>Método: " + esc(dash(i.method)) + "</span>" +
+      "<span class='tag'>Calidad: " + esc(enumLabel(i.forecast_quality)) + "</span>" +
+      "<span class='tag'>" + esc(T("prediction.historical_trend")) + ": " + esc(enumLabel(i.trend)) + "</span>" +
+      (i.forecast_direction ? "<span class='tag'>" + esc(T("prediction.forecast_direction")) + ": " + esc(enumLabel(i.forecast_direction)) + "</span>" : "") +
+      "<span class='tag'>Riesgo de caída: " + esc(enumLabel(i.decline_risk)) + "</span>" +
+      "<span class='tag'>Método: " + esc(enumLabel(i.method)) + "</span>" +
       "<span class='tag tag-status'>" + esc(statusLabel) + "</span></div>" +
-      (i.business_interpretation ? "<p class='muted'>" + esc(i.business_interpretation).slice(0, 300) + "</p>" : "") + "</article>";
+      (i.business_interpretation ? "<p class='muted'>" + esc(i.business_interpretation) + "</p>" : "") + "</article>";
   }
 
   function bindCardClicks(root) {
@@ -810,7 +842,7 @@
     }
     html += "<section class='section' aria-labelledby='h-estado'><h2 id='h-estado'>Estado de la empresa</h2>" +
       "<div class='attention-banner attention-" + esc(st.attention_level || "LOW") + "' role='status'>" +
-      "Nivel de atención actual: <strong>" + esc(dash(st.attention_level)) + "</strong></div>" +
+      "Nivel de atención actual: <strong>" + esc(enumLabel(st.attention_level)) + "</strong></div>" +
       "<div class='cards'>" +
       card("urgent", st.urgent_findings, "Hallazgos urgentes", "urgent") +
       card("important", st.important_findings, "Hallazgos importantes", "important") +
@@ -839,8 +871,8 @@
       html += emptyHTML("Sin riesgos identificados con los datos actuales.");
     } else {
       risks.forEach(function (r) {
-        html += "<article class='finding-item'><h3>" + esc(dash(r.risk_type).replace(/_/g, " ")) + " — " + esc(dash(r.severity)) + "</h3>" +
-          "<div class='meta'><span class='prio prio-" + esc(r.severity === "HIGH" ? "URGENT" : (r.severity === "MEDIUM" ? "IMPORTANT" : "REVIEW")) + "'>" + esc(dash(r.severity)) + "</span>" +
+        html += "<article class='finding-item'><h3>" + esc(enumLabel(r.risk_type)) + " — " + esc(enumLabel(r.severity)) + "</h3>" +
+          "<div class='meta'><span class='prio prio-" + esc(r.severity === "HIGH" ? "URGENT" : (r.severity === "MEDIUM" ? "IMPORTANT" : "REVIEW")) + "'>" + esc(enumLabel(r.severity)) + "</span>" +
           (r.evidence_id ? "<span class='ev-id'>" + esc(r.evidence_id) + "</span>" : "") + "</div>" +
           "<p>" + esc(dash(r.explanation)) + "</p>" +
           (r.recommendation ? "<p><strong>Qué revisar:</strong> " + esc(r.recommendation) + "</p>" : "") + "</article>";
@@ -976,12 +1008,12 @@
       "<label class='sr-only' for='f-priority'>Prioridad</label>" +
       "<select id='f-priority'>" + ["all", "URGENT", "IMPORTANT", "REVIEW", "MONITOR"].map(function (p) {
         return "<option value='" + p + "'" + (fl.priority === p ? " selected" : "") + ">" +
-          (p === "all" ? "Todas las prioridades" : p) + "</option>";
+          (p === "all" ? "Todas las prioridades" : esc(enumLabel(p))) + "</option>";
       }).join("") + "</select>" +
       "<label class='sr-only' for='f-type'>Tipo</label>" +
       "<select id='f-type'>" + TYPE_OPTIONS.map(function (t) {
         return "<option value='" + t + "'" + (fl.type === t ? " selected" : "") + ">" +
-          (t === "all" ? "Todos los tipos" : t) + "</option>";
+          (t === "all" ? "Todos los tipos" : esc(enumLabel(t))) + "</option>";
       }).join("") + "</select>" +
       "<label class='sr-only' for='f-period'>Período</label>" +
       "<select id='f-period'>" + PERIOD_OPTIONS.map(function (o) {
@@ -992,8 +1024,8 @@
       "<button class='btn' id='f-go'>Filtrar</button></div>";
 
     html += "<p class='muted'>" + fmtNum(f.total, 0) + " hallazgos" +
-      (f.by_priority ? " · URGENT " + (f.by_priority.URGENT || 0) + " · IMPORTANT " + (f.by_priority.IMPORTANT || 0) +
-        " · REVIEW " + (f.by_priority.REVIEW || 0) + " · MONITOR " + (f.by_priority.MONITOR || 0) : "") + "</p>";
+      (f.by_priority ? " · " + esc(enumLabel("URGENT")) + " " + (f.by_priority.URGENT || 0) + " · " + esc(enumLabel("IMPORTANT")) + " " + (f.by_priority.IMPORTANT || 0) +
+        " · " + esc(enumLabel("REVIEW")) + " " + (f.by_priority.REVIEW || 0) + " · " + esc(enumLabel("MONITOR")) + " " + (f.by_priority.MONITOR || 0) : "") + "</p>";
 
     if (!(f.items || []).length) {
       html += emptyHTML("Sin hallazgos disponibles.");
@@ -1007,7 +1039,7 @@
         "<span>Impacto: <strong>" + esc(dash(v.impact_score)) + "</strong></span>" +
         "<span>Confianza: <strong>" + esc(dash(v.confidence_score)) + "</strong></span>" +
         "<span>Entidad: <strong>" + esc((v.entity || {}).label || "—") + "</strong></span></div>" +
-        "<p class='muted'>" + esc(dash(v.business_explanation)).slice(0, 220) + "</p></article>";
+        "<p class='muted'>" + esc(dash(v.business_explanation)) + "</p></article>";
     });
 
     var pages = Math.max(1, Math.ceil(f.total / f.per_page));
@@ -1054,7 +1086,7 @@
     var ent = f.entity || {}, per = f.period || {};
     var html = "<a class='back-link' href='#/hallazgos'>← Volver a hallazgos</a>" +
       "<h1 class='page-title'>" + esc(f.title) + "</h1>" +
-      "<p class='page-sub'><span class='prio prio-" + esc(f.business_priority) + "'>" + esc(f.business_priority) + "</span> " +
+      "<p class='page-sub'><span class='prio prio-" + esc(f.business_priority) + "'>" + esc(enumLabel(f.business_priority)) + "</span> " +
       "<span class='tag'>" + esc(dash(f.type_label)) + "</span> " +
       "<span class='tag'>Entidad: " + esc(ent.label || "—") + "</span> " +
       "<span class='tag'>Período: " + esc(fmtDate(per.start)) + " → " + esc(fmtDate(per.end)) + "</span></p>";
@@ -1450,7 +1482,7 @@
     }
     html += "<section class='section' aria-labelledby='h-emp'><h2 id='h-emp'>" + esc(c.name || "Mi empresa") + "</h2>" +
       "<div class='kv'>" +
-      "<div><span>Estado</span><strong>" + esc(dash(c.status)) + "</strong></div>" +
+      "<div><span>Estado</span><strong>" + esc(companyStatusLabel(c.status)) + "</strong></div>" +
       "<div><span>Usuario</span><strong>" + esc(u.name || u.email || "—") + "</strong></div>" +
       "<div><span>Rol</span><strong>" + esc((u.role || "").toUpperCase()) + "</strong></div>" +
       "</div></section>";
@@ -1566,6 +1598,11 @@
       "<h1 class='page-title'>" + esc(d.nombre) + "</h1>" +
       stateMessageHTML(d.status, d.status_message || null);
     if (d.is_demo) html += "<div class='demo-banner'>DEMO · Datos de demostración</div>";
+    /* QA-005: advertencias propagadas del procesamiento/revisión. */
+    if ((d.warnings || []).length) {
+      html += "<div class='warn-box' role='status'><strong>Advertencias sobre estos datos:</strong><ul>" +
+        d.warnings.map(function (w) { return "<li>⚠ " + esc(w) + "</li>"; }).join("") + "</ul></div>";
+    }
 
     var up = d.upload || {};
     html += "<section class='section'><h2>Archivo</h2><div class='kv'>" +

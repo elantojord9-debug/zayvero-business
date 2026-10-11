@@ -162,7 +162,47 @@
       "plans.enterprise.f3": "Configuración regional por empresa",
       "plans.enterprise.f4": "Soporte prioritario",
       "plans.cta": "Elegir plan",
-      "plans.note": "Los planes se muestran solo como presentación. Por ahora no se procesan pagos."
+      "plans.note": "Los planes se muestran solo como presentación. Por ahora no se procesan pagos.",
+      /* QA-003 — etiquetas de presentación para identificadores internos.
+       * Los identificadores (LOW, REVIEW, moving_average, …) NO cambian:
+       * solo se traduce lo visible. Si un código no tiene entrada,
+       * labelEnum() devuelve el código original (fail-safe). */
+      "company.status.active": "Activo",
+      "company.status.disabled": "Deshabilitado",
+      "enum.LOW": "Bajo",
+      "enum.MEDIUM": "Medio",
+      "enum.HIGH": "Alto",
+      "enum.URGENT": "Urgente",
+      "enum.IMPORTANT": "Importante",
+      "enum.REVIEW": "Revisar",
+      "enum.MONITOR": "Monitorear",
+      "enum.INSUFFICIENT": "Datos insuficientes",
+      "enum.INSUFFICIENT_DATA": "Datos insuficientes",
+      "enum.UNSTABLE": "Inestable",
+      "enum.STABLE": "Estable",
+      "enum.UPWARD": "Al alza",
+      "enum.DOWNWARD": "A la baja",
+      "enum.UP": "Al alza",
+      "enum.DOWN": "A la baja",
+      "enum.FLAT": "Sin cambio material",
+      "enum.UNKNOWN": "Desconocido",
+      "enum.naive": "Método ingenuo",
+      "enum.moving_average": "Promedio móvil",
+      "enum.rolling_median": "Mediana móvil",
+      "enum.seasonal_naive": "Naive estacional",
+      "enum.SALES_ANOMALY": "Ventas",
+      "enum.PRODUCT_ANOMALY": "Producto",
+      "enum.CUSTOMER_ANOMALY": "Cliente",
+      "enum.PRICE_ANOMALY": "Precio",
+      "enum.QUANTITY_ANOMALY": "Cantidad",
+      "enum.TEMPORAL_ANOMALY": "Temporal",
+      "enum.REVENUE_RISK": "Riesgo de ingresos",
+      "enum.PRODUCT_RISK": "Riesgo de producto",
+      "enum.CUSTOMER_RISK": "Riesgo de cliente",
+      "enum.PRICE_RISK": "Riesgo de precio",
+      "enum.QUANTITY_RISK": "Riesgo de cantidad",
+      "enum.PREDICTION_RISK": "Riesgo de predicción",
+      "enum.DATA_QUALITY_RISK": "Riesgo de calidad de datos"
     },
     en: {
       "app.subtitle": "Your business intelligence",
@@ -311,7 +351,44 @@
       "plans.enterprise.f3": "Regional configuration per company",
       "plans.enterprise.f4": "Priority support",
       "plans.cta": "Choose plan",
-      "plans.note": "Plans are shown for presentation only. No payments are processed at this time."
+      "plans.note": "Plans are shown for presentation only. No payments are processed at this time.",
+      /* QA-003 — display labels for internal identifiers (see es catalog). */
+      "company.status.active": "Active",
+      "company.status.disabled": "Disabled",
+      "enum.LOW": "Low",
+      "enum.MEDIUM": "Medium",
+      "enum.HIGH": "High",
+      "enum.URGENT": "Urgent",
+      "enum.IMPORTANT": "Important",
+      "enum.REVIEW": "Review",
+      "enum.MONITOR": "Monitor",
+      "enum.INSUFFICIENT": "Insufficient data",
+      "enum.INSUFFICIENT_DATA": "Insufficient data",
+      "enum.UNSTABLE": "Unstable",
+      "enum.STABLE": "Stable",
+      "enum.UPWARD": "Upward",
+      "enum.DOWNWARD": "Downward",
+      "enum.UP": "Up",
+      "enum.DOWN": "Down",
+      "enum.FLAT": "No material change",
+      "enum.UNKNOWN": "Unknown",
+      "enum.naive": "Naive method",
+      "enum.moving_average": "Moving average",
+      "enum.rolling_median": "Rolling median",
+      "enum.seasonal_naive": "Seasonal naive",
+      "enum.SALES_ANOMALY": "Sales",
+      "enum.PRODUCT_ANOMALY": "Product",
+      "enum.CUSTOMER_ANOMALY": "Customer",
+      "enum.PRICE_ANOMALY": "Price",
+      "enum.QUANTITY_ANOMALY": "Quantity",
+      "enum.TEMPORAL_ANOMALY": "Temporal",
+      "enum.REVENUE_RISK": "Revenue risk",
+      "enum.PRODUCT_RISK": "Product risk",
+      "enum.CUSTOMER_RISK": "Customer risk",
+      "enum.PRICE_RISK": "Price risk",
+      "enum.QUANTITY_RISK": "Quantity risk",
+      "enum.PREDICTION_RISK": "Prediction risk",
+      "enum.DATA_QUALITY_RISK": "Data quality risk"
     }
   };
 
@@ -335,6 +412,19 @@
     if (cat[key] !== undefined) return cat[key];
     if (STRINGS.es[key] !== undefined) return STRINGS.es[key];
     return key;
+  }
+
+  /* QA-003 — etiqueta de presentación para un identificador interno
+   * (prioridades, niveles, tendencias, riesgos, métodos, …).
+   * El identificador nunca se altera: si no hay traducción, se devuelve
+   * el código original (fail-safe ante enums nuevos del backend). */
+  function labelEnum(code) {
+    if (code === null || code === undefined || code === "") return "—";
+    var key = "enum." + code;
+    var cat = STRINGS[lang] || STRINGS.es;
+    if (cat[key] !== undefined) return cat[key];
+    if (STRINGS.es[key] !== undefined) return STRINGS.es[key];
+    return String(code);
   }
 
   function numFmt() { return cfg.number_format === "en" ? "en" : "es"; }
@@ -377,6 +467,7 @@
   global.ZBI18N = {
     setConfig: setConfig,
     t: t,
+    labelEnum: labelEnum,
     fmtNum: fmtNum,
     fmtMoney: fmtMoney,
     fmtDate: fmtDate,

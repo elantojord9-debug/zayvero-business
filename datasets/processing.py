@@ -69,6 +69,56 @@ def _friendly_error(exc: Exception) -> str:
 _DEMO_LABEL = "Demo Dataset — UCI Online Retail II"
 
 
+def _sufficiency_check(ds: Dataset, profile: Dict[str, Any]) -> tuple:
+    """QA-005 — compuerta de suficiencia de datos (conservadora).
+
+    Decide si la evidencia disponible basta para presentar un análisis
+    válido. NO usa solo el número de filas: combina la revisión previa
+    (columnas, fechas, registros) con el perfil generado por el pipeline.
+
+    Devuelve (suficiente, motivo). El motivo es un código interno corto;
+    el texto para el usuario sale de STATUS_MESSAGES y de ds.warnings.
+    El motor analítico no se toca: esta compuerta solo decide el estado
+    final del dataset.
+    """
+    review = ds.review or {}
+    checks = {}
+    for c in (review.get("checks") or []):
+        if isinstance(c, dict) and c.get("key"):
+            checks[c["key"]] = c
+
+    # Sin filas procesadas no hay nada que analizar.
+    if (ds.row_count or 0) <= 0:
+        return False, "no_rows"
+
+    # Sin fechas utilizables el núcleo temporal (tendencias, anomalías
+    # temporales, predicciones) no puede operar. La revisión lo marca en
+    # el check "dates"; se confirma contra el rango del perfil.
+    dates_check = checks.get("dates")
+    dr = (profile or {}).get("date_range") or {}
+    has_dates = bool(dr.get("min_date") and dr.get("max_date"))
+    if dates_check is not None and not dates_check.get("ok") and not has_dates:
+        return False, "no_dates"
+
+    return True, ""
+
+
+def _propagate_review_warnings(ds: Dataset) -> None:
+    """QA-005 — copia las advertencias de la revisión a ds.warnings para
+    que la interfaz las muestre. Antes vivían solo en ds.review."""
+    seen = set()
+    out = []
+    for w in ((ds.review or {}).get("warnings") or []):
+        if isinstance(w, dict):
+            txt = (w.get("detail") or w.get("label") or "").strip()
+        else:
+            txt = str(w).strip()
+        if txt and txt not in seen:
+            seen.add(txt)
+            out.append(txt)
+    ds.warnings = out
+
+
 def _relabel_walk(node: Any, label: str) -> bool:
     """Reemplaza la etiqueta demo por el nombre del reporte del cliente.
 
@@ -382,15 +432,37 @@ def process_dataset(store: DatasetStore, dataset_id: str,
             "error": None,
             "steps": steps,
         }
-        ds.status = "READY"
-        # Primer dataset listo → se activa automáticamente.
+        # QA-005: propagar advertencias de la revisión al usuario.
+        _propagate_review_warnings(ds)
+        # QA-005: compuerta de suficiencia. Un archivo sin evidencia
+        # suficiente no se presenta como análisis válido: pasa a
+        # INSUFFICIENT_DATA (estado ya previsto en models.py) en vez de
+        # READY. El motor analítico no se modifica.
+        sufficient, insuf_reason = _sufficiency_check(ds, profile)
+        if sufficient:
+            ds.status = "READY"
+        else:
+            ds.status = "INSUFFICIENT_DATA"
+            # Obs. revisión 2: un dataset insuficiente nunca permanece
+            # activo como análisis válido, ni siquiera si antes lo estaba
+            # y se reprocesa por otra vía (la API ya bloquea reprocesar
+            # un READY; set_active() además solo acepta READY).
+            ds.is_active = False
+        # Primer dataset listo → se activa automáticamente. Solo un READY
+        # válido se auto-activa: un dataset insuficiente no se presenta
+        # como el análisis de la empresa.
         others_ready = [d for d in store.list_datasets()
                         if d.status == "READY" and d.dataset_id != dataset_id]
-        if not others_ready and not any(d.is_active for d in store.list_datasets()):
+        if (ds.status == "READY" and not others_ready
+                and not any(d.is_active for d in store.list_datasets())):
             ds.is_active = True
         store.save_dataset(ds)
+        audit_meta = {"row_count": ds.row_count, "steps": len(steps),
+                      "status": ds.status}
+        if not sufficient:
+            audit_meta["insufficient_reason"] = insuf_reason
         _audit("DATASET_PROCESSING_COMPLETED",
-               metadata={"row_count": ds.row_count, "steps": len(steps)})
+               metadata=audit_meta)
         if ds.is_active:
             _audit("DATASET_ACTIVATED")
         return store.get_dataset(dataset_id)
