@@ -490,6 +490,21 @@
     var c = s.cards || {};
     var att = s.attention_level || "—";
 
+    /* Etiqueta "Mostrando N de M" cuando la sección es una selección.
+       (Definida aquí y no solo en renderDiagnostic: esta vista también
+       la utiliza; fuera de su alcance producía "showingOf is not defined"
+       y la vista Resumen quedaba en blanco.) */
+    var sc = s.section_counts || {};
+    function showingOf(key) {
+      var cc = sc[key] || {};
+      var shown = cc.shown || 0, total = cc.total || 0;
+      if (total > shown && shown > 0) {
+        return "<p class='muted'>" + esc(T("diagnostic.showing_of")
+          .replace("{shown}", String(shown)).replace("{total}", String(total))) + "</p>";
+      }
+      return "";
+    }
+
     function card(cls, num, cap, helpKey) {
       return "<div class='card " + cls + "'><div class='cap'>" + esc(cap) + "</div>" +
         "<div class='num'>" + esc(dash(num)) + "</div>" + helpHTML(helpKey) + "</div>";

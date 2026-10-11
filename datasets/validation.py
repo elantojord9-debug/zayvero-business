@@ -26,6 +26,41 @@ from typing import Any, Dict, List
 
 import pandas as pd
 
+# Columnas originales (no canónicas) que el pipeline utiliza en
+# validaciones internas aunque no se asignen al esquema estándar.
+# Se conservan como orig_* durante la normalización; la detección de
+# gastos usa orig_Tipo y orig_Gasto_DOP.
+INTERNAL_VALIDATION_COLUMNS = frozenset({"Tipo", "Gasto_DOP"})
+
+
+def _clip_columns(cols, n=10):
+    base = ", ".join(cols[:n])
+    if len(cols) > n:
+        base += f" (+{len(cols) - n} más)"
+    return base
+
+
+def unmapped_columns_detail(all_unmapped):
+    """Texto veraz para la advertencia de columnas no reconocidas.
+
+    Distingue entre columnas que no se asignan a ningún campo del esquema
+    canónico y columnas originales que se conservan y pueden seguir
+    utilizándose en validaciones internas (p. ej. detección de gastos).
+    """
+    internal = [c for c in all_unmapped
+                if c in INTERNAL_VALIDATION_COLUMNS]
+    rest = [c for c in all_unmapped
+            if c not in INTERNAL_VALIDATION_COLUMNS]
+    detail = ("Estas columnas no se asignaron a ningún campo del esquema "
+              "estándar")
+    if rest:
+        detail += ": " + _clip_columns(rest)
+    detail += ". Los datos originales se conservan"
+    if internal:
+        detail += (" y " + _clip_columns(internal) + " se utilizan en "
+                   "validaciones internas (detección de gastos)")
+    return detail + "."
+
 # Imports diferidos para no cargar pandas a nivel de paquete.
 
 
@@ -126,10 +161,7 @@ def build_review(file_path: str) -> Dict[str, Any]:
         all_warnings.append({
             "type": "unmapped_columns",
             "label": "Columnas no reconocidas",
-            "detail": ("Estas columnas no se reconocieron y no se usarán: "
-                       + ", ".join(all_unmapped[:10])
-                       + (f" (+{len(all_unmapped) - 10} más)"
-                          if len(all_unmapped) > 10 else "")),
+            "detail": unmapped_columns_detail(all_unmapped),
         })
     if n_nulls:
         all_warnings.append({

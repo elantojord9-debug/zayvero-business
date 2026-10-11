@@ -264,6 +264,27 @@ class ValidationTest(unittest.TestCase):
         with open(ds.upload["path"], "rb") as fh:
             self.assertEqual(fh.read(), data)
 
+    def test_19_review_columnas_no_reconocidas_mensaje_veraz(self):
+        # Las columnas no asignadas al esquema estándar se comunican sin
+        # afirmar que "no se usarán": Tipo y Gasto_DOP se conservan como
+        # orig_* y alimentan la detección de gastos.
+        lines = ["Nota,Fecha,Tipo,Producto_o_concepto,Cantidad,"
+                 "Precio_unitario_DOP,Gasto_DOP"]
+        lines.append(",2026-09-01,Venta,Producto 1,2,387,0")
+        lines.append(",2026-09-03,Gasto,Alquiler local,1,0,1500")
+        data = ("\n".join(lines) + "\n").encode("utf-8")
+        ds = self._upload(data)
+        rev = build_review(ds.upload["path"])
+        warns = [w for w in rev["warnings"]
+                 if w["label"] == "Columnas no reconocidas"]
+        self.assertEqual(len(warns), 1)
+        detail = warns[0]["detail"]
+        self.assertNotIn("no se usarán", detail.lower())
+        self.assertIn("Tipo", detail)
+        self.assertIn("Gasto_DOP", detail)
+        self.assertIn("validaciones internas", detail)
+        self.assertIn("Nota", detail)
+
 
 class MappingTest(unittest.TestCase):
     """Mapeo de columnas (unit)."""
