@@ -35,10 +35,8 @@ def isolated_database():
             schema = "e2e_" + secrets.token_hex(8)
             with psycopg.connect(admin, autocommit=True) as conn:
                 conn.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(schema)))
-            parsed = urlsplit(admin)
-            query = dict(parse_qsl(parsed.query))
-            query.update(options="-c search_path=" + schema, sslmode="require")
-            os.environ["FACTURA_DATABASE_URL"] = urlunsplit(parsed._replace(query=urlencode(query)))
+            from psycopg.conninfo import make_conninfo
+            os.environ["FACTURA_DATABASE_URL"] = make_conninfo(admin, options="-c search_path=" + schema, sslmode="require")
         else:
             os.environ.pop("FACTURA_DATABASE_URL", None)
         yield
