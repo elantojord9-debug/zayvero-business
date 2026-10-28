@@ -1,0 +1,35 @@
+# MANIFIESTO DE ORDEN DE MIGRACIONES — ZAYVERO Business OS
+#
+# Fuente única de verdad del orden de aplicación de os_persist/schema/*.sql.
+# El migrador (os_persist/pg.py::migrate) aplica EXACTAMENTE en este orden.
+#
+# Reglas (ver docs/migraciones.md):
+#  - Una línea por archivo, en orden de aplicación.
+#  - Todo .sql del directorio DEBE estar aquí (el migrador falla si falta).
+#  - No reutilizar un número de versión ya usado (el duplicado 008_*
+#    es histórico y queda congelado en este orden: aprobaciones ANTES
+#    que sesiones_verificador).
+#  - Una migración nueva se agrega al FINAL con el siguiente número libre.
+001_os_base.sql
+002_os_snapshots.sql
+003_os_company_lock.sql
+004_os_eventos.sql
+005_os_idempotency.sql
+006_os_tenant.sql
+007_os_catalogo.sql
+008_os_aprobaciones.sql
+008_os_sesiones_verificador.sql
+009_os_saas.sql
+009_os_eventos_gasto.sql
+010_os_eventos_importacion.sql
+011_os_empleados.sql
+012_os_eventos_tipos_crm.sql
+013_os_eventos_tipos_contab.sql
+014_os_seguridad.sql
+015_os_notif.sql
+017_os_garantias.sql
+018_os_contab_pg.sql
+019_os_ncf_pg.sql
+020_os_ia_decisiones_pg.sql
+021_os_aprobaciones_pg.sql
+022_os_seguridad_sin_fk_usuarios.sql

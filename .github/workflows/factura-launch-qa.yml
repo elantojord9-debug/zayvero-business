@@ -1,0 +1,46 @@
+name: Factura launch gate
+on:
+  pull_request:
+    paths: ["products/factura-candidate/**", ".github/workflows/factura-launch-qa.yml"]
+jobs:
+  synthetic-qa:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: factura_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: synthetic-ci-only-password
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s
+          --health-timeout 5s --health-retries 20
+    env:
+      FACTURA_TEST_DATABASE_URL: postgresql://postgres:synthetic-ci-only-password@127.0.0.1:5432/factura_test?sslmode=disable
+      FACTURA_TEST_ALLOW_DDL: "1"
+      FACTURA_SECRET: synthetic-ci-signing-key-only-never-production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r products/factura-candidate/factura/requirements-dev.txt
+      - run: python products/factura-candidate/factura/scripts/verify_dependencies.py
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - run: python -m pytest tests -q --junitxml=resultados.xml
+        working-directory: products/factura-candidate/factura
+      - name: Require zero failures and zero skipped tests
+        working-directory: products/factura-candidate/factura
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          root = ET.parse('resultados.xml').getroot()
+          suites = list(root.iter('testsuite'))
+          print({k:sum(int(s.get(k,0)) for s in suites) for k in ('tests','failures','errors','skipped')})
+          for name in ('failures','errors','skipped'):
+              assert sum(int(s.get(name,0)) for s in suites) == 0, name
+          PY
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/e2e_admin.py
+        working-directory: products/factura-candidate/factura

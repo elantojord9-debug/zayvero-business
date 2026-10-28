@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1560 512" width="1560" height="512">
+  <defs>
+    <linearGradient id="zgw-o" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#2563FF"/>
+  <stop offset="1" stop-color="#6D4CFF"/>
+</linearGradient>
+  </defs>
+  <rect x="0" y="0" width="1560" height="512" fill="#0B1F3A"/>
+  <g transform="translate(16,0)">
+  
+  <defs>
+    <linearGradient id="zg-o" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+  <stop offset="0" stop-color="#2563FF"/>
+  <stop offset="1" stop-color="#6D4CFF"/>
+</linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#zg-o)" stroke-width="76"
+     stroke-linecap="round" stroke-linejoin="round">
+    <path d="M128 152 H384 L128 360 H384"/>
+  </g>
+  <circle cx="420" cy="84" r="22" fill="url(#zg-o)"/>
+
+  </g>
+  <g transform="translate(600.00,322.00) scale(0.1850,-0.1850)"><path d="M555 0H24V98L366 589H33V714H546V616L204 125H555Z" fill="url(#zgw-o)"/></g>
+<g transform="translate(723.76,322.00) scale(0.1850,-0.1850)"><path d="M527 0 475 170H215L163 0H0L252 717H437L690 0ZM387 463Q382 480 374.0 506.0Q366 532 358.0 559.0Q350 586 345 606Q340 586 331.5 556.5Q323 527 315.5 500.5Q308 474 304 463L253 297H439Z" fill="#F8FAFC"/></g>
+<g transform="translate(868.07,322.00) scale(0.1850,-0.1850)"><path d="M312 420 461 714H624L387 278V0H237V273L0 714H164Z" fill="#F8FAFC"/></g>
+<g transform="translate(1000.16,322.00) scale(0.1850,-0.1850)"><path d="M650 714 407 0H242L0 714H153L287 289Q291 278 298.5 248.5Q306 219 314.0 186.5Q322 154 325 132Q328 154 335.5 186.5Q343 219 351.0 248.5Q359 278 362 289L497 714Z" fill="#F8FAFC"/></g>
+<g transform="translate(1137.06,322.00) scale(0.1850,-0.1850)"><path d="M501 0H90V714H501V590H241V433H483V309H241V125H501Z" fill="#F8FAFC"/></g>
+<g transform="translate(1257.31,322.00) scale(0.1850,-0.1850)"><path d="M298 714Q444 714 513.5 661.0Q583 608 583 500Q583 451 564.5 414.5Q546 378 515.5 352.5Q485 327 450 311L660 0H492L322 274H241V0H90V714ZM287 590H241V397H290Q365 397 397.5 422.0Q430 447 430 496Q430 547 395.5 568.5Q361 590 287 590Z" fill="#F8FAFC"/></g>
+<g transform="translate(1396.06,322.00) scale(0.1850,-0.1850)"><path d="M738 358Q738 247 701.5 164.5Q665 82 590.0 36.0Q515 -10 398 -10Q282 -10 206.5 36.0Q131 82 94.5 165.0Q58 248 58 359Q58 470 94.5 552.0Q131 634 206.5 679.5Q282 725 399 725Q515 725 590.0 679.5Q665 634 701.5 551.5Q738 469 738 358ZM217 358Q217 246 260.0 181.5Q303 117 398 117Q495 117 537.0 181.5Q579 246 579 358Q579 471 537.0 535.0Q495 599 399 599Q303 599 260.0 535.0Q217 471 217 358Z" fill="#F8FAFC"/></g>
+</svg>
