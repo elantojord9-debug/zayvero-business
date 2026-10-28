@@ -97,6 +97,8 @@ def main():
     from factura_persist import db
     if os.environ.get("FACTURA_ENV") not in ("staging", "production") or db.backend() != "pg":
         raise RuntimeError("el job requiere entorno staging/production y PostgreSQL")
+    if db._sslmode_dsn(db.dsn_configurado()) not in db._TLS_SEGUROS:
+        raise RuntimeError("el job requiere DSN PostgreSQL con TLS explícito")
     bucket = os.environ["FACTURA_BACKUP_BUCKET"]
     prefix = os.environ["FACTURA_ENV"] + "/" + os.environ.get("FACTURA_BACKUP_PREFIX", "zayvero-factura")
     import boto3
