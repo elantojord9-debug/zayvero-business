@@ -506,6 +506,21 @@ def migraciones_faltantes() -> list[str]:
         conn.close()
 
 
+def verificar_privilegios_runtime() -> None:
+    """Fail closed if the cloud app can perform persistent DDL."""
+    conn = connect()
+    try:
+        cur = conn.cursor()
+        role = fetchone(cur, "SELECT rolsuper OR rolcreatedb OR rolcreaterole OR rolbypassrls FROM pg_roles WHERE rolname=current_user")
+        database_create = fetchone(cur, "SELECT has_database_privilege(current_user,current_database(),'CREATE')")[0]
+        schema_create = fetchone(cur, "SELECT has_schema_privilege(current_user,current_schema(),'CREATE')")[0]
+        ownership = fetchone(cur, "SELECT EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname=current_schema() AND c.relkind IN ('r','p','S') AND pg_has_role(current_user,c.relowner,'MEMBER'))")[0]
+        if not role or role[0] or database_create or schema_create or ownership:
+            raise PreflightError("rol runtime con DDL/propiedad: use rol app sin CREATE ni propiedad de tablas y credenciales de migración separadas")
+    finally:
+        conn.close()
+
+
 def preflight_cloud() -> None:
     """Verificación obligatoria al arrancar en cloud/staging/production.
 
@@ -571,6 +586,11 @@ def preflight_cloud() -> None:
                 "Aplícalas primero con el rol que tiene permisos DDL: "
                 "'FACTURA_DATABASE_URL=<dsn-del-rol-dueño> "
                 "python app.py --migrate' y vuelve a servir.")
+    if solo_pg and not errores:
+        try:
+            verificar_privilegios_runtime()
+        except Exception as exc:
+            errores.append("privilegios de runtime inválidos: " + type(exc).__name__ + ": " + str(exc))
     if errores:
         raise PreflightError("preflight cloud FALLÓ:\n- " + "\n- ".join(errores))
 

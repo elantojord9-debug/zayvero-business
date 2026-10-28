@@ -137,7 +137,7 @@ def test_override_tls_no_bloquea_dsn_con_tls_en_cloud(env_limpio,
     completo (el override no estorba a un DSN que sí exige TLS)."""
     os.environ["FACTURA_ENV"] = "cloud"
     os.environ["FACTURA_DATABASE_URL"] = \
-        _tls_dsn(pg_segura["admin"])
+        _tls_dsn(pg_segura["ro"])
     os.environ["FACTURA_ALLOW_INSECURE_DSN"] = "1"
     db.reset_backend_cache()
     db.preflight_cloud()  # no debe lanzar
@@ -249,7 +249,7 @@ def _tls_dsn(dsn):
 def test_preflight_cloud_ok_con_tls_y_migraciones(env_limpio, pg_segura):
     os.environ["FACTURA_ENV"] = "cloud"
     os.environ["FACTURA_DATABASE_URL"] = \
-        _tls_dsn(pg_segura["admin"])
+        _tls_dsn(pg_segura["ro"])
     db.reset_backend_cache()
     db.preflight_cloud()  # no debe lanzar
 
@@ -340,3 +340,13 @@ def test_rol_sin_ddl_no_puede_migrar(env_limpio, pg_segura):
     finally:
         conn.close()
     assert db.migraciones_faltantes() == []
+
+
+@requiere_pg
+def test_cloud_rejects_migration_owner_credentials(env_limpio, pg_segura):
+    os.environ["FACTURA_ENV"] = "production"
+    os.environ["FACTURA_DATABASE_URL"] = _tls_dsn(pg_segura["admin"])
+    db.reset_backend_cache()
+    with pytest.raises(db.PreflightError) as error:
+        db.preflight_cloud()
+    assert "DDL" in str(error.value)

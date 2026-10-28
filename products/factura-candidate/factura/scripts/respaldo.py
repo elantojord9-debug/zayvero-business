@@ -51,15 +51,41 @@ def _sha256(ruta: str) -> str:
 
 
 def _dsn_db(dsn: str, nueva_db: str | None = None) -> str:
-    """Devuelve el DSN apuntando a otra base (para restaurar en --db)."""
+    """Replace dbname using libpq's parser (URI and keyword DSNs)."""
     if not nueva_db:
         return dsn
-    p = urlparse(dsn)
-    return urlunparse(p._replace(path="/" + nueva_db))
+    from psycopg.conninfo import conninfo_to_dict, make_conninfo
+    params = conninfo_to_dict(dsn)
+    params["dbname"] = nueva_db
+    return make_conninfo(**params)
+
+
+def _pg_env(dsn: str) -> dict:
+    """Pass parsed libpq fields through environment, never a URI in argv.
+
+    PGDATABASE is a database name, not a connection URI. Treating the full
+    DSN as that variable breaks pg_dump/restore even though psycopg connects.
+    """
+    from psycopg.conninfo import conninfo_to_dict
+    names = {"host": "PGHOST", "hostaddr": "PGHOSTADDR", "port": "PGPORT",
+             "dbname": "PGDATABASE", "user": "PGUSER", "password": "PGPASSWORD",
+             "sslmode": "PGSSLMODE", "sslcert": "PGSSLCERT", "sslkey": "PGSSLKEY",
+             "sslrootcert": "PGSSLROOTCERT", "sslcrl": "PGSSLCRL",
+             "options": "PGOPTIONS", "connect_timeout": "PGCONNECT_TIMEOUT",
+             "application_name": "PGAPPNAME", "client_encoding": "PGCLIENTENCODING",
+             "target_session_attrs": "PGTARGETSESSIONATTRS", "channel_binding": "PGCHANNELBINDING"}
+    params = conninfo_to_dict(dsn)
+    if any(key not in names for key in params):
+        raise ValueError("parámetros DSN no admitidos por el proceso de respaldo")
+    env = {key: value for key, value in os.environ.items()
+           if key not in set(names.values()) | {"PGSERVICE", "PGSERVICEFILE"}}
+    env.update({names[key]: value for key, value in params.items()})
+    env.setdefault("PGCONNECT_TIMEOUT", "20")
+    return env
 
 
 def _pg_dump(dsn: str, destino: str) -> None:
-    env = dict(os.environ, PGDATABASE=dsn)
+    env = _pg_env(dsn)
     r = subprocess.run(["pg_dump", "-Fc", "-f", destino],
                        env=env, capture_output=True, text=True, timeout=180)
     if r.returncode != 0:
@@ -184,13 +210,14 @@ def restaurar(archivo: str, db_destino: str | None = None) -> dict:
         # --confirmo). NUNCA se restaura sobre la productiva sin --confirmo.
         if not db_destino:
             raise ValueError("restore exige base destino separada explícita")
-        source_db = urlparse(db.dsn_configurado()).path.lstrip("/")
+        from psycopg.conninfo import conninfo_to_dict
+        source_db = conninfo_to_dict(db.dsn_configurado()).get("dbname")
         if db_destino == source_db:
             raise ValueError("no se restaura sobre la base operativa")
         dsn = _dsn_db(db.dsn_configurado(), db_destino)
         r = subprocess.run(
             ["pg_restore", "--single-transaction", "--exit-on-error", "--no-owner", "--no-privileges", "-d", "", ruta],
-            env=dict(os.environ, PGDATABASE=dsn), capture_output=True, text=True)
+            env=_pg_env(dsn), capture_output=True, text=True, timeout=180)
         if r.returncode != 0:
             raise RuntimeError(
                 "pg_restore falló; destino debe estar vacío; operación revertida")
