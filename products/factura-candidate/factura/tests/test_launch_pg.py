@@ -90,3 +90,41 @@ class TestLaunchPostgres(PGBase):
                     metodo_pago="efectivo", idempotencia="pg-fault-key")
         self.assertEqual(ventas.listar(eid), [])
         self.assertEqual(Decimal(inventario.obtener(eid, product["id"])["stock"]), 2)
+
+
+    def test_production_backup_script_restores_both_companies(self):
+        import tempfile, json, hashlib
+        from pathlib import Path
+        from scripts import respaldo
+        import psycopg
+        from psycopg import sql
+        eid_a, uid_a, _ = self._empresa()
+        eid_b, uid_b, _ = self._empresa()
+        pa = self._producto(eid_a, stock=20, precio=100)
+        pb = self._producto(eid_b, stock=30, precio=200)
+        self._venta(eid_a, pa, cantidad=2, creada_por=uid_a)
+        self._venta(eid_b, pb, cantidad=3, creada_por=uid_b)
+        source_dsn = os.environ["FACTURA_DATABASE_URL"]
+        target_name = "factura_restore_" + self.esquema
+        target_dsn = respaldo._dsn_db(source_dsn, target_name)
+        with psycopg.connect(source_dsn, autocommit=True) as connection:
+            connection.execute(sql.SQL("CREATE DATABASE {} TEMPLATE template0").format(sql.Identifier(target_name)))
+        try:
+            with tempfile.TemporaryDirectory(prefix="backup-real-pg-") as tmp:
+                with patch.object(respaldo, "RESPALDOS_DIR", tmp):
+                    manifest = respaldo.crear("qa")
+                    dump = Path(tmp) / manifest["archivo"]
+                    self.assertEqual(respaldo.verificar(str(dump))["verificacion"], "OK")
+                    respaldo.restaurar(str(dump), target_name)
+                    with psycopg.connect(source_dsn) as original, psycopg.connect(target_dsn) as restored:
+                        tables = original.execute("SELECT tablename FROM pg_tables WHERE schemaname=%s ORDER BY tablename", (self.esquema,)).fetchall()
+                        for (table,) in tables:
+                            query = sql.SQL("SELECT * FROM {}.{}").format(sql.Identifier(self.esquema), sql.Identifier(table))
+                            before = sorted(json.dumps(row, default=str) for row in original.execute(query).fetchall())
+                            after = sorted(json.dumps(row, default=str) for row in restored.execute(query).fetchall())
+                            self.assertEqual(hashlib.sha256(json.dumps(before).encode()).hexdigest(), hashlib.sha256(json.dumps(after).encode()).hexdigest(), table)
+                    with self.assertRaises(ValueError):
+                        respaldo.restaurar(str(dump))
+        finally:
+            with psycopg.connect(source_dsn, autocommit=True) as connection:
+                connection.execute(sql.SQL("DROP DATABASE {} WITH (FORCE)").format(sql.Identifier(target_name)))

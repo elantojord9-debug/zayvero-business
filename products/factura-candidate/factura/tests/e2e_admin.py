@@ -12,18 +12,54 @@ import sys
 import tempfile
 import time
 import urllib.request
+from contextlib import contextmanager
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 
+@contextmanager
+def isolated_database():
+    original = os.environ.get("FACTURA_DATABASE_URL")
+    postgres = os.environ.get("FACTURA_E2E_PG") == "1"
+    admin = None
+    schema = None
+    try:
+        if postgres:
+            if os.environ.get("FACTURA_TEST_ALLOW_DDL") != "1":
+                raise RuntimeError("PG E2E requiere autorización QA explícita")
+            admin = os.environ["FACTURA_TEST_DATABASE_URL"]
+            import psycopg, secrets
+            from psycopg import sql
+            from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+            schema = "e2e_" + secrets.token_hex(8)
+            with psycopg.connect(admin, autocommit=True) as conn:
+                conn.execute(sql.SQL("CREATE SCHEMA {}").format(sql.Identifier(schema)))
+            parsed = urlsplit(admin)
+            query = dict(parse_qsl(parsed.query))
+            query.update(options="-c search_path=" + schema, sslmode="require")
+            os.environ["FACTURA_DATABASE_URL"] = urlunsplit(parsed._replace(query=urlencode(query)))
+        else:
+            os.environ.pop("FACTURA_DATABASE_URL", None)
+        yield
+    finally:
+        if admin and schema:
+            import psycopg
+            from psycopg import sql
+            with psycopg.connect(admin, autocommit=True) as conn:
+                conn.execute(sql.SQL("DROP SCHEMA IF EXISTS {} CASCADE").format(sql.Identifier(schema)))
+        if original is None:
+            os.environ.pop("FACTURA_DATABASE_URL", None)
+        else:
+            os.environ["FACTURA_DATABASE_URL"] = original
+
+
 def main():
     from playwright.sync_api import sync_playwright
-    with tempfile.TemporaryDirectory(prefix="factura-browser-") as tmp:
+    with isolated_database(), tempfile.TemporaryDirectory(prefix="factura-browser-") as tmp:
         os.environ["FACTURA_SQLITE_PATH"] = str(Path(tmp) / "test.db")
         os.environ["FACTURA_ENV"] = "local"
         os.environ["FACTURA_SECRET"] = "synthetic-browser-tests-signing-key-only"
-        os.environ.pop("FACTURA_DATABASE_URL", None)
         import config
         from factura_persist import db
         from factura_auth import registro
@@ -85,9 +121,21 @@ def main():
                         context.close()
                     browser.close()
                 assert not errors, errors
+                server.terminate()
+                server.wait(timeout=10)
+                server = subprocess.Popen([sys.executable, "-m", "gunicorn", "-c", str(ROOT / "gunicorn.conf.py"), "--bind", "127.0.0.1:" + str(port), "wsgi:application"], cwd=ROOT, env=env, stdout=log, stderr=log)
+                ready = False
+                for _ in range(100):
+                    try:
+                        urllib.request.urlopen(base + "/health", timeout=1)
+                        ready = True
+                        break
+                    except Exception:
+                        time.sleep(.05)
+                assert ready, "server did not recover after restart"
                 assert len(ventas.listar(eid)) == 2
                 assert str(inventario.obtener(eid, product["id"])["stock"]) == "3"
-                print(json.dumps({"status": "passed", "viewports": ["1440x1000", "390x844"], "flows": ["login", "POS", "invoice", "inventory", "receivables", "reports", "returns", "price_gate"], "javascript_errors": errors, "database": "SQLite synthetic", "sales": 2}))
+                print(json.dumps({"status": "passed", "viewports": ["1440x1000", "390x844"], "flows": ["login", "POS", "invoice", "inventory", "receivables", "reports", "returns", "price_gate"], "javascript_errors": errors, "database": db.backend() + " synthetic", "sales": 2, "restart_verified": True}))
             finally:
                 server.terminate()
                 server.wait(timeout=10)

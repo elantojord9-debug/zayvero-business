@@ -70,3 +70,13 @@ jobs:
       - run: python -m playwright install --with-deps chromium
       - run: python tests/e2e_admin.py
         working-directory: products/factura-candidate/factura
+      - name: Browser E2E with PostgreSQL and restart
+        run: python tests/e2e_admin.py
+        working-directory: products/factura-candidate/factura
+        env:
+          FACTURA_E2E_PG: "1"
+      - name: Build production image
+        run: docker build -t factura-production-qa products/factura-candidate
+      - name: Production image, least privilege, load and restart
+        run: python tests/production_smoke.py
+        working-directory: products/factura-candidate/factura

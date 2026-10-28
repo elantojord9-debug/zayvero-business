@@ -61,14 +61,14 @@ def _dsn_db(dsn: str, nueva_db: str | None = None) -> str:
 def _pg_dump(dsn: str, destino: str) -> None:
     env = dict(os.environ, PGDATABASE=dsn)
     r = subprocess.run(["pg_dump", "-Fc", "-f", destino],
-                       env=env, capture_output=True, text=True)
+                       env=env, capture_output=True, text=True, timeout=180)
     if r.returncode != 0:
         raise RuntimeError("pg_dump falló; revisar conexión/permisos sin registrar DSN")
 
 
 def _pg_listado_tablas(dump: str) -> list[str]:
     r = subprocess.run(["pg_restore", "-l", dump],
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, timeout=180)
     if r.returncode != 0:
         raise RuntimeError(f"pg_restore -l falló: {r.stderr.strip()[:300]}")
     tablas = []
@@ -76,7 +76,7 @@ def _pg_listado_tablas(dump: str) -> list[str]:
         partes = linea.split()
         # formato: <id>; <oid> <oid> TABLE <schema> <nombre> <owner>
         if len(partes) >= 6 and partes[3] == "TABLE" \
-                and partes[4] not in ("pg_catalog", "information_schema"):
+                and partes[4] not in ("DATA", "pg_catalog", "information_schema"):
             tablas.append(f"{partes[4]}.{partes[5]}")
     return tablas
 
@@ -199,7 +199,13 @@ def restaurar(archivo: str, db_destino: str | None = None) -> dict:
                 "verificacion": v}
     # Respaldo de seguridad del estado actual antes de sobrescribir.
     previo = crear("pre-restore")
-    shutil.copy2(ruta, config.SQLITE_PATH)
+    source = sqlite3.connect(ruta)
+    destination = sqlite3.connect(config.SQLITE_PATH)
+    try:
+        source.backup(destination)
+    finally:
+        destination.close()
+        source.close()
     return {"restaurado": os.path.basename(ruta),
             "respaldo_previo": previo["archivo"], "verificacion": v}
 
