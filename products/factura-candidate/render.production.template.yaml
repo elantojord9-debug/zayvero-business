@@ -1,0 +1,88 @@
+# TEMPLATE ONLY: creates paid resources if applied. Not deployed.
+# Runtime DSN and backup DSN MUST use distinct least-privilege roles.
+previews:
+  generation: 'off'
+projects:
+- name: ZAYVERO FACTURA v1
+  environments:
+  - name: production
+    services:
+    - type: web
+      name: zayvero-factura-v1-prod
+      runtime: docker
+      region: ohio
+      plan: 0.5c-512mb
+      branch: factura/rc1-qa-20261028
+      rootDir: products/factura-candidate
+      dockerfilePath: ./Dockerfile
+      dockerContext: .
+      autoDeployTrigger: 'off'
+      healthCheckPath: /health
+      envVars:
+      - &id001
+        key: FACTURA_ENV
+        value: production
+      - &id002
+        key: FACTURA_DATABASE_URL
+        sync: false
+      - key: FACTURA_HTTPS
+        value: '1'
+      - key: FACTURA_TIMEZONE
+        value: America/Santo_Domingo
+      - key: FACTURA_SECRET
+        generateValue: true
+      - key: FACTURA_PUBLIC_ORIGIN
+        sync: false
+      - key: FACTURA_SUPERADMIN_EMAIL
+        sync: false
+      - key: FACTURA_SUPERADMIN_PASS
+        generateValue: true
+      - key: FACTURA_MAIL_MODE
+        value: smtp
+      - key: FACTURA_SMTP_TLS
+        value: '1'
+      - key: FACTURA_SMTP_PORT
+        value: '587'
+      - key: FACTURA_SMTP_HOST
+        sync: false
+      - key: FACTURA_SMTP_USER
+        sync: false
+      - key: FACTURA_SMTP_PASS
+        sync: false
+      - key: FACTURA_SMTP_FROM
+        sync: false
+    - type: cron
+      name: zayvero-factura-v1-backup
+      runtime: docker
+      region: ohio
+      plan: 0.5c-512mb
+      branch: factura/rc1-qa-20261028
+      rootDir: products/factura-candidate
+      dockerfilePath: ./Dockerfile
+      dockerContext: .
+      dockerCommand: python scripts/backup_remote.py
+      autoDeployTrigger: 'off'
+      schedule: 0 5 * * *
+      envVars:
+      - *id001
+      - *id002
+      - key: AWS_EC2_METADATA_DISABLED
+        value: 'true'
+      - key: FACTURA_BACKUP_BUCKET
+        sync: false
+      - key: AWS_DEFAULT_REGION
+        sync: false
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+    databases:
+    - name: zayvero-factura-v1-prod-db
+      databaseName: zayvero_factura_v1
+      user: factura_owner
+      region: ohio
+      plan: 0.1c-256mb
+      diskSizeGB: 1
+      storageAutoscalingEnabled: false
+      postgresMajorVersion: '16'
+      ipAllowList: []

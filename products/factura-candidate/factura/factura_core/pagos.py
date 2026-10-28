@@ -1,6 +1,8 @@
 """Pagos y cuentas por cobrar (CxC)."""
 from __future__ import annotations
 
+from factura_core import clock
+
 from datetime import datetime, timezone
 from decimal import Decimal
 
@@ -101,14 +103,24 @@ def registrar_pago(empresa_id: int, venta_id: int, monto,
 
 
 def cxc_pendientes(empresa_id: int) -> list[dict]:
-    """Ventas a crédito pendientes con su balance."""
-    out = []
-    for v in ventas.listar(empresa_id, estado="pendiente", limite=500):
-        if v["tipo"] not in ("factura", "pos"):
-            continue
-        v["balance"] = str(balance(empresa_id, v["id"]))
-        out.append(v)
-    return out
+    """Complete, consistent receivables; no hidden 500-document truncation."""
+    from factura_persist.uow import company_transaction
+    from collections import defaultdict
+    with company_transaction(empresa_id) as conn:
+        cur = conn.cursor()
+        rows = db.fetchall(cur, "SELECT v.*, c.nombre AS cliente_nombre FROM factura_ventas v LEFT JOIN factura_clientes c ON c.id=v.cliente_id AND c.empresa_id=v.empresa_id WHERE v.empresa_id=%s AND v.estado='pendiente' AND v.tipo IN ('factura','pos') ORDER BY v.creada DESC,v.id DESC", (empresa_id,))
+        adjustments = defaultdict(Decimal)
+        for table, field, sign, condition in (("factura_pagos", "monto", -1, ""), ("factura_devoluciones", "total", -1, " AND financiera=1"), ("factura_reembolsos", "monto", 1, "")):
+            for sale_id, amount in db.fetchall(cur, "SELECT venta_id," + field + " FROM " + table + " WHERE empresa_id=%s" + condition, (empresa_id,)):
+                adjustments[sale_id] += sign * db.dec(amount)
+        result = []
+        for row in rows:
+            row = dict(row)
+            remaining = db.dec(row["total"]) + adjustments[row["id"]]
+            if remaining > 0:
+                row["balance"] = str(remaining)
+                result.append(row)
+        return result
 
 
 def total_cxc(empresa_id: int) -> Decimal:
@@ -122,7 +134,7 @@ def cxc_vencidas(empresa_id: int) -> list[dict]:
     del cliente."""
     from datetime import date
     from factura_core import clientes as cli_mod
-    hoy = date.today().isoformat()
+    hoy = clock.today_business().isoformat()
     nombres: dict[int | None, str] = {}
     out = []
     for v in cxc_pendientes(empresa_id):
@@ -137,7 +149,7 @@ def cxc_vencidas(empresa_id: int) -> list[dict]:
             nombres[cid] = c["nombre"] if c else "Consumidor final"
         v["cliente_nombre"] = nombres[cid]
         try:
-            v["dias_vencidos"] = (date.today() -
+            v["dias_vencidos"] = (clock.today_business() -
                                   date.fromisoformat(ven)).days
         except Exception:
             v["dias_vencidos"] = 0

@@ -10,6 +10,8 @@ Todos los montos usan Decimal exacto; toda consulta filtra por empresa_id.
 """
 from __future__ import annotations
 
+from factura_core import clock
+
 import json
 from collections import defaultdict
 from datetime import date
@@ -46,7 +48,7 @@ def _rd(d) -> str:
 
 def _ventanas(referencia: date | None = None) -> dict:
     """Ventanas de mes actual y mes anterior (ISO) desde una referencia."""
-    ref = referencia or date.today()
+    ref = referencia or clock.today_business()
     mes_ini = ref.replace(day=1)
     # primer día del mes siguiente
     if mes_ini.month == 12:
@@ -87,7 +89,7 @@ def _ventas_rango(eid: int, desde: str, hasta: str) -> list[dict]:
             cur, "SELECT id, cliente_id, items, total, descuento, creada"
                  " FROM factura_ventas WHERE empresa_id=%s"
                  " AND estado<>'anulada' AND tipo IN ('factura','pos')"
-                 " AND substr(creada,1,10)>=%s AND substr(creada,1,10)<=%s"
+                 " AND creada>=%s AND creada<%s"
                  " ORDER BY creada",
             (eid, desde, hasta))
         return [dict(f) for f in filas]
@@ -201,7 +203,7 @@ def analisis_cxc(eid: int, referencia: date | None = None) -> dict:
     (misma regla que pagos.cxc_vencidas, pero con fecha de referencia
     explícita para que el análisis sea determinista).
     """
-    ref = referencia or date.today()
+    ref = referencia or clock.today_business()
     hoy = ref.isoformat()
     pend = pagos_mod.cxc_pendientes(eid)
     total_pend = sum((Decimal(p["balance"]) for p in pend), _CERO)
@@ -250,7 +252,7 @@ def analisis_inventario(eid: int,
     'días de stock' = stock actual / ritmo promedio de venta de los
     últimos 30 días (0 si el producto no se vendió).
     """
-    ref = referencia or date.today()
+    ref = referencia or clock.today_business()
     desde_30 = (ref.fromordinal(ref.toordinal() - 29)).isoformat()
     hasta = ref.isoformat()
     unidades_30d: dict[int, Decimal] = defaultdict(Decimal)

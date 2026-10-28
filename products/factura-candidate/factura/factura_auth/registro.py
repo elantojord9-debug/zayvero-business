@@ -6,6 +6,8 @@ estado 'activa' con trial_hasta = hoy + config.TRIAL_DIAS y plan
 """
 from __future__ import annotations
 
+from factura_core import clock
+
 from datetime import date, datetime, timedelta, timezone
 
 import config
@@ -33,7 +35,7 @@ def registrar_empresa(nombre: str, rnc: str, telefono: str, direccion: str,
     if auth_mod._fila_usuario_por_email(email_n):
         raise ValueError("ese email ya está registrado")
 
-    trial_hasta = (date.today() +
+    trial_hasta = (clock.today_business() +
                    timedelta(days=config.TRIAL_DIAS)).isoformat()
     conn = db.connect()
     try:

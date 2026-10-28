@@ -25,7 +25,11 @@ def fecha_do(s, con_hora: bool = True) -> str:
     """Fecha ISO → formato dominicano DD/MM/AAAA [HH:MM]."""
     if not s:
         return "—"
-    t = str(s).strip().replace("T", " ")
+    from factura_core import clock
+    try:
+        t = clock.local_datetime(s).isoformat(sep=" ") if len(str(s).strip()) > 10 else str(s).strip()
+    except ValueError:
+        t = str(s).strip().replace("T", " ")
     partes = (t.split(" ", 1) + [""])[:2]
     fecha, hora = partes[0], partes[1]
     f = fecha

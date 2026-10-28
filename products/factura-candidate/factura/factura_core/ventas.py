@@ -320,19 +320,11 @@ def anular(empresa_id: int, venta_id: int, motivo: str = "") -> dict:
 
 
 def ventas_del_dia(empresa_id: int) -> dict:
-    from datetime import date
-    hoy = date.today().isoformat()
-    conn = db.connect()
-    try:
-        cur = conn.cursor()
-        filas = db.fetchall(
-            cur, "SELECT total, estado FROM factura_ventas"
-                 " WHERE empresa_id=%s AND substr(creada,1,10)=%s"
-                 " AND estado<>'anulada'", (empresa_id, hoy))
-        total = sum((db.dec(f[0]) for f in filas), Decimal("0"))
-        return {"cantidad": len(filas), "total": total, "fecha": hoy}
-    finally:
-        conn.close()
+    from factura_core import reportes, clock
+    rows = reportes.ventas_por_dia(empresa_id, dias=1)
+    today = clock.today_business().isoformat()
+    row = next((r for r in rows if r["dia"] == today), {"cantidad": 0, "total": "0"})
+    return {"cantidad": row["cantidad"], "total": Decimal(row["total"]), "fecha": today}
 
 
 # --- cotizaciones -----------------------------------------------------------

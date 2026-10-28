@@ -6,6 +6,8 @@ servidor antes de crear usuarios, sucursales y documentos.
 """
 from __future__ import annotations
 
+from factura_core import clock
+
 from datetime import date, datetime, timedelta, timezone
 
 import config
@@ -41,7 +43,7 @@ def trial_dias_restantes(empresa: dict) -> int | None:
         fin = date.fromisoformat(hasta[:10])
     except Exception:
         return None
-    return (fin - date.today()).days
+    return (fin - clock.today_business()).days
 
 
 def bloqueada_por_trial(empresa: dict) -> bool:
@@ -75,14 +77,16 @@ def contar_sucursales_activas(empresa_id: int) -> int:
 
 def contar_docs_mes(empresa_id: int) -> int:
     """Documentos de venta (no anulados) creados en el mes calendario."""
-    prefijo = date.today().strftime("%Y-%m")
+    today = clock.today_business()
+    first = today.replace(day=1)
+    next_month = (first.replace(day=28) + timedelta(days=4)).replace(day=1)
     conn = db.connect()
     try:
         cur = conn.cursor()
         fila = db.fetchone(
             cur, "SELECT COUNT(*) FROM factura_ventas"
                  " WHERE empresa_id=%s AND estado<>'anulada'"
-                 " AND substr(creada,1,7)=%s", (empresa_id, prefijo))
+                 " AND creada>=%s AND creada<%s", (empresa_id, clock.utc_start(first), clock.utc_start(next_month)))
         return int(fila[0])
     finally:
         conn.close()
@@ -179,10 +183,10 @@ def extender_trial(empresa_id: int, dias: int) -> dict:
     if dias <= 0 or dias > 365:
         raise ValueError("días inválidos (1-365)")
     empresa = obtener_empresa(empresa_id)
-    base = date.today()
+    base = clock.today_business()
     actual = trial_dias_restantes(empresa or {})
     if actual is not None and actual > 0:
-        base = date.today() + timedelta(days=actual)
+        base = clock.today_business() + timedelta(days=actual)
     nuevo = (base + timedelta(days=dias)).isoformat()
     conn = db.connect()
     try:

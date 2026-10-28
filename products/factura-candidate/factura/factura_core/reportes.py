@@ -5,6 +5,8 @@ aritmética Decimal exacta (tasa como parámetro).
 """
 from __future__ import annotations
 
+from factura_core import clock
+
 import json
 from collections import Counter, defaultdict
 from datetime import date, timedelta
@@ -17,24 +19,26 @@ from os_contab.itbis import calcular_itbis
 
 
 def ventas_por_dia(empresa_id: int, dias: int = 30) -> list[dict]:
-    desde = (date.today() - timedelta(days=dias - 1)).isoformat()
+    desde = (clock.today_business() - timedelta(days=dias - 1)).isoformat()
     conn = db.connect()
     try:
         cur = conn.cursor()
         filas = db.fetchall(
-            cur, "SELECT substr(creada,1,10) AS dia, total"
+            cur, "SELECT creada AS dia, total"
                  " FROM factura_ventas WHERE empresa_id=%s"
-                 " AND substr(creada,1,10)>=%s AND estado<>'anulada'"
+                 " AND creada>=%s AND estado<>'anulada'"
                  " ORDER BY dia",
-            (empresa_id, desde))
+            (empresa_id, clock.utc_start(desde)))
         por_dia: dict[str, dict] = {}
         for dia, total in filas:
+            dia = clock.local_datetime(dia).date().isoformat()
             acc = por_dia.setdefault(dia, {"cantidad": 0,
                                             "total": Decimal("0")})
             acc["cantidad"] += 1
             acc["total"] += db.dec(total)
-        credits = db.fetchall(cur, "SELECT substr(creada_en,1,10), total FROM factura_devoluciones WHERE empresa_id=%s AND financiera=1 AND substr(creada_en,1,10)>=%s", (empresa_id, desde))
+        credits = db.fetchall(cur, "SELECT creada_en, total FROM factura_devoluciones WHERE empresa_id=%s AND financiera=1 AND creada_en>=%s", (empresa_id, clock.utc_start(desde)))
         for day, amount in credits:
+            day = clock.local_datetime(day).date().isoformat()
             acc = por_dia.setdefault(day, {"cantidad": 0, "total": Decimal("0")})
             acc["total"] -= db.dec(amount)
         return [{"dia": d, "cantidad": v["cantidad"], "total": str(v["total"])}
@@ -52,11 +56,11 @@ def _ventas_rango(empresa_id: int, desde: str | None,
                " FROM factura_ventas WHERE empresa_id=%s AND estado<>'anulada'")
         params: list = [empresa_id]
         if desde:
-            sql += " AND substr(creada,1,10)>=%s"
-            params.append(desde)
+            sql += " AND creada>=%s"
+            params.append(clock.utc_start(desde))
         if hasta:
-            sql += " AND substr(creada,1,10)<=%s"
-            params.append(hasta)
+            sql += " AND creada<%s"
+            params.append(clock.utc_after(hasta))
         sql += " ORDER BY creada"
         return [dict(f) for f in db.fetchall(cur, sql, params)]
     finally:
@@ -86,11 +90,11 @@ def resumen_itbis(empresa_id: int, desde: str | None = None,
         sql = "SELECT total, itbis FROM factura_devoluciones WHERE empresa_id=%s AND financiera=1"
         params = [empresa_id]
         if desde:
-            sql += " AND substr(creada_en,1,10)>=%s"
-            params.append(desde)
+            sql += " AND creada_en>=%s"
+            params.append(clock.utc_start(desde))
         if hasta:
-            sql += " AND substr(creada_en,1,10)<=%s"
-            params.append(hasta)
+            sql += " AND creada_en<%s"
+            params.append(clock.utc_after(hasta))
         credits = db.fetchall(conn.cursor(), sql, params)
         returned_tax = sum((db.dec(r[1]) for r in credits), Decimal("0"))
     finally:
@@ -186,11 +190,11 @@ def estado_resultados(empresa_id: int, desde: str | None = None,
         sql = "SELECT total, itbis, items FROM factura_devoluciones WHERE empresa_id=%s AND financiera=1"
         params = [empresa_id]
         if desde:
-            sql += " AND substr(creada_en,1,10)>=%s"
-            params.append(desde)
+            sql += " AND creada_en>=%s"
+            params.append(clock.utc_start(desde))
         if hasta:
-            sql += " AND substr(creada_en,1,10)<=%s"
-            params.append(hasta)
+            sql += " AND creada_en<%s"
+            params.append(clock.utc_after(hasta))
         returned = db.fetchall(conn.cursor(), sql, params)
         for amount, tax, items in returned:
             total_ventas -= db.dec(amount) - db.dec(tax)
