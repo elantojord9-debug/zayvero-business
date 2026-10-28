@@ -11,6 +11,9 @@ import secrets
 import socket
 import subprocess
 import time
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import urllib.error
 import urllib.request
 from urllib.parse import parse_qsl, quote, urlencode, urlsplit, urlunsplit
@@ -28,6 +31,8 @@ def main():
     dbname = "image_qa_" + suffix
     role = "image_runtime_" + suffix
     password = secrets.token_urlsafe(32)
+    backup_role = "backup_runtime_" + suffix
+    backup_password = secrets.token_urlsafe(32)
     query = dict(parse_qsl(parsed.query))
     query["sslmode"] = "require"
     migration_dsn = urlunsplit(parsed._replace(path="/" + dbname, query=urlencode(query)))
@@ -82,19 +87,15 @@ def main():
         raise RuntimeError("production container not ready")
 
     execute(sql.SQL("CREATE DATABASE {} TEMPLATE template0").format(sql.Identifier(dbname)))
-    execute(sql.SQL("CREATE ROLE {} LOGIN PASSWORD {}").format(sql.Identifier(role), sql.Literal(password)))
     try:
         run_image("python", "app.py", "--migrate", dsn=migration_dsn)
-        execute(sql.SQL("GRANT CONNECT ON DATABASE {} TO {}").format(sql.Identifier(dbname), sql.Identifier(role)))
-        for statement in ("REVOKE CREATE ON SCHEMA public FROM PUBLIC",
-                          "GRANT USAGE ON SCHEMA public TO {}",
-                          "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO {}",
-                          "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO {}",
-                          "REVOKE UPDATE, DELETE ON factura_auditoria, factura_operaciones, factura_reembolsos FROM {}",
-                          "REVOKE INSERT, UPDATE, DELETE ON factura_migrations FROM {}"):
-            execute(sql.SQL(statement).format(sql.Identifier(role)), migration_dsn)
+        from scripts.bootstrap_pg_roles import provision_roles
+        with psycopg.connect(migration_dsn) as conn:
+            provision_roles(conn, role, password, backup_role, backup_password)
         run_image("python", "-c", "from factura_auth.registro import registrar_empresa; from factura_core import inventario,ventas; r=registrar_empresa('Synthetic QA','123456789','','','owner@qa.invalid','Synthetic-Password-123!'); e=r['empresa_id']; p=inventario.crear(e,'QA','Synthetic',100,stock=10); ventas.crear_venta(e,'factura',None,[{'producto_id':p['id'],'nombre':'Synthetic','cantidad':2,'precio':'100'}])")
         before = fingerprint()
+        backup_dsn = urlunsplit((parsed.scheme, quote(backup_role) + ":" + quote(backup_password) + "@" + parsed.hostname + ":" + str(parsed.port or 5432), "/" + dbname, urlencode(query), ""))
+        run_image("python", "-c", "import os; os.environ['FACTURA_BACKUP_DIR']='/tmp/backups'; from scripts.respaldo import crear,verificar; m=crear('readonly-qa'); assert verificar(m['archivo'])['verificacion']=='OK'", dsn=backup_dsn)
         with psycopg.connect(runtime_dsn) as conn:
             assert conn.execute("SELECT ssl FROM pg_stat_ssl WHERE pid=pg_backend_pid()").fetchone()[0]
         try:
@@ -137,6 +138,7 @@ def main():
         subprocess.run(["docker", "rm", "-f", container], capture_output=True)
         execute(sql.SQL("DROP DATABASE IF EXISTS {} WITH (FORCE)").format(sql.Identifier(dbname)))
         execute(sql.SQL("DROP ROLE IF EXISTS {}").format(sql.Identifier(role)))
+        execute(sql.SQL("DROP ROLE IF EXISTS {}").format(sql.Identifier(backup_role)))
 
 
 if __name__ == "__main__":
