@@ -137,7 +137,7 @@ def test_override_tls_no_bloquea_dsn_con_tls_en_cloud(env_limpio,
     completo (el override no estorba a un DSN que sí exige TLS)."""
     os.environ["FACTURA_ENV"] = "cloud"
     os.environ["FACTURA_DATABASE_URL"] = \
-        pg_segura["admin"] + "?sslmode=require"
+        _tls_dsn(pg_segura["admin"])
     os.environ["FACTURA_ALLOW_INSECURE_DSN"] = "1"
     db.reset_backend_cache()
     db.preflight_cloud()  # no debe lanzar
@@ -191,76 +191,65 @@ def test_serve_falla_sin_migraciones_con_mensaje_util(env_limpio, tmp_path):
 
 @pytest.fixture(scope="module")
 def pg_segura():
-    """Base `factura_p0_test` migrada + rol `factura_p0_ro` con solo
-    CONNECT + USAGE + DML (sin DDL). Limpieza total al terminar."""
+    """Isolated DB + DML-only role using the explicit QA admin DSN.
+
+    No runuser, local Unix socket, production filename or host-specific role.
+    """
+    import psycopg
+    from psycopg import sql
+    from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
     dsn_admin = _dsn_admin()
-    assert dsn_admin, "se necesita el DSN operativo para crear la base"
-    dbname = "factura_p0_test"
-    rol = "factura_p0_ro"
-    ro_pass = secrets.token_urlsafe(18)
+    assert dsn_admin, "se necesita DSN explícito de QA"
+    suffix = str(os.getpid()) + "_" + secrets.token_hex(3)
+    dbname = "factura_p0_test_" + suffix
+    rol = "factura_p0_ro_" + suffix
+    ro_pass = secrets.token_urlsafe(24)
+    parsed = urlsplit(dsn_admin)
+    dsn_db = urlunsplit(parsed._replace(path="/" + dbname))
 
-    def psql(*args, db=None, timeout=60):
-        cmd = ["runuser", "-u", "postgres", "--", "psql",
-               "-h", _PG_SOCKET_DIR, "-v", "ON_ERROR_STOP=1"]
-        if db:
-            cmd += ["-d", db]
-        cmd += ["-c", " ".join(args)]
-        subprocess.run(cmd, check=True, capture_output=True, text=True,
-                       timeout=timeout)
+    def statement(query, target=dsn_admin):
+        with psycopg.connect(target, autocommit=True) as connection:
+            connection.execute(query)
 
-    psql(f"DROP DATABASE IF EXISTS {dbname};")
-    psql(f"CREATE DATABASE {dbname} ENCODING 'UTF8' "
-         f"LC_COLLATE 'C.UTF-8' LC_CTYPE 'C.UTF-8' TEMPLATE template0;")
-    psql(f"ALTER DATABASE {dbname} OWNER TO factura_app;")
-    psql(f"DROP ROLE IF EXISTS {rol};")
-    psql(f"CREATE ROLE {rol} LOGIN PASSWORD '{ro_pass}';")
-
-    dsn_db = re.sub(r"(/)[^/?]*(\?.*)?$", r"\1" + dbname + r"\2", dsn_admin)
-    os.environ["FACTURA_DATABASE_URL"] = dsn_db
-    db.reset_backend_cache()
-    hechas = db.migrate()
-    assert len(hechas) == len(db._orden()), hechas
-    assert db.migraciones_faltantes() == []
-
-    psql(f"GRANT CONNECT ON DATABASE {dbname} TO {rol};")
-    psql(f"GRANT USAGE ON SCHEMA public TO {rol};", db=dbname)
-    psql(f"GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES "
-         f"IN SCHEMA public TO {rol};", db=dbname)
-    psql(f"GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public "
-         f"TO {rol};", db=dbname)
-    dsn_ro = f"postgresql://{rol}:{ro_pass}@127.0.0.1:5432/{dbname}"
-
-    yield {"admin": dsn_db, "ro": dsn_ro, "dbname": dbname, "rol": rol}
-
-    db.reset_backend_cache()
-    os.environ.pop("FACTURA_DATABASE_URL", None)
+    statement(sql.SQL("CREATE DATABASE {} TEMPLATE template0").format(sql.Identifier(dbname)))
+    statement(sql.SQL("CREATE ROLE {} LOGIN PASSWORD {}").format(sql.Identifier(rol), sql.Literal(ro_pass)))
     try:
-        subprocess.run(
-            ["runuser", "-u", "postgres", "--", "psql", "-h",
-             _PG_SOCKET_DIR, "-c",
-             f"SELECT pg_terminate_backend(pid) FROM pg_stat_activity "
-             f"WHERE datname='{dbname}' AND pid<>pg_backend_pid();"],
-            capture_output=True, text=True, timeout=30)
-        subprocess.run(
-            ["runuser", "-u", "postgres", "--", "psql", "-h",
-             _PG_SOCKET_DIR, "-v", "ON_ERROR_STOP=1", "-c",
-             f"DROP DATABASE IF EXISTS {dbname};"],
-            capture_output=True, text=True, timeout=60)
-        subprocess.run(
-            ["runuser", "-u", "postgres", "--", "psql", "-h",
-             _PG_SOCKET_DIR, "-v", "ON_ERROR_STOP=1", "-c",
-             f"DROP ROLE IF EXISTS {rol};"],
-            capture_output=True, text=True, timeout=60)
-    except Exception:
-        pass
-    db.reset_backend_cache()
+        os.environ["FACTURA_DATABASE_URL"] = dsn_db
+        db.reset_backend_cache()
+        hechas = db.migrate()
+        assert len(hechas) == len(db._orden()), hechas
+        assert db.migraciones_faltantes() == []
+        statement(sql.SQL("GRANT CONNECT ON DATABASE {} TO {}").format(sql.Identifier(dbname), sql.Identifier(rol)))
+        for query in ("GRANT USAGE ON SCHEMA public TO {}",
+                      "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO {}",
+                      "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO {}"):
+            statement(sql.SQL(query).format(sql.Identifier(rol)), dsn_db)
+        host = parsed.hostname or "127.0.0.1"
+        port = parsed.port or 5432
+        from urllib.parse import quote
+        dsn_ro = urlunsplit((parsed.scheme, quote(rol) + ":" + quote(ro_pass) + "@" + host + ":" + str(port), "/" + dbname, parsed.query, ""))
+        yield {"admin": dsn_db, "ro": dsn_ro, "dbname": dbname, "rol": rol}
+    finally:
+        db.reset_backend_cache()
+        os.environ.pop("FACTURA_DATABASE_URL", None)
+        statement(sql.SQL("DROP DATABASE IF EXISTS {} WITH (FORCE)").format(sql.Identifier(dbname)))
+        statement(sql.SQL("DROP ROLE IF EXISTS {}").format(sql.Identifier(rol)))
+        db.reset_backend_cache()
+
+
+def _tls_dsn(dsn):
+    from urllib.parse import urlsplit, urlunsplit, parse_qsl, urlencode
+    parsed = urlsplit(dsn)
+    query = dict(parse_qsl(parsed.query))
+    query["sslmode"] = "require"
+    return urlunsplit(parsed._replace(query=urlencode(query)))
 
 
 @requiere_pg
 def test_preflight_cloud_ok_con_tls_y_migraciones(env_limpio, pg_segura):
     os.environ["FACTURA_ENV"] = "cloud"
     os.environ["FACTURA_DATABASE_URL"] = \
-        pg_segura["admin"] + "?sslmode=require"
+        _tls_dsn(pg_segura["admin"])
     db.reset_backend_cache()
     db.preflight_cloud()  # no debe lanzar
 
