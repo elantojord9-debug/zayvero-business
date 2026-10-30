@@ -1,0 +1,82 @@
+name: Factura launch gate
+on:
+  pull_request:
+    paths: ["products/factura-candidate/**", ".github/workflows/factura-launch-qa.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: factura-qa-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  synthetic-qa:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: factura_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: synthetic-ci-only-password
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres -d factura_test" --health-interval 5s
+          --health-timeout 5s --health-retries 20
+    env:
+      FACTURA_TEST_DATABASE_URL: postgresql://postgres:synthetic-ci-only-password@127.0.0.1:5432/factura_test?sslmode=disable
+      FACTURA_TEST_ALLOW_DDL: "1"
+      FACTURA_SECRET: synthetic-ci-signing-key-only-never-production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r products/factura-candidate/factura/requirements-dev.txt
+      - run: python products/factura-candidate/factura/scripts/verify_dependencies.py
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - name: Enable TLS on isolated PostgreSQL service
+        env:
+          PG_CID: ${{ job.services.postgres.id }}
+          PGHOST: 127.0.0.1
+          PGPORT: "5432"
+          PGUSER: postgres
+          PGPASSWORD: synthetic-ci-only-password
+          PGDATABASE: factura_test
+        run: |
+          openssl req -x509 -newkey rsa:2048 -nodes -days 1 -subj "/CN=localhost" -keyout "$RUNNER_TEMP/qa.key" -out "$RUNNER_TEMP/qa.crt" 2>/dev/null
+          docker cp "$RUNNER_TEMP/qa.key" "$PG_CID:/tmp/qa.key"
+          docker cp "$RUNNER_TEMP/qa.crt" "$PG_CID:/tmp/qa.crt"
+          docker exec -u 0 "$PG_CID" sh -c 'chown postgres:postgres /tmp/qa.key /tmp/qa.crt && chmod 600 /tmp/qa.key'
+          psql -v ON_ERROR_STOP=1 -c "ALTER SYSTEM SET ssl_cert_file='/tmp/qa.crt'"
+          psql -v ON_ERROR_STOP=1 -c "ALTER SYSTEM SET ssl_key_file='/tmp/qa.key'"
+          psql -v ON_ERROR_STOP=1 -c "ALTER SYSTEM SET ssl='on'"
+          psql -v ON_ERROR_STOP=1 -c "SELECT pg_reload_conf()"
+          for i in $(seq 1 10); do
+            if [ "$(psql -Atc 'SHOW ssl')" = "on" ]; then break; fi
+            sleep 1
+          done
+      - run: python -m pytest tests -q --junitxml=resultados.xml
+        working-directory: products/factura-candidate/factura
+      - name: Require zero failures and zero skipped tests
+        working-directory: products/factura-candidate/factura
+        run: |
+          python - <<'PY'
+          import xml.etree.ElementTree as ET
+          root = ET.parse('resultados.xml').getroot()
+          suites = list(root.iter('testsuite'))
+          print({k:sum(int(s.get(k,0)) for s in suites) for k in ('tests','failures','errors','skipped')})
+          for name in ('failures','errors','skipped'):
+              assert sum(int(s.get(name,0)) for s in suites) == 0, name
+          PY
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/e2e_admin.py
+        working-directory: products/factura-candidate/factura
+      - name: Browser E2E with PostgreSQL and restart
+        run: python tests/e2e_admin.py
+        working-directory: products/factura-candidate/factura
+        env:
+          FACTURA_E2E_PG: "1"
+      - name: Build production image
+        run: docker build -t factura-production-qa products/factura-candidate
+      - name: Production image, least privilege, load and restart
+        run: python tests/production_smoke.py
+        working-directory: products/factura-candidate/factura

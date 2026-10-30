@@ -1,0 +1,8 @@
+# ZAYVERO FACTURA — dependencias de desarrollo/pruebas
+# (incluye las de producción)
+-r requirements.txt
+
+# Suite de pruebas (tests/ usa unittest de stdlib, ejecutado con pytest)
+pytest==9.2.0
+
+playwright==1.58.0

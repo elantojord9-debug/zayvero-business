@@ -1,0 +1,13 @@
+**/__pycache__
+**/.pytest_cache
+**/*.pyc
+**/*.db
+**/*.db-wal
+**/*.db-shm
+**/*.dump
+**/*.log
+**/.factura_secret
+**/.demo-bandeja
+**/backups
+**/demo
+**/.git

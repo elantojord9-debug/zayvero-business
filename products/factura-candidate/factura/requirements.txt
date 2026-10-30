@@ -1,0 +1,19 @@
+# ZAYVERO FACTURA — dependencias de producción (runtime)
+#
+# Instalación:  python -m venv .venv && .venv/bin/pip install -r requirements.txt
+# Versiones exactas (fijadas) para instalación reproducible.
+#
+# NOTA: el código reutiliza en SOLO LECTURA los motores del Business OS
+# (módulos tenant, os_ecf, catalogo, os_contab) vía la variable de entorno
+# FACTURA_BIZ_PATH — no son dependencias pip y no figuran aquí.
+# Todos esos módulos son stdlib puro (verificado 2026-10-14).
+
+# PostgreSQL vía psycopg3 (factura_persist/db.py hace `import psycopg`).
+# Se fijan AMBOS paquetes: psycopg aporta el código Python y psycopg-binary
+# la libpq compilada incluida, así NO se requiere libpq del sistema.
+# Alternativa en servidores con libpq del sistema: solo psycopg==3.3.6.
+psycopg==3.3.6
+psycopg-binary==3.3.6
+gunicorn==23.0.0
+
+boto3==1.43.120

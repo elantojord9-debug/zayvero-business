@@ -1,0 +1,13 @@
+# Manifiesto de migraciones de ZAYVERO FACTURA (orden de aplicación).
+001_factura_base.sql
+002_factura_ecf.sql
+003_factura_vinculos.sql
+004_factura_idempotencia.sql
+005_factura_ecf_emisor.sql
+006_factura_auditoria.sql
+007_factura_fase1.sql
+008_factura_fase4_seed.sql
+009_factura_fase2.sql
+010_factura_seguridad.sql
+011_factura_operaciones.sql
+012_factura_reembolsos.sql
