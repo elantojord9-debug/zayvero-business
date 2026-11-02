@@ -1,0 +1,25 @@
+name: RutiERP sandbox contract (offline)
+on:
+  pull_request:
+    paths:
+      - 'products/factura-candidate/factura/factura_ecf/rutierp_connector.py'
+      - 'products/factura-candidate/factura/factura_ecf/rangos_externos.py'
+      - 'products/factura-candidate/factura/tests/test_rutierp_connector.py'
+      - 'products/factura-candidate/factura/tests/test_rangos_externos.py'
+      - '.github/workflows/factura-rutierp-sandbox-contract.yml'
+  workflow_dispatch:
+jobs:
+  contract-tests:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run offline sandbox adapter tests
+        working-directory: products/factura-candidate/factura
+        env:
+          PYTHONPATH: .
+        run: python -m unittest discover -s tests -p 'test_rutierp_connector.py' -v && python -m unittest discover -s tests -p 'test_rangos_externos.py' -v
