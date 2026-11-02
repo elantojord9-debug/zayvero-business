@@ -1,0 +1,27 @@
+name: RutiERP live sandbox read-only
+on:
+  workflow_dispatch:
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    env:
+      RUTIERP_SANDBOX_URL: ${{ secrets.RUTIERP_SANDBOX_URL }}
+      RUTIERP_API_KEY: ${{ secrets.RUTIERP_API_KEY }}
+      PYTHONPATH: .
+    defaults:
+      run:
+        working-directory: products/factura-candidate/factura
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Check secret configuration without exposing values
+        run: |
+          test -n "$RUTIERP_SANDBOX_URL" || { echo "Missing RUTIERP_SANDBOX_URL secret"; exit 1; }
+          test -n "$RUTIERP_API_KEY" || { echo "Missing RUTIERP_API_KEY secret"; exit 1; }
+      - name: Authenticate and check E31/E32 without sending invoices
+        run: python scripts/check_rutierp_live.py

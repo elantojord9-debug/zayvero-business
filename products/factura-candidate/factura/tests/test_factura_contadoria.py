@@ -18,6 +18,7 @@ import sys
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 from datetime import date
 from decimal import Decimal
 from http.server import ThreadingHTTPServer
@@ -351,19 +352,23 @@ class TestRutaHTTP(BaseFactura):
         conta = self._cookie(eid, "conta@ia.test", "contador")
         cajero = self._cookie(eid, "caja@ia.test", "cajero")
 
-        st, cuerpo = self._get(puerto, admin)
-        self.assertEqual(st, 200)
-        self.assertIn("Contador IA", cuerpo)
-        self.assertIn("Recomendaciones", cuerpo)
-        # los números del análisis aparecen en la página
-        self.assertIn("11,500.00", cuerpo)
+        # Fijar fecha de referencia también en la ruta HTTP. El panel real
+        # utiliza la fecha actual, que cambia y rompe fixtures históricos.
+        panel_real = contador_ia.panel_contador
+        with patch.object(contador_ia, "panel_contador",
+                          side_effect=lambda empresa_id: panel_real(empresa_id, REF)):
+            st, cuerpo = self._get(puerto, admin)
+            self.assertEqual(st, 200)
+            self.assertIn("Contador IA", cuerpo)
+            self.assertIn("Recomendaciones", cuerpo)
+            self.assertIn("11,500.00", cuerpo)
 
-        st, _ = self._get(puerto, conta)
-        self.assertEqual(st, 200)
+            st, _ = self._get(puerto, conta)
+            self.assertEqual(st, 200)
 
-        st, cuerpo = self._get(puerto, cajero)
-        self.assertEqual(st, 403)
-        self.assertNotIn("Recomendaciones", cuerpo)
+            st, cuerpo = self._get(puerto, cajero)
+            self.assertEqual(st, 403)
+            self.assertNotIn("Recomendaciones", cuerpo)
 
 
 if __name__ == "__main__":
