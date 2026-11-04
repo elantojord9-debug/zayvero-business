@@ -650,6 +650,10 @@ def pagina_factura_detalle(sesion, v, empresa, pagos, puede_anular,
   <tbody>{filas_pagos or '<tr><td colspan="3">Sin pagos registrados.</td></tr>'}</tbody></table></div>
   <p class="sub doc-foot">Documento generado por ZAYVERO FACTURA (prototipo).</p>
 </div>"""
+    from factura_ecf import rutiverso
+    if sesion["rol"] == "admin" and rutiverso.enabled(sesion["e"]):
+        from factura_web.sandbox_panel import panel
+        h += panel(v["id"])
     return base(sesion, f"Factura {v['numero']}", h, active="/facturas",
                 crumbs=[("/facturas", "Facturas"), f"Factura {v['numero']}"])
 

@@ -1122,6 +1122,16 @@ class Handler(BaseHTTPRequestHandler):
             if sid:
                 ventas.asignar_sucursal(eid, venta["id"], int(sid))
 
+        if path == "/api/pos/sandbox":
+            from factura_ecf import rutiverso
+            if ses["rol"] != "admin":
+                return self._json({"ok": False, "error": "Prueba reservada al administrador"}, 403)
+            result = rutiverso.operate(eid, int(datos.get("venta_id", 0)),
+                                       str(datos.get("tipo", "32")), datos.get("accion"))
+            _audit(self, ses, "sandbox_consultado", "venta", datos.get("venta_id"),
+                   {"ncf": result["ncf"], "estado": result["estado"]})
+            return self._json({"ok": True, **result})
+
         if path == "/api/pos/cobrar":
             if not config.tiene_permiso(ses["rol"], "pos"):
                 return self._json({"ok": False,
