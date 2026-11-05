@@ -1,5 +1,6 @@
-"""Rutiverso Sandbox, enabled explicitly for one synthetic test company."""
+"""Rutiverso Sandbox with explicit per-company server configuration."""
 import json
+import hashlib
 import os
 from decimal import Decimal
 from urllib.request import Request, build_opener, HTTPRedirectHandler
@@ -20,14 +21,43 @@ class NoRedirect(HTTPRedirectHandler):
         return None
 
 
+def configuration(company):
+    """Resolve only server-owned secrets; never accept connector keys from a sale."""
+    configured = os.getenv('FACTURA_RUTIVERSO_SANDBOX_CONFIG')
+    if configured:
+        entries = json.loads(configured)
+        entry = entries.get(str(company))
+        if not entry:
+            raise ValueError('Sandbox sin habilitar para esta empresa')
+        token_env = entry['token_env']
+        if not token_env.startswith('FACTURA_RUTIVERSO_TOKEN_'):
+            raise ValueError('Referencia de credencial inválida')
+        token = os.environ[token_env]
+        starts = {kind: int(entry['inicio'][kind]) for kind in START}
+        due = entry['vencimiento']
+        from datetime import date
+        date.fromisoformat(due)
+    else:
+        if str(company) != os.getenv('FACTURA_RUTIVERSO_SANDBOX_EMPRESA', ''):
+            raise ValueError('Sandbox sin habilitar para esta empresa')
+        token = os.environ['FACTURA_RUTIVERSO_SANDBOX_TOKEN']
+        starts = {kind: int(os.environ['FACTURA_RUTIVERSO_E' + kind + '_INICIO']) for kind in START}
+        due = '2028-12-31'
+    if not token or any(not START[kind] <= starts[kind] <= END for kind in START):
+        raise ValueError('Credencial o rango Sandbox inválido')
+    return {'token': token, 'inicio': starts, 'vencimiento': due}
+
+
 def enabled(company):
-    return (str(company) == os.getenv('FACTURA_RUTIVERSO_SANDBOX_EMPRESA', '')
-            and bool(os.getenv('FACTURA_RUTIVERSO_SANDBOX_TOKEN'))
-            and all(os.getenv('FACTURA_RUTIVERSO_E' + kind + '_INICIO') for kind in START))
+    try:
+        configuration(company)
+        return True
+    except (ValueError, KeyError, TypeError, AttributeError):
+        return False
 
 
-def request(path, payload=None):
-    headers = {'Authorization': os.environ['FACTURA_RUTIVERSO_SANDBOX_TOKEN'],
+def request(path, payload=None, *, company):
+    headers = {'Authorization': configuration(company)['token'],
                'Content-Type': 'application/json'}
     body = None if payload is None else json.dumps(payload).encode()
     with build_opener(NoRedirect()).open(Request(BASE + path, data=body,
@@ -38,11 +68,11 @@ def request(path, payload=None):
     return raw.decode('utf-8')
 
 
-def _json(path, payload=None):
-    result = json.loads(request(path, payload))
+def _json(path, payload=None, *, company):
+    result = json.loads(request(path, payload, company=company))
     if result.get('code', 200) != 200:
         raise ValueError('el proveedor rechazó la solicitud')
-    return result.get('data') or result
+    return result.get('data') if 'data' in result else result
 
 
 def _row(conn, company, sale):
@@ -50,7 +80,7 @@ def _row(conn, company, sale):
     return dict(row) if row else None
 
 
-def _payload(sale, kind, ncf):
+def _payload(sale, kind, ncf, config):
     if sale['estado'] == 'anulada' or Decimal(sale.get('descuento') or '0'):
         raise ValueError('Prueba disponible para ventas vigentes sin descuentos')
     items = []
@@ -68,13 +98,25 @@ def _payload(sale, kind, ncf):
     total = sum((Decimal(i['subtotal']) + Decimal(i['itbis']) for i in sale['items']), Decimal(0))
     if total != Decimal(sale['total']):
         raise ValueError('El total de la venta no coincide con sus líneas')
-    payload = {'ncf': ncf, 'invoice_date_due': '2028-12-31',
+    payload = {'ncf': ncf, 'invoice_date_due': config['vencimiento'],
                'external_ref': 'ZAYVERO-POS-SANDBOX-' + ncf,
                'income_type': '01', 'payment_type': '1', 'wait_dgii': False,
                'client_name': 'ZAYVERO PRUEBA SANDBOX', 'items': items}
     if kind == '31':
         payload.update(client_name='GRUPO VILLAR SRL', client_vat='131118003')
     return payload
+
+
+def _connector_fingerprint(company):
+    return hashlib.sha256(configuration(company)['token'].encode()).hexdigest()
+
+
+def _check_connector(company, row):
+    fingerprint = json.loads(row['payload']).get('_zayvero_connector')
+    if fingerprint and fingerprint != _connector_fingerprint(company):
+        raise ValueError('El comprobante pertenece a otra credencial; revise la configuración')
+    if not fingerprint and os.getenv('FACTURA_RUTIVERSO_SANDBOX_CONFIG'):
+        raise ValueError('Comprobante anterior a la configuración por empresa; requiere conciliación')
 
 
 def _reserve(company, sale_id, kind):
@@ -84,19 +126,22 @@ def _reserve(company, sale_id, kind):
             raise ValueError('Venta no encontrada')
         existing = _row(conn, company, sale_id)
         if existing:
+            _check_connector(company, existing)
             if existing['tipo'] != kind:
                 raise ValueError('La venta ya tiene otro tipo de comprobante de prueba')
             return existing, False
         # The company lock serializes allocation, unique e-NCF also guards reuse.
         last = db.fetchone(conn.cursor(), 'SELECT MAX(secuencia) FROM factura_sandbox WHERE tipo=%s', (kind,))[0]
-        start = int(os.environ['FACTURA_RUTIVERSO_E' + kind + '_INICIO'])
+        config = configuration(company)
+        start = config['inicio'][kind]
         if not START[kind] <= start <= END:
             raise ValueError('Inicio fuera del rango reservado para pruebas')
         sequence = max(start, (last or 0) + 1)
         if sequence > END:
             raise ValueError('Rango Sandbox agotado')
         ncf = 'E' + kind + str(sequence).zfill(10)
-        payload = _payload(sale, kind, ncf)
+        payload = _payload(sale, kind, ncf, config)
+        payload['_zayvero_connector'] = _connector_fingerprint(company)
         db.execute(conn.cursor(), 'INSERT INTO factura_sandbox (empresa_id,venta_id,tipo,secuencia,ncf,payload,estado) VALUES (%s,%s,%s,%s,%s,%s,%s)',
                    (company, sale_id, kind, sequence, ncf, json.dumps(payload), 'pendiente'))
         return _row(conn, company, sale_id), True
@@ -139,7 +184,9 @@ def operate(company, sale, kind, action):
         row, fresh = _reserve(company, sale, kind)
         if fresh:
             try:
-                _accept(company, sale, row, _json('/send', json.loads(row['payload'])))
+                payload = json.loads(row['payload'])
+                payload.pop('_zayvero_connector', None)
+                _accept(company, sale, row, _json('/send', payload, company=company))
             except Exception:
                 _save(company, sale, mensaje='Envío pendiente de confirmar. Consulte el estado con el mismo comprobante.')
     else:
@@ -150,15 +197,18 @@ def operate(company, sale, kind, action):
             conn.close()
         if not row:
             raise ValueError('Primero emita la prueba de esta venta')
+        if row['tipo'] != kind:
+            raise ValueError('Seleccione el tipo del comprobante emitido')
+        _check_connector(company, row)
         try:
             invoice_id = row['invoice_id']
             if not invoice_id:
-                matches = [v for v in _json('/invoices?limit=100') if v.get('l10n_do_fiscal_number') == row['ncf']]
+                matches = [v for v in _json('/invoices?limit=100', company=company) if v.get('l10n_do_fiscal_number') == row['ncf']]
                 if not matches:
                     raise ValueError('Sin resultado en las últimas 100 facturas')
                 invoice_id = int(matches[0]['id'])
-            _accept(company, sale, row, _json('/invoice/' + str(invoice_id) + '/status'))
-            xml = request('/get/' + str(invoice_id) + '/xml')
+            _accept(company, sale, row, _json('/invoice/' + str(invoice_id) + '/status', company=company))
+            xml = request('/get/' + str(invoice_id) + '/xml', company=company)
             root = ET.fromstring(xml)
             if root.findtext('.//eNCF') != row['ncf']:
                 raise ValueError('XML de otro comprobante')

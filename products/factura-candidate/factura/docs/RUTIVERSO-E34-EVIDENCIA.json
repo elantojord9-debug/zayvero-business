@@ -1,0 +1,12 @@
+{
+  "ambiente": "Sandbox TesteCF",
+  "ncf": "E340000019003",
+  "original": "E310000019002",
+  "invoice_id": 1927,
+  "estado": "success",
+  "total": 118.0,
+  "xml_bytes": 1718,
+  "xml_sha256": "0ba68bbdcefb0d56628055127f76bb32a4b72255b1eee8a6122025157e7fbda2",
+  "referencia_original_validada": true,
+  "qr_pruebas": true
+}

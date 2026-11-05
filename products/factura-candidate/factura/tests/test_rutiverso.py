@@ -117,3 +117,55 @@ class TestRutiverso(BaseFactura):
         with patch.object(rutiverso,'request') as call:
             self.assertEqual(self.action()[0],403)
             call.assert_not_called()
+
+    def test_company_configuration_does_not_fall_back_to_shared_key(self):
+        mapping = {str(self.eid): {'token_env': 'FACTURA_RUTIVERSO_TOKEN_A',
+                   'inicio': {'31': 19003, '32': 19103}, 'vencimiento': '2028-12-31'}}
+        with patch.dict(os.environ, {'FACTURA_RUTIVERSO_SANDBOX_CONFIG': json.dumps(mapping),
+                                   'FACTURA_RUTIVERSO_TOKEN_A': 'company-a-secret'}):
+            self.assertEqual(rutiverso.configuration(self.eid)['token'], 'company-a-secret')
+            self.assertFalse(rutiverso.enabled(self.eid + 100))
+            with patch.object(rutiverso, 'request', return_value=json.dumps(self.result('E320000019103'))) as call:
+                self.assertEqual(self.action()[0], 200)
+                self.assertEqual(call.call_args.kwargs['company'], self.eid)
+                self.assertNotIn('_zayvero_connector', call.call_args.args[1])
+            with patch.dict(os.environ, {'FACTURA_RUTIVERSO_TOKEN_A': 'another-connector'}):
+                with patch.object(rutiverso, 'request') as call:
+                    self.assertEqual(self.action('consultar')[0], 400)
+                    call.assert_not_called()
+
+    def test_invalid_company_mapping_fails_closed(self):
+        for mapping in ['not-json', '[]', json.dumps({str(self.eid): {'token_env': 'HOME'}})]:
+            with patch.dict(os.environ, {'FACTURA_RUTIVERSO_SANDBOX_CONFIG': mapping}):
+                with patch.object(rutiverso, 'request') as call:
+                    self.assertEqual(self.action()[0], 400)
+                    call.assert_not_called()
+
+    def test_wrong_type_consult_does_not_call_provider(self):
+        with patch.object(rutiverso, 'request', return_value=json.dumps(self.result())):
+            self.action()
+        with patch.object(rutiverso, 'request') as call:
+            self.assertEqual(self.action('consultar', kind='31')[0], 400)
+            call.assert_not_called()
+
+    def test_empty_provider_list_remains_pending_without_resend(self):
+        with patch.object(rutiverso, 'request', side_effect=TimeoutError):
+            self.action()
+        with patch.object(rutiverso, 'request', return_value=json.dumps({'data': []})) as call:
+            data = json.loads(self.action('consultar')[1])
+            self.assertEqual(data['estado'], 'pendiente')
+            self.assertEqual(call.call_args.args[0], '/invoices?limit=100')
+            self.assertEqual(call.call_count, 1)
+
+    def test_http_uses_each_company_secret(self):
+        mapping = {str(c): {'token_env': 'FACTURA_RUTIVERSO_TOKEN_' + str(c),
+                   'inicio': {'31': 19003, '32': 19103}, 'vencimiento': '2028-12-31'} for c in (10,20)}
+        env = {'FACTURA_RUTIVERSO_SANDBOX_CONFIG': json.dumps(mapping),
+               'FACTURA_RUTIVERSO_TOKEN_10': 'secret-a', 'FACTURA_RUTIVERSO_TOKEN_20': 'secret-b'}
+        with patch.dict(os.environ, env), patch.object(rutiverso, 'build_opener') as build:
+            build.return_value.open.return_value.__enter__.return_value.read.return_value = b'{}'
+            for company, token in [(10,'secret-a'), (20,'secret-b')]:
+                rutiverso.request('/auth', {}, company=company)
+                req = build.return_value.open.call_args.args[0]
+                self.assertEqual(req.get_header('Authorization'), token)
+                self.assertEqual(req.full_url, rutiverso.BASE + '/auth')
