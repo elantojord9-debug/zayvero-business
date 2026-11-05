@@ -15,6 +15,8 @@ if admin:
     runtime_info = conninfo_to_dict(runtime)
     admin_info = conninfo_to_dict(admin)
     if runtime_info.get("dbname") != admin_info.get("dbname"):
+        print("Runtime target:", runtime_info.get("host"), runtime_info.get("dbname"), flush=True)
+        print("Owner target:", admin_info.get("host"), admin_info.get("dbname"), flush=True)
         raise SystemExit("Migration and runtime databases differ")
     if runtime_info.get("user") == admin_info.get("user"):
         raise SystemExit("Use separate migration and runtime roles")
